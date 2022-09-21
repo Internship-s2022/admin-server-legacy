@@ -1,11 +1,11 @@
-# Getting started with ${App Name}
+# Getting started with Admin Server
 
 ## Domains
 
-- https://{url}.radiumrocket.com Production (master)
-- https://{url}.radiumrocket.com UAT (uat)
-- https://{url}.radiumrocket.com Test (test)
-- https://{url}.radiumrocket.com Develop (develop)
+- https://admin.server.radiumrocket.com Production (master)
+- https://uat.admin.server.radiumrocket.com UAT (uat)
+- https://test.admin.server.radiumrocket.com Test (test)
+- https://dev.admin.server.radiumrocket.com Develop (develop)
 
 ## Features
 
