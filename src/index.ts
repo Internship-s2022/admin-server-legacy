@@ -1,12 +1,20 @@
 import 'express-async-errors';
-import dotenv from 'dotenv';
+import 'dotenv/config';
+import mongoose from 'mongoose';
 
 import app from './app';
 
-dotenv.config();
+const port = process.env.PORT || 3000;
+// eslint-disable-next-line max-len
+const MONGO_URL = process.env.MONGO_URL || '';
 
-const port = process.env.PORT || 4000;
-
-app.listen(port, () => {
-  console.log(`⚡️ Server is running at http://localhost:${port} ✅`);
+mongoose.connect(MONGO_URL, (error) => {
+  if (error) {
+    console.log('Fail connection to database', error);
+  } else {
+    console.log('Connected to database');
+    app.listen(port, () => {
+      console.log(`Server ready on port ${port}`);
+    });
+  }
 });
