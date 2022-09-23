@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 import app from './app';
 
 const port = process.env.PORT || 3000;
-// eslint-disable-next-line max-len
 const MONGO_URL = process.env.MONGO_URL || '';
 
 mongoose.connect(MONGO_URL, (error) => {
