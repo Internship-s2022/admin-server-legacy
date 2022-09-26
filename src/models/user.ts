@@ -1,6 +1,6 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-enum AccesRoleType {
+export enum AccesRoleType {
   MANAGER = 'Manager',
   SUPERADMIN = 'SuperAdmin',
   ADMIN = 'Admin',

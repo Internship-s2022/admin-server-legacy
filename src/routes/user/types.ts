@@ -1,8 +1,12 @@
+import { AccesRoleType } from 'src/models/user';
+
 export interface User {
-  id: string;
+  firebaseUid: string;
+  accesRoleType: AccesRoleType;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
+  location: string;
+  workedHours: number;
   isActive: boolean;
 }
