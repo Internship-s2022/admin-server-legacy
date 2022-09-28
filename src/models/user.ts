@@ -13,7 +13,8 @@ const userSchema = new Schema({
     required: true,
   },
   accessRoleType: {
-    type: AccesRoleType,
+    type: String,
+    enum: AccesRoleType,
     required: true,
   },
   email: {

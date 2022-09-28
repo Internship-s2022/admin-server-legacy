@@ -1,12 +1,11 @@
-import { Request, Response } from 'express';
-import fs from 'fs';
+import { Request, Response, response } from 'express';
 
-import users from '../../data/users';
+import user from 'src/models/user';
 
 // GET method is only for example
-const getAllUsers = (req: Request, res: Response) => {
+const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const allUsers = users.filter((user) => user.isActive);
+    const allUsers = await user.find({});
     if (allUsers.length > 0) {
       return res.status(200).json({
         message: 'Showing Users.',
@@ -30,50 +29,31 @@ const getAllUsers = (req: Request, res: Response) => {
 
 // TODO CONTROLLER GET-GETBY-POST-PUT
 
-const deleteUser = (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response) => {
   try {
-    const user = users.find((user) => user.firebaseUid === req.params.id);
-    if (!user) {
+    const success = await user.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    console.log('body: ', req);
+    if (!success) {
       return res.status(404).json({
-        message: 'User not found',
+        message: `User account with ID "${req.params.id}" can not be found.`,
         data: undefined,
         error: true,
       });
     }
-    const newUsers = users.filter((user) => user.firebaseUid !== req.params.id);
-    const editedUser = {
-      ...user,
-      isActive: false,
-    };
-    newUsers.push(editedUser);
-    fs.writeFile('src/data/users.json', JSON.stringify(newUsers), (err) => {
-      if (err) {
-        return res.status(500).json({
-          message: `Something went wrong: ${err.message}`,
-          data: undefined,
-          error: true,
-        });
-      } else {
-        return res.status(200).json({
-          message: 'User deleted',
-          data: editedUser,
-          error: false,
-        });
-      }
+    return res.status(200).json({
+      message: `User account with ID "${req.params.id}" deleted succesfully`,
+      data: req.body,
+      error: false,
     });
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error has ocurred: ${error}`,
       data: undefined,
       error: true,
     });
   }
 };
-
 export default {
   getAllUsers,
-  // getUserById,
-  // createUser,
-  // editUser,
   deleteUser,
 };
