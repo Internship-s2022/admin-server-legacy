@@ -1,8 +1,8 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-export enum AccesRoleType {
+export enum AccessRoleType {
   MANAGER = 'MANAGER',
-  SUPER_ADMIN = 'SUPER_ADMIN',
+  SUPER__ADMIN = 'SUPER_ADMIN',
   ADMIN = 'ADMIN',
   EMPLOYEE = 'EMPLOYEE',
 }
@@ -14,7 +14,7 @@ const userSchema = new Schema({
   },
   accessRoleType: {
     type: String,
-    enum: AccesRoleType,
+    enum: AccessRoleType,
     required: true,
   },
   email: {

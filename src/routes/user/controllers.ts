@@ -1,37 +1,53 @@
 import { Request, Response } from 'express';
 
-import user from 'src/models/user';
+import users from '../../data/users';
+import UserModel from '../../models/user';
 
-// GET method is only for example
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const allUsers = await user.find({});
-    if (allUsers.length > 0) {
-      return res.status(200).json({
-        message: 'Showing Users.',
-        data: allUsers,
-        error: false,
-      });
-    }
-    return res.status(404).json({
-      message: 'Cannot show the list of Users.',
-      data: undefined,
-      error: true,
+    const allUsers = await UserModel.find({});
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allUsers,
+      error: false,
     });
   } catch (error: any) {
-    return res.status(500).json({
-      message: `Something went wrong: ${error.message}`,
+    return res.json({
+      message: 'Error',
       data: undefined,
       error: true,
     });
   }
 };
 
-// TODO CONTROLLER GET-GETBY-POST-PUT
+const getUserById = async (req: Request, res: Response) => {
+  try {
+    if (req.params.id) {
+      const userId = await UserModel.findById(req.params.id);
+      return res.status(200).json({
+        message: `User with ID ${req.params.id} has been found`,
+        data: userId,
+        error: false,
+      });
+    } else {
+      return res.status(404).json({
+        message: `Could not found an user by the id of ${req.params.id}.`,
+        data: undefined,
+        error: true,
+      });
+    }
+  } catch (error: any) {
+    return res.json({
+      message: 'Error',
+      data: undefined,
+      error: true,
+    });
+  }
+};
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    const response = await user.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const response = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     console.log(response);
     if (!response) {
       return res.status(404).json({
@@ -56,4 +72,5 @@ const deleteUser = async (req: Request, res: Response) => {
 export default {
   getAllUsers,
   deleteUser,
+  getUserById,
 };
