@@ -14,5 +14,8 @@
   "typescript.preferences.importModuleSpecifier": "shortest",
   "[typescript]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
-  }
+  },
+  "cSpell.words": [
+    "radiumrocket"
+  ]
 }

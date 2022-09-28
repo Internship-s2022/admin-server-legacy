@@ -42,13 +42,40 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
     } else {
       return res.status(404).json({
         message: `Could not found an user by the id of ${req.params.id}.`,
+
         data: undefined,
         error: true,
       });
     }
   } catch (error: any) {
+    return res.status(400).json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const createUser = async (req: Request, res: Response) => {
+  try {
+    const isUsed = await UserModel.findOne({ email: req.body.email });
+    if (isUsed) {
+      return res.status(400).json({
+        message: 'This user has already been registered',
+        data: undefined,
+        error: true,
+      });
+    }
+    const newUser = new UserModel(req.body);
+    const successData = await newUser.save();
+    return res.status(201).json({
+      message: 'Employee created successfully',
+      data: successData,
+      error: false,
+    });
+  } catch (error: any) {
     return res.json({
-      message: 'Error',
+      message: `MongoDB Error: ${error.message}`,
       data: undefined,
       error: true,
     });
@@ -67,7 +94,7 @@ const deleteUser = async (req: Request, res: Response) => {
       });
     }
     return res.status(200).json({
-      message: `User account with ID "${req.params.id}" deleted succesfully`,
+      message: `User account with ID "${req.params.id}" deleted successfully`,
       data: req.body,
       error: false,
     });
@@ -83,4 +110,5 @@ export default {
   getAllUsers,
   deleteUser,
   getUserById,
+  createUser,
 };

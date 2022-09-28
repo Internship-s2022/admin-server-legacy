@@ -1,10 +1,10 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
 export enum AccessRoleType {
-  MANAGER = 'MANAGER',
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE',
+  MANAGER = 'Manager',
+  SUPER_ADMIN = 'SuperAdmin',
+  ADMIN = 'Admin',
+  EMPLOYEE = 'Employee',
 }
 
 const userSchema = new Schema({
@@ -33,9 +33,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  workedHour: {
+  workedHours: {
     type: Number,
     required: false,
+  },
+  birthDate: {
+    type: Date,
+    required: true,
   },
   isActive: {
     type: Boolean,
