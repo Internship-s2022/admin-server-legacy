@@ -1,8 +1,8 @@
-// import { AccesRoleType } from 'src/models/user';
+import { AccesRoleType } from 'src/models/user';
 
 export interface User {
   firebaseUid: string;
-  // accesRoleType: AccesRoleType;
+  accesRoleType: AccesRoleType;
   email: string;
   firstName: string;
   lastName: string;

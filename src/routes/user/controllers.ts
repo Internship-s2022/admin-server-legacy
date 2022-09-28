@@ -1,4 +1,4 @@
-import { Request, Response, response } from 'express';
+import { Request, Response } from 'express';
 
 import user from 'src/models/user';
 
@@ -31,9 +31,9 @@ const getAllUsers = async (req: Request, res: Response) => {
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    const success = await user.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    console.log('body: ', req);
-    if (!success) {
+    const response = await user.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    console.log(response);
+    if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
         data: undefined,
