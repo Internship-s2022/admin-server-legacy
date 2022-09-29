@@ -6,11 +6,12 @@ export interface BodyResponse<T> {
 
 export interface UserData {
   firebaseUid: string;
-  accessRoleType: string;
+  accessRoleType?: string;
   email: string;
   firstName: string;
   lastName: string;
   location: string;
-  workedHour?: number;
+  birthDate: Date;
+  workedHours?: number;
   isActive: boolean;
 }
