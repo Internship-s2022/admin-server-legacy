@@ -3,6 +3,7 @@ export interface BodyResponse<T> {
   data?: T;
   error: boolean;
 }
+
 export interface UserData {
   firebaseUid: string;
   accessRoleType: string;
