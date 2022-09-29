@@ -15,7 +15,7 @@ const userSchema = new Schema({
   accessRoleType: {
     type: String,
     enum: AccessRoleType,
-    required: false,
+    required: true,
   },
   email: {
     type: String,

@@ -23,8 +23,10 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         AccessRoleType.SUPER_ADMIN,
       )
       .messages({
+        'any.required': 'User must not have an empty field',
         'any.only': 'Access rol type must be one ADMIN, EMPLOYEE, MANAGER or SUPER ADMIN',
-      }),
+      })
+      .required(),
 
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
@@ -79,6 +81,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
   });
 
   const validate = schema.validate(req.body);
+  console.log(validate.error);
   if (validate.error) {
     return res.status(400).json({
       message: validate.error.details[0].message,
