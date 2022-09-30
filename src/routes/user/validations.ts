@@ -9,8 +9,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .max(35)
       .messages({
-        'string.pattern': 'Invalid email',
-        'string.empty': 'Email cannot be an empty field',
+        'string.pattern': 'You have to use a valid firebaseUid',
+        'string.empty': 'You have to add a firebaseUid to create an user',
         'string.min': 'firebaseUid must not contain less than 3 letters',
       })
       .required(),
@@ -29,8 +29,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.pattern.base': 'Invalid email format',
-        'string.empty': 'Email cannot be an empty field',
+        'string.pattern': 'You have to use a valid email',
+        'string.empty': 'You have to add an email to create an user',
       }),
 
     firstName: Joi.string()
@@ -38,9 +38,9 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .messages({
         'string.base': 'First name has to be a string',
-        'string.empty': 'First name cannot be an empty field',
+        'string.empty': 'You have to add a first name to create an username ',
         'string.pattern': 'First name must contain only letters',
-        'string.min': 'Invalid first name, it must not contain less than 3 letters',
+        'string.min': 'First name must contain more than 3 letters',
       })
       .required(),
 
@@ -50,8 +50,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .messages({
         'string.base': 'Last name has to be a string',
         'string.pattern': 'Last name must contain only letters',
-        'string.empty': 'Last name cannot be an empty field',
-        'string.min': 'Invalid Last name, it must not contain less than 3 letters',
+        'string.empty': 'You have to add a last name to create an user ',
+        'string.min': 'Last name must contain more than 3 letters',
       })
       .required(),
 
@@ -59,8 +59,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .messages({
         'string.base': 'Location has to be a string',
-        'string.empty': 'Location cannot be an empty field',
-        'string.min': 'Invalid last name, it must not contain less than 3 letters',
+        'string.empty': 'You have to add a location to create an user',
+        'string.min': 'Location must contain more than 3 letters',
       })
       .required(),
 
@@ -68,14 +68,14 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .greater('1-1-1900')
       .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
       .messages({
-        'date.greater': 'You cannot be ',
+        'date.greater': 'Date of birth must be earlier than 1900',
         'date.less': 'Your must be over 18',
       })
       .required(),
 
     isActive: Joi.boolean().required(),
-    'string.base': 'Location has to be a boolean',
-    'string.empty': 'Location cannot be an empty field',
+    'string.base': 'Status has to be a boolean',
+    'string.empty': 'You have to add a status to create an user ',
   });
 
   const validate = schema.validate(req.body);
