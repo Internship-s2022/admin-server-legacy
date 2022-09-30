@@ -11,6 +11,7 @@ export interface UserData {
   firstName: string;
   lastName: string;
   location: string;
-  workedHour?: number;
+  birthDate: Date;
+  workedHours?: number;
   isActive: boolean;
 }
