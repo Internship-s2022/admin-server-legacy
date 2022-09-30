@@ -23,10 +23,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         AccessRoleType.SUPER_ADMIN,
       )
       .messages({
-        'any.required': 'User must not have an empty field',
-        'any.only': 'Access rol type must be one ADMIN, EMPLOYEE, MANAGER or SUPER ADMIN',
-      })
-      .required(),
+        'any.only': 'Access rol type must be one Admin, Employee, Manager or Super Admin',
+      }),
 
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
