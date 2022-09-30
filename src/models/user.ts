@@ -33,9 +33,13 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  workedHour: {
+  workedHours: {
     type: Number,
     required: false,
+  },
+  birthDate: {
+    type: Date,
+    required: true,
   },
   isActive: {
     type: Boolean,
