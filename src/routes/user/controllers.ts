@@ -42,7 +42,6 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
     } else {
       return res.status(404).json({
         message: `Could not found an user by the id of ${req.params.id}.`,
-
         data: undefined,
         error: true,
       });
