@@ -79,7 +79,6 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
   });
 
   const validate = schema.validate(req.body);
-  console.log(validate.error);
   if (validate.error) {
     return res.status(400).json({
       message: validate.error.details[0].message,
