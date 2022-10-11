@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 
 import { BodyResponse, ProjectData } from 'src/interfaces';
-
-import ProjectModel from '../../models/project';
+import ProjectModel from 'src/models/project';
 
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
@@ -32,11 +31,11 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
 
 const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    const projectId = await ProjectModel.findById(req.params.id);
-    if (projectId) {
+    const project = await ProjectModel.findById(req.params.id);
+    if (project) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
-        data: projectId,
+        data: project,
         error: false,
       });
     } else {

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 
 import { BodyResponse, UserData } from 'src/interfaces';
-
-import UserModel from '../../models/user';
+import UserModel from 'src/models/user';
 
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
   try {
@@ -32,11 +31,11 @@ const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>
 
 const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   try {
-    const userId = await UserModel.findById(req.params.id);
-    if (userId) {
+    const user = await UserModel.findById(req.params.id);
+    if (user) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
-        data: userId,
+        data: user,
         error: false,
       });
     } else {
