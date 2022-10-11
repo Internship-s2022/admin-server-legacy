@@ -54,4 +54,22 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
   }
 };
 
-export default { getAllProjects, getProjectById };
+const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const newProject = new ProjectModel(req.body);
+    const project = await newProject.save();
+    return res.status(201).json({
+      message: 'Project created successfully',
+      data: project,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default { getAllProjects, getProjectById, createProject };
