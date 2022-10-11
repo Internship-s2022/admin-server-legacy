@@ -98,4 +98,32 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
   }
 };
 
-export default { getAllProjects, getProjectById, createProject, editProject };
+const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const response = await ProjectModel.findOneAndUpdate(
+      { _id: req.params.id, isActive: true },
+      { isActive: false },
+      { new: true },
+    );
+    if (!response) {
+      return res.status(404).json({
+        message: `User account with ID "${req.params.id}" can not be found.`,
+        data: undefined,
+        error: true,
+      });
+    }
+    return res.status(200).json({
+      message: `User account with ID "${req.params.id}" deleted successfully`,
+      data: req.body,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error has ocurred: ${error}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default { getAllProjects, getProjectById, createProject, editProject, deleteProject };

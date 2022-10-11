@@ -17,4 +17,6 @@ router
   .get(idValidationMiddleware, controllers.getProjectById)
   .patch(idValidationMiddleware, validations.editProject, controllers.editProject);
 
+router.route('/delete/:id').patch(idValidationMiddleware, controllers.deleteProject);
+
 export default router;
