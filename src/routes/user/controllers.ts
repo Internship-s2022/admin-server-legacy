@@ -133,6 +133,7 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     });
   }
 };
+
 export default {
   getAllUsers,
   getUserById,

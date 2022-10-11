@@ -72,4 +72,30 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
   }
 };
 
-export default { getAllProjects, getProjectById, createProject };
+const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+    });
+    if (!response) {
+      return res.status(404).json({
+        message: `User account with ID "${req.params.id}" can not be found.`,
+        data: undefined,
+        error: true,
+      });
+    }
+    return res.status(200).json({
+      message: `User account with ID "${req.params.id}" updated successfully`,
+      data: req.body,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: `An error has ocurred: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default { getAllProjects, getProjectById, createProject, editProject };
