@@ -67,7 +67,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     const newUser = new UserModel(req.body);
     const successData = await newUser.save();
     return res.status(201).json({
-      message: 'Employee created successfully',
+      message: 'User created successfully',
       data: successData,
       error: false,
     });
