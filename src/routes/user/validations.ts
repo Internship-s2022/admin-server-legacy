@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { AccessRoleType } from 'src/models/user';
+import { AccessRoleType } from 'src/routes/user/types';
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({

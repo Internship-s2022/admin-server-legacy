@@ -15,3 +15,17 @@ export interface UserData {
   workedHours?: number;
   isActive: boolean;
 }
+
+export interface ProjectData {
+  clientName: string;
+  projectName: string;
+  description: string;
+  notes?: string;
+  startDate: Date;
+  endDate: Date;
+  members?: string[];
+  isCritic: string;
+  isUpdated: boolean;
+  projectType: string;
+  isActive: boolean;
+}

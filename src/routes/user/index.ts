@@ -11,8 +11,8 @@ router.route('/').get(controllers.getAllUsers).post(validations.createUser, cont
 
 router
   .route('/:id')
-  .get(controllers.getUserById)
-  .patch(validations.updateUser, controllers.editUser);
+  .get(idValidationMiddleware, controllers.getUserById)
+  .patch(idValidationMiddleware, validations.updateUser, controllers.editUser);
 
 router.route('/delete/:id').patch(idValidationMiddleware, controllers.deleteUser);
 

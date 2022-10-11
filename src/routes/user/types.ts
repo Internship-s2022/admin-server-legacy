@@ -1,5 +1,3 @@
-import { AccessRoleType } from 'src/models/user';
-
 export interface User {
   firebaseUid: string;
   accessRoleType: AccessRoleType;
@@ -9,4 +7,11 @@ export interface User {
   location: string;
   workedHours: number;
   isActive: boolean;
+}
+
+export enum AccessRoleType {
+  MANAGER = 'MANAGER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE',
 }
