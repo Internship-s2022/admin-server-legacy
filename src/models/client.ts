@@ -35,6 +35,6 @@ const clientSchema = new Schema({
   },
 });
 
-export type User = InferSchemaType<typeof clientSchema>;
+export type Client = InferSchemaType<typeof clientSchema>;
 
-export default model('User', clientSchema);
+export default model('Client', clientSchema);

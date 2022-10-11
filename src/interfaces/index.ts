@@ -15,7 +15,6 @@ export interface UserData {
   workedHours?: number;
   isActive: boolean;
 }
-
 export interface ProjectData {
   clientName: string;
   projectName: string;
@@ -27,5 +26,15 @@ export interface ProjectData {
   isCritic: string;
   isUpdated: boolean;
   projectType: string;
+  isActive: boolean;
+}
+export interface ClientData {
+  name: string;
+  ourContact: string;
+  clientContact: string;
+  projects: string[];
+  relationshipStart: Date;
+  relationshipEnd: Date;
+  notes?: string;
   isActive: boolean;
 }
