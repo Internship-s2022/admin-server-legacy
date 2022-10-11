@@ -11,6 +11,9 @@ router
   .get(controllers.getAllClients)
   .post(validations.createClient, controllers.createClient);
 
-router.route('/:id').get(idValidationMiddleware, controllers.getClientById);
+router
+  .route('/:id')
+  .get(idValidationMiddleware, controllers.getClientById)
+  .patch(validations.updateClient, controllers.editClient);
 
 export default router;
