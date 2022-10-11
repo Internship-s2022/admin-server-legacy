@@ -1,22 +1,13 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-export enum CritcalType {
-  LOW = 'LOW',
-  MEDIUM = 'MEDIUM',
-  HIGH = 'HIGH',
-}
-
-export enum ProjectType {
-  STAFF_AUMENTATION = 'STAFF_AUMENTATION',
-  PROJECT_BUILDING = 'PROJECT_BUILDING',
-}
+import { CriticalType, ProjectType } from 'src/routes/project/types';
 
 const projectSchema = new Schema({
   clientName: {
     type: String,
     required: true,
   },
-  porjectName: {
+  projectName: {
     type: String,
     required: true,
   },
@@ -37,12 +28,12 @@ const projectSchema = new Schema({
     required: true,
   },
   members: {
-    type: Array,
+    type: [String],
     required: false,
   },
   isCritic: {
     type: String,
-    enum: CritcalType,
+    enum: CriticalType,
     required: true,
   },
   isUpdated: {
