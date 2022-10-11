@@ -6,7 +6,6 @@ import UserModel from 'src/models/user';
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
   try {
     const allUsers = await UserModel.find(req.body);
-
     if (allUsers.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',

@@ -73,9 +73,12 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    isActive: Joi.boolean().required(),
-    'string.base': 'Status has to be a boolean',
-    'string.empty': 'You have to add a status to create an user ',
+    isActive: Joi.boolean()
+      .messages({
+        'string.base': 'Status has to be a boolean',
+        'string.empty': 'You have to add a status to create an user ',
+      })
+      .required(),
   });
 
   const validate = schema.validate(req.body);
