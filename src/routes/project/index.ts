@@ -9,3 +9,5 @@ const router = express.Router();
 router.route('/').get(controllers.getAllProjects);
 
 router.route('/:id').get(idValidationMiddleware, controllers.getProjectById);
+
+export default router;
