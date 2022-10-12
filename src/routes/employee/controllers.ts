@@ -53,3 +53,27 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
     });
   }
 };
+
+const createEmployee = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
+  try {
+    const newEmployee = new EmployeeModel(req.body);
+    const successData = await newEmployee.save();
+    return res.status(201).json({
+      message: 'Employee created successfully',
+      data: successData,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default {
+  getAllEmployees,
+  getEmployeeById,
+  createEmployee,
+};
