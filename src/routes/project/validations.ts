@@ -91,8 +91,6 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const editProject = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.body);
-
   const schema = Joi.object({
     clientName: Joi.string().min(3).max(35).messages({
       'string.base': 'You have to use a valid name',
