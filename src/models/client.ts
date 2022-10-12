@@ -1,4 +1,6 @@
-import { InferSchemaType, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
+
+import { ClientData } from 'src/interfaces';
 
 const clientSchema = new Schema({
   name: {
@@ -13,10 +15,13 @@ const clientSchema = new Schema({
     type: String,
     required: true,
   },
-  projects: {
-    type: [String],
-    required: true,
-  },
+  projects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true,
+    },
+  ],
   relationshipStart: {
     type: Date,
     required: true,
@@ -35,6 +40,4 @@ const clientSchema = new Schema({
   },
 });
 
-export type Client = InferSchemaType<typeof clientSchema>;
-
-export default model('Client', clientSchema);
+export default model<ClientData>('Client', clientSchema);

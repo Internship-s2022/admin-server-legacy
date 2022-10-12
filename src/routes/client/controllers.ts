@@ -5,7 +5,7 @@ import ClientSchema from 'src/models/client';
 
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {
-    const allClients = await ClientSchema.find(req.body);
+    const allClients = await ClientSchema.find(req.body).populate('projects');
     if (allClients.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
@@ -21,7 +21,7 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
     }
   } catch (error: any) {
     return res.json({
-      message: 'Error',
+      message: error.message,
       data: undefined,
       error: true,
     });
@@ -30,7 +30,8 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
 
 const getClientById = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
   try {
-    const client = await ClientSchema.findById(req.params.id);
+    const client = await ClientSchema.findById(req.params.id).populate('projects');
+
     if (client) {
       return res.status(200).json({
         message: `Client with ID ${req.params.id} has been found`,
@@ -57,6 +58,7 @@ const createClient = async (req: Request, res: Response<BodyResponse<ClientData>
   try {
     const newClient = new ClientSchema(req.body);
     const successData = await newClient.save();
+
     return res.status(201).json({
       message: 'Client created successfully',
       data: successData,
@@ -76,6 +78,7 @@ const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>)
     const response = await ClientSchema.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });
+
     if (!response) {
       return res.status(404).json({
         message: `Client account with ID "${req.params.id}" can not be found.`,
@@ -83,6 +86,7 @@ const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>)
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `Client account with ID "${req.params.id}" updated successfully`,
       data: req.body,

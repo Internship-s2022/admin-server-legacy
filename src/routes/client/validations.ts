@@ -33,7 +33,14 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    // Projects validations here
+    projects: Joi.array()
+      .items(Joi.string().alphanum().length(24).required())
+      .messages({
+        'string.base': 'Project id must be a string',
+        'any.required': 'Project id is a required field',
+        'string.length': 'Project id must have exactly 24 characters',
+      })
+      .required(),
 
     relationshipStart: Joi.date()
       .less('now')
@@ -93,7 +100,11 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       'string.min': 'Client contact name must contain more than 3 letters',
     }),
 
-    // Projects validations here
+    projects: Joi.array().items(Joi.string().alphanum().length(24).required()).messages({
+      'string.base': 'Project id must be a string',
+      'any.required': 'Project id is a required field',
+      'string.length': 'Project id must have exactly 24 characters',
+    }),
 
     relationshipStart: Joi.date().less('now').messages({
       'date.less': 'Relationship start date must be earlier than now',

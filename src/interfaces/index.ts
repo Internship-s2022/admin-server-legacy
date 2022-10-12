@@ -1,3 +1,4 @@
+import { Document, ObjectId, PopulatedDoc } from 'mongoose';
 export interface BodyResponse<T> {
   message: string;
   data?: T;
@@ -32,7 +33,7 @@ export interface ClientData {
   name: string;
   ourContact: string;
   clientContact: string;
-  projects: string[];
+  projects?: PopulatedDoc<Document<ObjectId> & ProjectData>[];
   relationshipStart: Date;
   relationshipEnd: Date;
   notes?: string;
