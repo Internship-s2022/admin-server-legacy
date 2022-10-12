@@ -7,14 +7,14 @@ import validations from './validations';
 
 const router = express.Router();
 
-router.route('/').get(controllers.getAllEmployees);
-
-router.route('/:id').get(idValidationMiddleware, controllers.getEmployeeById);
-
-router.route('/').post(validations.createEmployee, controllers.createEmployee);
+router
+  .route('/')
+  .post(validations.createEmployee, controllers.createEmployee)
+  .get(controllers.getAllEmployees);
 
 router
   .route('/:id')
-  .patch(idValidationMiddleware, validations.editEmployee, controllers.editEmployee);
+  .patch(idValidationMiddleware, validations.editEmployee, controllers.editEmployee)
+  .get(idValidationMiddleware, controllers.getEmployeeById);
 
 export default router;
