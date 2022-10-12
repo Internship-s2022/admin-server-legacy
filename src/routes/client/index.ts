@@ -16,4 +16,6 @@ router
   .get(idValidationMiddleware, controllers.getClientById)
   .patch(validations.updateClient, controllers.editClient);
 
+router.route('/delete/:id').patch(idValidationMiddleware, controllers.deleteClient);
+
 export default router;
