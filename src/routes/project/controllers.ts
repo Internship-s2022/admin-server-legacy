@@ -54,4 +54,76 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
   }
 };
 
-export default { getAllProjects, getProjectById };
+const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const newProject = new ProjectModel(req.body);
+    const project = await newProject.save();
+    return res.status(201).json({
+      message: 'Project created successfully',
+      data: project,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
+      new: true,
+    });
+    if (!response) {
+      return res.status(404).json({
+        message: `User account with ID "${req.params.id}" can not be found.`,
+        data: undefined,
+        error: true,
+      });
+    }
+    return res.status(200).json({
+      message: `User account with ID "${req.params.id}" updated successfully`,
+      data: req.body,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: `An error has ocurred: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  try {
+    const response = await ProjectModel.findOneAndUpdate(
+      { _id: req.params.id, isActive: true },
+      { isActive: false },
+      { new: true },
+    );
+    if (!response) {
+      return res.status(404).json({
+        message: `User account with ID "${req.params.id}" can not be found.`,
+        data: undefined,
+        error: true,
+      });
+    }
+    return res.status(200).json({
+      message: `User account with ID "${req.params.id}" deleted successfully`,
+      data: req.body,
+      error: false,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: `An error has ocurred: ${error}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+export default { getAllProjects, getProjectById, createProject, editProject, deleteProject };
