@@ -1,6 +1,6 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-import { RoleType, SeniorityType } from 'src/routes/employee';
+import { RoleType, SeniorityType } from 'src/routes/employee/types';
 
 const employeeSchema = new Schema({
   skills: {
@@ -8,7 +8,8 @@ const employeeSchema = new Schema({
     required: false,
   },
   seniority: {
-    type: SeniorityType,
+    type: String,
+    enum: SeniorityType,
     required: true,
   },
   projectHistory: {
@@ -20,11 +21,12 @@ const employeeSchema = new Schema({
     required: false,
   },
   userId: {
-    type: [String],
+    type: String,
     required: true,
   },
   potentialRole: {
-    type: RoleType,
+    type: [String],
+    enum: RoleType,
     required: false,
   },
   notes: {
