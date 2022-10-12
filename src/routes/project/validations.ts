@@ -9,8 +9,8 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .max(35)
       .messages({
-        'string.pattern': 'You have to use a valid name',
-        'string.empty': 'This field is required',
+        'string.base': 'You have to use a valid name',
+        'any.required': 'This field is required',
         'string.min': 'The name must not contain less than 3 letters',
         'string.max': 'The name must not contain more than 35 letters',
       })
@@ -20,8 +20,8 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .max(35)
       .messages({
-        'string.pattern': 'You have to use a valid name',
-        'string.empty': 'This field is required',
+        'string.base': 'You have to use a valid name',
+        'any.required': 'This field is required',
         'string.min': 'The name must not contain less than 3 letters',
         'string.max': 'The name must not contain more than 35 letters',
       })
@@ -31,15 +31,15 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .min(12)
       .max(50)
       .messages({
-        'string.pattern': 'You have to use a valid description',
-        'string.empty': 'This field is required',
+        'string.base': 'You have to use a valid description',
+        'any.required': 'This field is required',
         'string.min': 'The description must not contain less than 12 letters',
         'string.max': 'The description must not contain more than 50 letters',
       })
       .required(),
 
     notes: Joi.string().min(12).max(50).messages({
-      'string.pattern': 'You have to use a valid name',
+      'string.base': 'You have to use a valid name',
       'string.min': 'The name must not contain less than 12 letters',
       'string.max': 'The name must not contain more than 50 letters',
     }),
@@ -76,7 +76,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
     isActive: Joi.boolean().required(),
     'string.base': 'Status has to be a boolean',
-    'string.empty': 'You have to add a status to create an user ',
+    'any.required': 'You have to add a status to create an user ',
   });
 
   const validate = schema.validate(req.body);
