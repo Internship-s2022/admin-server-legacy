@@ -4,8 +4,6 @@ import Joi from 'joi';
 import { CriticalType, ProjectType } from './types';
 
 const createProject = (req: Request, res: Response, next: NextFunction) => {
-  console.log(req.body);
-
   const schema = Joi.object({
     clientName: Joi.string()
       .min(3)
@@ -60,9 +58,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    members: Joi.string().min(12).max(12).messages({
-      'string.pattern': 'You have to use a valid ID',
-    }),
+    members: Joi.array().items(Joi.string().alphanum().length(24).required()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
@@ -132,9 +128,7 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
     endDate: Joi.date().greater('now').messages({
       'date.greater': 'Start date must be later than now',
     }),
-    members: Joi.string().min(12).max(12).messages({
-      'string.pattern': 'You have to use a valid ID',
-    }),
+    members: Joi.array().items(Joi.string().alphanum().length(24).required()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
