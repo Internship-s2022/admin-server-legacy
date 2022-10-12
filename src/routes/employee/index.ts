@@ -10,4 +10,6 @@ router.route('/:id').get(controllers.getEmployeeById);
 
 router.route('/').post(controllers.createEmployee);
 
+router.route('/:id').patch(controllers.editEmployee);
+
 export default router;
