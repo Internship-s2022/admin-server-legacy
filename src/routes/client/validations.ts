@@ -8,7 +8,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .max(35)
       .messages({
         'string.base': 'Name must be a string',
-        'any.required': 'Name is a required field',
         'string.min': 'Name must not contain less than 3 letters',
       })
       .required(),
@@ -18,7 +17,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .max(35)
       .messages({
         'string.base': 'Our contact name must be a string',
-        'any.required': 'Our contact name is a required field',
         'string.min': 'Our contact name must contain more than 3 letters',
       })
       .required(),
@@ -28,32 +26,22 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .max(35)
       .messages({
         'string.base': 'Client contact name must be a string',
-        'any.required': 'Client contact name is a required field',
         'string.min': 'Client contact name must contain more than 3 letters',
       })
       .required(),
 
-    projects: Joi.array()
-      .items(Joi.string().alphanum().length(24).required())
-      .messages({
-        'string.base': 'Project id must be a string',
-        'string.length': 'Project id must have exactly 24 characters',
-      })
-      .required(),
+    projects: Joi.array().items(Joi.string().alphanum().length(24).required()).messages({
+      'string.base': 'Project id must be a string',
+      'string.length': 'Project id must have exactly 24 characters',
+    }),
 
-    relationshipStart: Joi.date()
-      .less('now')
-      .messages({
-        'date.less': 'Relationship start date must be earlier than now',
-      })
-      .required(),
+    relationshipStart: Joi.date().less('now').messages({
+      'date.less': 'Relationship start date must be earlier than now',
+    }),
 
-    relationshipEnd: Joi.date()
-      .greater('now')
-      .messages({
-        'date.greater': 'Relationship end date must be later than now',
-      })
-      .required(),
+    relationshipEnd: Joi.date().greater('now').messages({
+      'date.greater': 'Relationship end date must be later than now',
+    }),
 
     notes: Joi.string().min(3).max(35).messages({
       'string.base': 'Notes must be a string',
@@ -62,7 +50,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
 
     isActive: Joi.boolean().required(),
     'boolean.base': 'Status has to be a boolean',
-    'any.required': 'You have to add a status to create a client ',
   });
 
   const validate = schema.validate(req.body);
@@ -92,13 +79,11 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
 
     clientContact: Joi.string().min(3).max(35).messages({
       'string.base': 'Client contact name must be a string',
-      'any.required': 'Client contact name is a required field',
       'string.min': 'Client contact name must contain more than 3 letters',
     }),
 
     projects: Joi.array().items(Joi.string().alphanum().length(24).required()).messages({
       'string.base': 'Project id must be a string',
-      'any.required': 'Project id is a required field',
       'string.length': 'Project id must have exactly 24 characters',
     }),
 
@@ -118,7 +103,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
     }),
 
     isActive: Joi.boolean().messages({
-      'string.base': 'Status has to be a boolean',
+      'boolean.base': 'Status has to be a boolean',
       'any.required': 'You have to add a status to create a client ',
     }),
   });
