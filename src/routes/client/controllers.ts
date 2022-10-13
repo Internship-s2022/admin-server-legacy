@@ -6,6 +6,7 @@ import ClientSchema from 'src/models/client';
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {
     const allClients = await ClientSchema.find(req.body).populate('projects');
+
     if (allClients.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
@@ -108,6 +109,7 @@ const deleteClient = async (req: Request, res: Response<BodyResponse<ClientData>
       { isActive: false },
       { new: true },
     );
+
     if (!response) {
       return res.status(404).json({
         message: `Client with ID "${req.params.id}" can not be found.`,
@@ -115,6 +117,7 @@ const deleteClient = async (req: Request, res: Response<BodyResponse<ClientData>
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `Client with ID "${req.params.id}" deleted successfully`,
       data: req.body,
