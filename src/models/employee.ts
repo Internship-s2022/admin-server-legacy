@@ -25,7 +25,7 @@ const employeeSchema = new Schema({
       required: false,
     },
   ],
-  userId: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true,

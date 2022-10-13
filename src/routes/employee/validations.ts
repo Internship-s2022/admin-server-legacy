@@ -25,7 +25,7 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
       .items(Joi.string())
       .messages({ 'string.base': 'Array items must be strings' }),
 
-    userId: Joi.string().messages({
+    user: Joi.string().messages({
       'string.base': 'User Id must be a string',
     }),
 

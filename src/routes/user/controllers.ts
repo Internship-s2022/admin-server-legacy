@@ -76,7 +76,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 
     if (successData.accessRoleType === 'EMPLOYEE') {
       const employeeBody = {
-        userId: successData._id,
+        user: successData._id,
       };
       const newEmployee = new EmployeeModel(employeeBody);
       await newEmployee.save();
@@ -107,11 +107,11 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     const response = await UserModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     }).session(session);
-    const employeeFound = await EmployeeModel.findOne({ userId: req.params.id });
+    const employeeFound = await EmployeeModel.findOne({ user: req.params.id });
 
     if (!employeeFound && req.body.accessRoleType === 'EMPLOYEE') {
       const employeeBody = {
-        userId: req.params.id,
+        user: req.params.id,
       };
       const newEmployee = new EmployeeModel(employeeBody);
       await newEmployee.save();

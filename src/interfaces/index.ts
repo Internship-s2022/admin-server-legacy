@@ -47,7 +47,7 @@ export interface EmployeeData {
   seniority?: string;
   projectHistory?: string[];
   absences?: string[];
-  userId: PopulatedDoc<Document<ObjectId> & UserData>;
+  user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
 }

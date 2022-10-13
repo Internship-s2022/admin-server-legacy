@@ -5,7 +5,7 @@ import EmployeeModel from 'src/models/employee';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
-    const allEmployees = await EmployeeModel.find(req.body).populate('userId', [
+    const allEmployees = await EmployeeModel.find(req.body).populate('user', [
       'firstName',
       'lastName',
       'email',
@@ -36,7 +36,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
-    const employee = await EmployeeModel.findById(req.params.id).populate('userId', [
+    const employee = await EmployeeModel.findById(req.params.id).populate('user', [
       'firstName',
       'lastName',
       'email',
