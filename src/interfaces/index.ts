@@ -41,3 +41,13 @@ export interface ClientData {
   notes?: string;
   isActive: boolean;
 }
+
+export interface EmployeeData {
+  skills?: string[];
+  seniority?: string;
+  projectHistory?: string[];
+  absences?: string[];
+  user: PopulatedDoc<Document<ObjectId> & UserData>;
+  potentialRole?: string[];
+  notes?: string;
+}
