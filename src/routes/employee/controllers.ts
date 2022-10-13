@@ -5,7 +5,12 @@ import EmployeeModel from 'src/models/employee';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
-    const allEmployees = await EmployeeModel.find(req.body);
+    const allEmployees = await EmployeeModel.find(req.body).populate('userId', [
+      'firstName',
+      'lastName',
+      'email',
+      'birthDate',
+    ]);
 
     if (allEmployees.length) {
       return res.status(200).json({
@@ -31,7 +36,12 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
-    const employee = await EmployeeModel.findById(req.params.id);
+    const employee = await EmployeeModel.findById(req.params.id).populate('userId', [
+      'firstName',
+      'lastName',
+      'email',
+      'birthDate',
+    ]);
 
     if (employee) {
       return res.status(200).json({
