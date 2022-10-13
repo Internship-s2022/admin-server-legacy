@@ -4,10 +4,12 @@ import { EmployeeData } from 'src/interfaces';
 import { RoleType, SeniorityType } from 'src/routes/employee/types';
 
 const employeeSchema = new Schema({
-  skills: {
-    type: [String],
-    required: false,
-  },
+  skills: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
   seniority: {
     type: String,
     enum: SeniorityType,
