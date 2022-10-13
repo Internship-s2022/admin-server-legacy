@@ -7,7 +7,7 @@ const clientSchema = new Schema({
     type: String,
     required: true,
   },
-  ourContact: {
+  localContact: {
     type: String,
     required: true,
   },

@@ -33,7 +33,7 @@ export interface ProjectData {
 
 export interface ClientData {
   name: string;
-  ourContact: string;
+  localContact: string;
   clientContact: string;
   projects?: PopulatedDoc<Document<ObjectId> & ProjectData>[];
   relationshipStart?: Date;

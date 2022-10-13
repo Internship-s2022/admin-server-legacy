@@ -13,7 +13,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    ourContact: Joi.string()
+    localContact: Joi.string()
       .min(3)
       .max(35)
       .messages({
@@ -33,7 +33,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    projects: Joi.array().items(Joi.string().alphanum().length(24).required()).messages({
+    projects: Joi.array().items(Joi.string().alphanum().length(24)).messages({
       'string.base': 'Project id must be a string',
       'string.length': 'Project id must have exactly 24 characters',
     }),
@@ -51,13 +51,17 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       'string.min': 'Notes must not contain less than 3 letters',
     }),
 
-    isActive: Joi.boolean().required(),
-    'boolean.base': 'Status has to be a boolean',
-    'any.required': 'Client status is a required field',
+    isActive: Joi.boolean()
+      .messages({
+        'boolean.base': 'Status has to be a boolean',
+        'any.required': 'Client status is a required field',
+      })
+      .required(),
   });
 
   const validate = schema.validate(req.body);
   if (validate.error) {
+    console.log(validate.error);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,
@@ -74,7 +78,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       'string.min': 'Name must not contain less than 3 letters',
     }),
 
-    ourContact: Joi.string().min(3).max(35).messages({
+    localContact: Joi.string().min(3).max(35).messages({
       'string.base': 'Our local contact name must be a string',
       'string.min': 'Our local contact name must contain more than 3 letters',
     }),
@@ -84,7 +88,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       'string.min': 'Client contact name must contain more than 3 letters',
     }),
 
-    projects: Joi.array().items(Joi.string().alphanum().length(24).required()).messages({
+    projects: Joi.array().items(Joi.string().alphanum().length(24)).messages({
       'string.base': 'Project id must be a string',
       'string.length': 'Project id must have exactly 24 characters',
     }),
