@@ -5,7 +5,12 @@ import ClientSchema from 'src/models/client';
 
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {
-    const allClients = await ClientSchema.find(req.body).populate('projects');
+    const allClients = await ClientSchema.find(req.body).populate('projects', [
+      'projectName',
+      'description',
+      'endDate',
+      'isCritic',
+    ]);
 
     if (allClients.length) {
       return res.status(200).json({
@@ -31,7 +36,12 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
 
 const getClientById = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
   try {
-    const client = await ClientSchema.findById(req.params.id).populate('projects');
+    const client = await ClientSchema.findById(req.params.id).populate('projects', [
+      'projectName',
+      'description',
+      'endDate',
+      'isCritic',
+    ]);
 
     if (client) {
       return res.status(200).json({

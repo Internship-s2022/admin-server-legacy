@@ -37,7 +37,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .items(Joi.string().alphanum().length(24).required())
       .messages({
         'string.base': 'Project id must be a string',
-        'any.required': 'Project id is a required field',
         'string.length': 'Project id must have exactly 24 characters',
       })
       .required(),
@@ -46,7 +45,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .less('now')
       .messages({
         'date.less': 'Relationship start date must be earlier than now',
-        'any.required': 'Relationship start date is a required field',
       })
       .required(),
 
@@ -54,7 +52,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       .greater('now')
       .messages({
         'date.greater': 'Relationship end date must be later than now',
-        'any.required': 'Relationship end date is a required field',
       })
       .required(),
 
@@ -64,13 +61,12 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
     }),
 
     isActive: Joi.boolean().required(),
-    'string.base': 'Status has to be a boolean',
+    'boolean.base': 'Status has to be a boolean',
     'any.required': 'You have to add a status to create a client ',
   });
 
   const validate = schema.validate(req.body);
   if (validate.error) {
-    console.log('ERROR IS HERE:', validate.error);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,

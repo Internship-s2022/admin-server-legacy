@@ -19,16 +19,16 @@ const clientSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       ref: 'Project',
-      required: true,
+      required: false,
     },
   ],
   relationshipStart: {
     type: Date,
-    required: true,
+    required: false,
   },
   relationshipEnd: {
     type: Date,
-    required: true,
+    required: false,
   },
   notes: {
     type: String,

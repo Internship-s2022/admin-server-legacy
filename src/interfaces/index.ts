@@ -36,8 +36,8 @@ export interface ClientData {
   ourContact: string;
   clientContact: string;
   projects?: PopulatedDoc<Document<ObjectId> & ProjectData>[];
-  relationshipStart: Date;
-  relationshipEnd: Date;
+  relationshipStart?: Date;
+  relationshipEnd?: Date;
   notes?: string;
   isActive: boolean;
 }
