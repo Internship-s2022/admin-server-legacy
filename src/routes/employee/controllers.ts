@@ -55,25 +55,6 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
   }
 };
 
-const createEmployee = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
-  try {
-    const newEmployee = new EmployeeModel(req.body);
-    const successData = await newEmployee.save();
-
-    return res.status(201).json({
-      message: 'Employee created successfully',
-      data: successData,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
-  }
-};
-
 const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
     const response = await EmployeeModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
@@ -105,6 +86,5 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
 export default {
   getAllEmployees,
   getEmployeeById,
-  createEmployee,
   editEmployee,
 };

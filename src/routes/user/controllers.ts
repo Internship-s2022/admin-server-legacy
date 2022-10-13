@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import { startSession } from 'mongoose';
 
 import { BodyResponse, UserData } from 'src/interfaces';
+import EmployeeModel from 'src/models/employee';
 import UserModel from 'src/models/user';
 
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
@@ -54,8 +56,12 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
 };
 
 const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+  const session = await startSession();
+  session.startTransaction();
+
   try {
     const isUsed = await UserModel.findOne({ email: req.body.email });
+
     if (isUsed) {
       return res.status(400).json({
         message: 'This user has already been registered',
@@ -63,14 +69,27 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
         error: true,
       });
     }
+
     const newUser = new UserModel(req.body);
-    const successData = await newUser.save();
+    const successData = await newUser.save({ session: session });
+
+    if (successData.accessRoleType === 'EMPLOYEE') {
+      const employeeBody = {
+        userId: successData._id,
+      };
+      const newEmployee = new EmployeeModel(employeeBody);
+      await newEmployee.save();
+    }
+
+    session.commitTransaction();
+
     return res.status(201).json({
       message: 'User created successfully',
       data: successData,
       error: false,
     });
   } catch (error: any) {
+    session.abortTransaction();
     return res.json({
       message: `MongoDB Error: ${error.message}`,
       data: undefined,
@@ -80,10 +99,24 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 };
 
 const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+  const session = await startSession();
+  session.startTransaction();
+
   try {
     const response = await UserModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
-    });
+    }).session(session);
+    const employeeFound = await EmployeeModel.findOne({ userId: req.params.id });
+    if (!employeeFound && req.body.accessRoleType === 'EMPLOYEE') {
+      const employeeBody = {
+        userId: req.params.id,
+      };
+      const newEmployee = new EmployeeModel(employeeBody);
+      await newEmployee.save();
+    }
+
+    session.commitTransaction();
+
     if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
@@ -97,6 +130,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
       error: false,
     });
   } catch (error: any) {
+    session.abortTransaction();
     return res.status(400).json({
       message: `An error has ocurred: ${error.message}`,
       data: undefined,
@@ -107,6 +141,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
 
 const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   try {
+    //to do: check if user is related to an employee that is active as member in project.
     const response = await UserModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },
       { isActive: false },

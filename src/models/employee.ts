@@ -1,4 +1,4 @@
-import { InferSchemaType, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
 import { EmployeeData } from 'src/interfaces';
 import { RoleType, SeniorityType } from 'src/routes/employee/types';
@@ -11,7 +11,7 @@ const employeeSchema = new Schema({
   seniority: {
     type: String,
     enum: SeniorityType,
-    required: true,
+    required: false,
   },
   projectHistory: {
     type: [String],

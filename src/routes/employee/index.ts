@@ -7,10 +7,7 @@ import validations from './validations';
 
 const router = express.Router();
 
-router
-  .route('/')
-  .post(validations.createEmployee, controllers.createEmployee)
-  .get(controllers.getAllEmployees);
+router.route('/').get(controllers.getAllEmployees);
 
 router
   .route('/:id')

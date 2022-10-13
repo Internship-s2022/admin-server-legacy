@@ -44,7 +44,7 @@ export interface ClientData {
 
 export interface EmployeeData {
   skills?: string[];
-  seniority: string;
+  seniority?: string;
   projectHistory?: string[];
   absences?: string[];
   userId: string;
