@@ -9,7 +9,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .min(3)
       .max(35)
       .messages({
-        'string.pattern': 'You have to use a valid firebaseUid',
+        'string.base': 'You have to use a valid firebaseUid',
         'string.empty': 'You have to add a firebaseUid to create an user',
         'string.min': 'firebaseUid must not contain less than 3 letters',
       })
@@ -29,7 +29,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.pattern': 'You have to use a valid email',
+        'string.pattern.base': 'You have to use a valid email',
         'string.empty': 'You have to add an email to create an user',
       }),
 
@@ -37,9 +37,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .regex(/^[a-zA-Z\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'First name has to be a string',
+        'string.base': 'First name must contain only letters',
         'string.empty': 'You have to add a first name to create an username ',
-        'string.pattern': 'First name must contain only letters',
         'string.min': 'First name must contain more than 3 letters',
       })
       .required(),
@@ -48,8 +47,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .regex(/^[a-zA-Z\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'Last name has to be a string',
-        'string.pattern': 'Last name must contain only letters',
+        'string.pattern.base': 'Last name must contain only letters',
         'string.empty': 'You have to add a last name to create an user ',
         'string.min': 'Last name must contain more than 3 letters',
       })
@@ -73,9 +71,12 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    isActive: Joi.boolean().required(),
-    'string.base': 'Status has to be a boolean',
-    'string.empty': 'You have to add a status to create an user ',
+    isActive: Joi.boolean()
+      .messages({
+        'string.base': 'Status has to be a boolean',
+        'string.empty': 'You have to add a status to create an user ',
+      })
+      .required(),
   });
 
   const validate = schema.validate(req.body);
@@ -92,7 +93,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     firebaseUid: Joi.string().min(3).max(35).messages({
-      'string.pattern': 'You have to use a valid firebaseUid',
+      'string.base': 'You have to use a valid firebaseUid',
       'string.min': 'firebaseUid must not contain less than 3 letters',
     }),
     accessRoleType: Joi.string()
@@ -109,25 +110,25 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.pattern': 'You have to use a valid email',
+        'string.base': 'You have to use a valid email',
       }),
 
     firstName: Joi.string()
       .regex(/^[a-zA-Z\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'First name has to be a string',
-        'string.pattern': 'First name must contain only letters',
+        'string.base': 'First name must contain only letters',
         'string.min': 'First name must contain more than 3 letters',
       }),
+
     lastName: Joi.string()
       .regex(/^[a-zA-Z\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'Last name has to be a string',
-        'string.pattern': 'Last name must contain only letters',
+        'string.base': 'Last name must contain only letters',
         'string.min': 'Last name must contain more than 3 letters',
       }),
+
     location: Joi.string().min(3).messages({
       'string.base': 'Location has to be a string',
       'string.min': 'Location must contain more than 3 letters',

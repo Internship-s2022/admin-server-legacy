@@ -1,3 +1,4 @@
+import { Document, ObjectId, PopulatedDoc } from 'mongoose';
 export interface BodyResponse<T> {
   message: string;
   data?: T;
@@ -27,5 +28,16 @@ export interface ProjectData {
   isCritic: string;
   isUpdated: boolean;
   projectType: string;
+  isActive: boolean;
+}
+
+export interface ClientData {
+  name: string;
+  localContact: string;
+  clientContact: string;
+  projects?: PopulatedDoc<Document<ObjectId> & ProjectData>[];
+  relationshipStart?: Date;
+  relationshipEnd?: Date;
+  notes?: string;
   isActive: boolean;
 }

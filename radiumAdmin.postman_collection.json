@@ -1,0 +1,534 @@
+{
+	"info": {
+		"_postman_id": "3890995d-a70e-48f8-a17b-5d017918966e",
+		"name": "Radium Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23586625"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getbyId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/users/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firebaseUid\": \"asd123asd\",\n    \"accessRoleType\": \"MANAGER\",\n    \"email\": \"aquiles.rocket@radiumrocket.com\",\n    \"firstName\": \"Aquiles\",\n    \"lastName\": \"Badium\",\n    \"location\": \"Rosario\",\n    \"birthDate\": \"2001/01/14\",\n    \"isActive\": true\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/users/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Luchito\",\n    \"lastName\": \"Alarcon\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/users/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/users/delete/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"users",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "projects",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/projects/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"projects",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "63459393a0bb8596e630fcfb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/projects/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"projects",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"projectName\": \"Luchirou\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:4000/projects/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"projects",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "63459393a0bb8596e630fcfb"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/projects/delete/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"projects",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "63459393a0bb8596e630fcfb"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "clients",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/clients/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/clients/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6345feb6c96a96d0ca0bc4b1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/clients/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"clients",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/clients/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"clients",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6345f762f2879862cf562af0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/clients/delete/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"clients",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6345cd2726695476288b2dc6"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "employees",
+			"item": [
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/employees/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/employees/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6346d7c20358fed7de70aa8f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/employees/",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"employees",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/employees/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"employees",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6346d7c20358fed7de70aa8f"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "localhost:4000/employees/delete/:id",
+							"host": [
+								"localhost"
+							],
+							"port": "4000",
+							"path": [
+								"employees",
+								"delete",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

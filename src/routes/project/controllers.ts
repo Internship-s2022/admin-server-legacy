@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 
-import { BodyResponse, ProjectData } from 'src/interfaces';
-import ProjectModel from 'src/models/project';
+import { BodyResponse } from 'src/interfaces';
+import ProjectModel, { Project } from 'src/models/project';
 
-const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
+const getAllProjects = async (req: Request, res: Response<BodyResponse<Project[]>>) => {
   try {
     const allProjects = await ProjectModel.find(req.body);
 
@@ -29,9 +29,10 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
   }
 };
 
-const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+const getProjectById = async (req: Request, res: Response<BodyResponse<Project>>) => {
   try {
     const project = await ProjectModel.findById(req.params.id);
+
     if (project) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
@@ -54,10 +55,11 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
   }
 };
 
-const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+const createProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
   try {
     const newProject = new ProjectModel(req.body);
     const project = await newProject.save();
+
     return res.status(201).json({
       message: 'Project created successfully',
       data: project,
@@ -72,11 +74,12 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
   }
 };
 
-const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+const editProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
   try {
     const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });
+
     if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
@@ -84,6 +87,7 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" updated successfully`,
       data: req.body,
@@ -98,13 +102,14 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
   }
 };
 
-const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+const deleteProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
   try {
     const response = await ProjectModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },
       { isActive: false },
       { new: true },
     );
+
     if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
@@ -112,6 +117,7 @@ const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectDat
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" deleted successfully`,
       data: req.body,

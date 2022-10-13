@@ -6,7 +6,6 @@ import UserModel from 'src/models/user';
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
   try {
     const allUsers = await UserModel.find(req.body);
-
     if (allUsers.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
@@ -67,7 +66,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     const newUser = new UserModel(req.body);
     const successData = await newUser.save();
     return res.status(201).json({
-      message: 'Employee created successfully',
+      message: 'User created successfully',
       data: successData,
       error: false,
     });
