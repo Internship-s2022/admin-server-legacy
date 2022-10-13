@@ -13,23 +13,29 @@ const employeeSchema = new Schema({
     enum: SeniorityType,
     required: false,
   },
-  projectHistory: {
-    type: [String],
-    required: false,
-  },
-  absences: {
-    type: [String],
-    required: false,
-  },
+  projectHistory: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
+  absences: [
+    {
+      type: String,
+      required: false,
+    },
+  ],
   userId: {
     type: String,
     required: true,
   },
-  potentialRole: {
-    type: [String],
-    enum: RoleType,
-    required: false,
-  },
+  potentialRole: [
+    {
+      type: String,
+      enum: RoleType,
+      required: false,
+    },
+  ],
   notes: {
     type: String,
     required: false,

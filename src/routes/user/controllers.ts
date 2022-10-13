@@ -33,6 +33,7 @@ const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>
 const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   try {
     const user = await UserModel.findById(req.params.id);
+
     if (user) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
@@ -107,6 +108,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
       new: true,
     }).session(session);
     const employeeFound = await EmployeeModel.findOne({ userId: req.params.id });
+
     if (!employeeFound && req.body.accessRoleType === 'EMPLOYEE') {
       const employeeBody = {
         userId: req.params.id,
