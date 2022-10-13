@@ -32,6 +32,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
     const employee = await EmployeeModel.findById(req.params.id);
+
     if (employee) {
       return res.status(200).json({
         message: `Employee with ID ${req.params.id} has been found`,
@@ -58,6 +59,7 @@ const createEmployee = async (req: Request, res: Response<BodyResponse<EmployeeD
   try {
     const newEmployee = new EmployeeModel(req.body);
     const successData = await newEmployee.save();
+
     return res.status(201).json({
       message: 'Employee created successfully',
       data: successData,
@@ -77,6 +79,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
     const response = await EmployeeModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });
+
     if (!response) {
       return res.status(404).json({
         message: `Employee with ID "${req.params.id}" can not be found.`,
@@ -84,6 +87,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `Employee with ID "${req.params.id}" updated successfully`,
       data: req.body,

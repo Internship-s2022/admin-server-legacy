@@ -1,5 +1,6 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
+import { EmployeeData } from 'src/interfaces';
 import { RoleType, SeniorityType } from 'src/routes/employee/types';
 
 const employeeSchema = new Schema({
@@ -35,6 +36,4 @@ const employeeSchema = new Schema({
   },
 });
 
-export type Employee = InferSchemaType<typeof employeeSchema>;
-
-export default model('Employee', employeeSchema);
+export default model<EmployeeData>('Employee', employeeSchema);
