@@ -5,6 +5,8 @@ import { BodyResponse, UserData } from 'src/interfaces';
 import EmployeeModel from 'src/models/employee';
 import UserModel from 'src/models/user';
 
+import { AccessRoleType } from './types';
+
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
   try {
     const allUsers = await UserModel.find(req.body);

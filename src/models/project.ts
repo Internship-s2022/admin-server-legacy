@@ -1,10 +1,12 @@
-import { InferSchemaType, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 
+import { ProjectData } from 'src/interfaces';
 import { CriticalType, ProjectType } from 'src/routes/project/types';
 
 const projectSchema = new Schema({
   clientName: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: 'Client',
     required: true,
   },
   projectName: {
@@ -51,6 +53,4 @@ const projectSchema = new Schema({
   },
 });
 
-export type Project = InferSchemaType<typeof projectSchema>;
-
-export default model<Project>('Project', projectSchema);
+export default model<ProjectData>('Project', projectSchema);
