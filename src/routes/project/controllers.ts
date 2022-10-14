@@ -62,17 +62,18 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
   session.startTransaction();
 
   try {
-    const newProject = new ProjectModel(req.body);
-    const project = await newProject.save({ session: session });
-
-    const clientExist = await ClientModel.findById(project.clientName);
+    const clientExist = await ClientModel.findById(req.body.clientName);
     if (!clientExist) {
       return res.status(404).json({
-        message: 'The client has not found',
+        message: 'The client was not found',
         data: undefined,
         error: true,
       });
     }
+
+    const newProject = new ProjectModel(req.body);
+    const project = await newProject.save({ session: session });
+
     await ClientModel.findByIdAndUpdate(
       { _id: clientExist._id },
       { $push: { projects: [project._id] } },
