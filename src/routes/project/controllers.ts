@@ -1,11 +1,13 @@
 import { Request, Response } from 'express';
+import { startSession } from 'mongoose';
 
-import { BodyResponse } from 'src/interfaces';
-import ProjectModel, { Project } from 'src/models/project';
+import { BodyResponse, ProjectData } from 'src/interfaces';
+import ClientModel from 'src/models/client';
+import ProjectModel from 'src/models/project';
 
-const getAllProjects = async (req: Request, res: Response<BodyResponse<Project[]>>) => {
+const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
-    const allProjects = await ProjectModel.find(req.body);
+    const allProjects = await ProjectModel.find(req.body).populate('clientName', ['name']);
 
     if (allProjects.length) {
       return res.status(200).json({
@@ -29,9 +31,9 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<Project[]
   }
 };
 
-const getProjectById = async (req: Request, res: Response<BodyResponse<Project>>) => {
+const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    const project = await ProjectModel.findById(req.params.id);
+    const project = await ProjectModel.findById(req.params.id).populate('clientName', ['name']);
 
     if (project) {
       return res.status(200).json({
@@ -55,10 +57,30 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<Project>>
   }
 };
 
-const createProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
+const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
+  const session = await startSession();
+  session.startTransaction();
+
   try {
+    const clientExist = await ClientModel.findById(req.body.clientName);
+    if (!clientExist) {
+      return res.status(404).json({
+        message: 'The client was not found',
+        data: undefined,
+        error: true,
+      });
+    }
+
     const newProject = new ProjectModel(req.body);
-    const project = await newProject.save();
+    const project = await newProject.save({ session: session });
+
+    await ClientModel.findByIdAndUpdate(
+      { _id: clientExist._id },
+      { $push: { projects: [project._id] } },
+      { new: true },
+    ).session(session);
+
+    session.commitTransaction();
 
     return res.status(201).json({
       message: 'Project created successfully',
@@ -66,6 +88,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<Project>>)
       error: false,
     });
   } catch (error: any) {
+    session.abortTransaction();
     return res.json({
       message: `MongoDB Error: ${error.message}`,
       data: undefined,
@@ -74,7 +97,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<Project>>)
   }
 };
 
-const editProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
+const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
     const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
@@ -102,7 +125,7 @@ const editProject = async (req: Request, res: Response<BodyResponse<Project>>) =
   }
 };
 
-const deleteProject = async (req: Request, res: Response<BodyResponse<Project>>) => {
+const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
     const response = await ProjectModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },

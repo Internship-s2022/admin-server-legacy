@@ -18,7 +18,7 @@ export interface UserData {
 }
 
 export interface ProjectData {
-  clientName: string;
+  clientName: PopulatedDoc<Document<ObjectId> & ClientData>;
   projectName: string;
   description: string;
   notes?: string;
