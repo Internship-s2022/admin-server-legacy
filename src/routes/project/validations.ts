@@ -58,7 +58,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    members: Joi.array().items(Joi.string().alphanum().length(24).required()),
+    members: Joi.array().items(Joi.string().alphanum().length(24)),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
