@@ -13,25 +13,35 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    localContact: Joi.string()
-      .min(3)
-      .max(35)
-      .messages({
+    localContact: Joi.object({
+      name: Joi.string().min(3).max(35).messages({
         'string.base': 'Our local contact name must be a string',
         'string.min': 'Our local contact name must contain more than 3 letters',
-        'any.required': 'Our local contact name is a required field',
-      })
-      .required(),
+      }),
+      email: Joi.string()
+        .regex(/^[a-zA-Z.]+@radiumrocket.com/)
+        .min(20)
+        .messages({
+          'string.pattern.base': 'Email is not valid',
+          'string.empty': 'Email is required to create client',
+          'string.min': 'Email must contain at least 3 characters',
+        }),
+    }).required(),
 
-    clientContact: Joi.string()
-      .min(3)
-      .max(35)
-      .messages({
-        'string.base': 'Client contact name must be a string',
-        'string.min': 'Client contact name must contain more than 3 letters',
-        'any.required': 'Client local contact name is a required field',
-      })
-      .required(),
+    clientContact: Joi.object({
+      name: Joi.string().min(3).max(35).messages({
+        'string.base': 'Our local contact name must be a string',
+        'string.min': 'Our local contact name must contain more than 3 letters',
+      }),
+      email: Joi.string()
+        .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+        .min(20)
+        .messages({
+          'string.pattern.base': 'Email is not valid',
+          'string.empty': 'Email is required to create client',
+          'string.min': 'Email must contain at least 3 characters',
+        }),
+    }).required(),
 
     projects: Joi.array().items(Joi.string().alphanum().length(24)).messages({
       'string.base': 'Project id must be a string',
@@ -78,14 +88,34 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       'string.min': 'Name must not contain less than 3 letters',
     }),
 
-    localContact: Joi.string().min(3).max(35).messages({
-      'string.base': 'Our local contact name must be a string',
-      'string.min': 'Our local contact name must contain more than 3 letters',
+    localContact: Joi.object({
+      name: Joi.string().min(3).max(35).messages({
+        'string.base': 'Our local contact name must be a string',
+        'string.min': 'Our local contact name must contain more than 3 letters',
+      }),
+      email: Joi.string()
+        .regex(/^[a-zA-Z.]+@radiumrocket.com/)
+        .min(20)
+        .messages({
+          'string.pattern.base': 'Email is not valid',
+          'string.empty': 'Email is required to create client',
+          'string.min': 'Email must contain at least 3 characters',
+        }),
     }),
 
-    clientContact: Joi.string().min(3).max(35).messages({
-      'string.base': 'Client contact name must be a string',
-      'string.min': 'Client contact name must contain more than 3 letters',
+    clientContact: Joi.object({
+      name: Joi.string().min(3).max(35).messages({
+        'string.base': 'Our local contact name must be a string',
+        'string.min': 'Our local contact name must contain more than 3 letters',
+      }),
+      email: Joi.string()
+        .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+        .min(20)
+        .messages({
+          'string.pattern.base': 'Email is not valid',
+          'string.empty': 'Email is required to create client',
+          'string.min': 'Email must contain at least 3 characters',
+        }),
     }),
 
     projects: Joi.array().items(Joi.string().alphanum().length(24)).messages({
