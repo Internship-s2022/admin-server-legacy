@@ -17,7 +17,7 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
       });
     } else {
       return res.status(404).json({
-        message: 'Cannot show the list of Project.',
+        message: 'Cannot show the list of Projects.',
         data: undefined,
         error: true,
       });
