@@ -1,19 +1,18 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
-import { BodyResponse, UserData } from 'src/interfaces';
-import EmployeeModel from 'src/models/employee';
-import UserModel from 'src/models/user';
+import { BodyResponse, ProjectData } from 'src/interfaces';
+import ClientModel from 'src/models/client';
+import ProjectModel from 'src/models/project';
 
-import { AccessRoleType } from './types';
-
-const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
+const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
-    const allUsers = await UserModel.find(req.body);
-    if (allUsers.length) {
+    const allProjects = await ProjectModel.find(req.body).populate('clientName', ['name']);
+
+    if (allProjects.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
-        data: allUsers,
+        data: allProjects,
         error: false,
       });
     } else {
@@ -32,14 +31,14 @@ const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>
   }
 };
 
-const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    const user = await UserModel.findById(req.params.id);
+    const project = await ProjectModel.findById(req.params.id).populate('clientName', ['name']);
 
-    if (user) {
+    if (project) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
-        data: user,
+        data: project,
         error: false,
       });
     } else {
@@ -58,37 +57,34 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
   }
 };
 
-const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   const session = await startSession();
   session.startTransaction();
 
   try {
-    const isUsed = await UserModel.findOne({ email: req.body.email });
-
-    if (isUsed) {
-      return res.status(400).json({
-        message: 'This user has already been registered',
+    const clientExist = await ClientModel.findById(req.body.clientName);
+    if (!clientExist) {
+      return res.status(404).json({
+        message: 'The client was not found',
         data: undefined,
         error: true,
       });
     }
 
-    const newUser = new UserModel(req.body);
-    const successData = await newUser.save({ session: session });
+    const newProject = new ProjectModel(req.body);
+    const project = await newProject.save({ session: session });
 
-    if (successData.accessRoleType === 'EMPLOYEE') {
-      const employeeBody = {
-        user: successData._id,
-      };
-      const newEmployee = new EmployeeModel(employeeBody);
-      await newEmployee.save();
-    }
+    await ClientModel.findByIdAndUpdate(
+      { _id: clientExist._id },
+      { $push: { projects: [project._id] } },
+      { new: true },
+    ).session(session);
 
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'User created successfully',
-      data: successData,
+      message: 'Project created successfully',
+      data: project,
       error: false,
     });
   } catch (error: any) {
@@ -101,25 +97,11 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
   }
 };
 
-const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
-  const session = await startSession();
-  session.startTransaction();
-
+const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    const response = await UserModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
-    }).session(session);
-    const employeeFound = await EmployeeModel.findOne({ user: req.params.id });
-
-    if (!employeeFound && req.body.accessRoleType === 'EMPLOYEE') {
-      const employeeBody = {
-        user: req.params.id,
-      };
-      const newEmployee = new EmployeeModel(employeeBody);
-      await newEmployee.save();
-    }
-
-    session.commitTransaction();
+    });
 
     if (!response) {
       return res.status(404).json({
@@ -128,13 +110,13 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" updated successfully`,
       data: req.body,
       error: false,
     });
   } catch (error: any) {
-    session.abortTransaction();
     return res.status(400).json({
       message: `An error has ocurred: ${error.message}`,
       data: undefined,
@@ -143,14 +125,14 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
   }
 };
 
-const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    //to do: check if user is related to an employee that is active as member in project.
-    const response = await UserModel.findOneAndUpdate(
+    const response = await ProjectModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },
       { isActive: false },
       { new: true },
     );
+
     if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
@@ -158,6 +140,7 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
         error: true,
       });
     }
+
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" deleted successfully`,
       data: req.body,
@@ -172,10 +155,4 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
   }
 };
 
-export default {
-  getAllUsers,
-  getUserById,
-  createUser,
-  editUser,
-  deleteUser,
-};
+export default { getAllProjects, getProjectById, createProject, editProject, deleteProject };

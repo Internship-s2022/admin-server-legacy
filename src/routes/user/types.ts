@@ -1,8 +1,17 @@
 export interface User {
-  id: string;
+  firebaseUid: string;
+  accessRoleType: AccessRoleType;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
+  location: string;
+  workedHours: number;
   isActive: boolean;
+}
+
+export enum AccessRoleType {
+  MANAGER = 'MANAGER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE',
 }
