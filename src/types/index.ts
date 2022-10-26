@@ -63,3 +63,15 @@ export interface AbsenceData {
   endDate?: Date;
   motive: string;
 }
+
+export interface MemberData {
+  hasHelper: boolean;
+}
+
+export enum RoleType {
+  DEV = 'DEV',
+  QA = 'QA',
+  UI_UX = 'UI_UX',
+  PM = 'PM',
+  TL = 'TL',
+}

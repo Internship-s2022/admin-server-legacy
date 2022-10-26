@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
-import { BodyResponse, ProjectData } from 'src/interfaces';
 import ClientModel from 'src/models/client';
 import ProjectModel from 'src/models/project';
+import { BodyResponse, ProjectData } from 'src/types';
 
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {

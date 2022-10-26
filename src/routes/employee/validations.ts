@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { RoleType, SeniorityType } from './types';
+import { RoleType } from 'src/types';
+
+import { SeniorityType } from './types';
 
 const editEmployee = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({

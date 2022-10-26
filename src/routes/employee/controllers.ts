@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { BodyResponse, EmployeeData } from 'src/interfaces';
 import EmployeeModel from 'src/models/employee';
+import { BodyResponse, EmployeeData } from 'src/types';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {

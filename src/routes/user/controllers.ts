@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
-import { BodyResponse, UserData } from 'src/interfaces';
 import EmployeeModel from 'src/models/employee';
 import UserModel from 'src/models/user';
+import { BodyResponse, UserData } from 'src/types';
 
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
   try {
