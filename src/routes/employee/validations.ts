@@ -23,7 +23,7 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
 
     absences: Joi.array().items(
       Joi.object({
-        startDate: Joi.date().required().messages({ 'any.only': 'Star date is required' }),
+        startDate: Joi.date().required().messages({ 'any.only': 'Start date is required' }),
         endDate: Joi.date()
           .greater(Joi.ref('startDate'))
           .message('End date must be after start date'),
