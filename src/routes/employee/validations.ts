@@ -21,10 +21,19 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
       .items(Joi.string())
       .messages({ 'string.base': 'Array items must be strings' }),
 
-    absences: Joi.array()
-      .items(Joi.string())
-      .messages({ 'string.base': 'Array items must be strings' }),
-
+    absences: Joi.array().items(
+      Joi.object({
+        startDate: Joi.date().required().messages({ 'any.only': 'Start date is required' }),
+        endDate: Joi.date()
+          .greater(Joi.ref('startDate'))
+          .message('End date must be after start date'),
+        motive: Joi.string().min(3).max(120).required().messages({
+          'string.base': 'Motive must be a string',
+          'string.min': 'Motive must be at least 3 characters long',
+          'string.max': 'Motive can only be 120 characters long',
+        }),
+      }),
+    ),
     user: Joi.string().messages({
       'string.base': 'User Id must be a string',
     }),

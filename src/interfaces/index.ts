@@ -52,8 +52,14 @@ export interface EmployeeData {
   skills?: string[];
   seniority?: string;
   projectHistory?: string[];
-  absences?: string[];
+  absences?: AbsenceData;
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
+}
+
+export interface AbsenceData {
+  startDate: Date;
+  endDate?: Date;
+  motive: string;
 }

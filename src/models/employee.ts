@@ -23,7 +23,11 @@ const employeeSchema = new Schema({
   ],
   absences: [
     {
-      type: String,
+      type: new Schema({
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: false },
+        motive: { type: String, required: true },
+      }),
       required: false,
     },
   ],
