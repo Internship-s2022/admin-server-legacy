@@ -58,7 +58,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    members: Joi.array().items(Joi.string().alphanum().length(24)),
+    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
@@ -125,7 +125,7 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
     endDate: Joi.date().greater('now').messages({
       'date.greater': 'Start date must be later than now',
     }),
-    members: Joi.array().items(Joi.string().alphanum().length(24)),
+    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)

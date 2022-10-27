@@ -65,7 +65,16 @@ export interface AbsenceData {
 }
 
 export interface MemberData {
-  hasHelper: boolean;
+  _id?: string;
+  hasHelper?: boolean;
+  helper?: string[];
+  employeeId?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  projectId?: PopulatedDoc<Document<ObjectId> & ProjectData>;
+  role: RoleType;
+  dedication?: number;
+  startDate?: Date;
+  endDate?: Date;
+  active: boolean;
 }
 
 export enum RoleType {

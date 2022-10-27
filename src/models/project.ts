@@ -30,7 +30,7 @@ const projectSchema = new Schema({
     required: true,
   },
   members: {
-    type: [String],
+    type: [Schema.Types.ObjectId],
     required: false,
   },
   isCritic: {

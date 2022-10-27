@@ -22,7 +22,8 @@ const membersSchema = new Schema({
     required: true,
   },
   role: {
-    type: RoleType,
+    type: String,
+    enum: RoleType,
     required: true,
   },
   dedication: {
