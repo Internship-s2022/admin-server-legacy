@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { startSession } from 'mongoose';
 
 import EmployeeModel from 'src/models/employee';
 import MemberModel from 'src/models/members';
@@ -58,11 +59,12 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
 };
 
 const createMember = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
+  const session = await startSession();
+  session.startTransaction();
   try {
-    const newMember = new MemberModel(req.body);
-    const successData = await newMember.save();
     const projectExists = await ProjectModel.findById(req.body.projectId);
-    const employeeExists = await EmployeeModel.findById(req.body.employeeId);
+    const employeeExists =
+      req.body.employeeId && (await EmployeeModel.findById(req.body.employeeId));
 
     if (!projectExists || (req.body.employeeId && !employeeExists)) {
       return res.status(404).json({
@@ -74,9 +76,32 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
         error: true,
       });
     }
+
+    const memberExists = await MemberModel.find({
+      projectId: req.body.projectId,
+      employeeId: req.body.employeeId,
+    });
+    let member: MemberData;
+    if (!memberExists.length) {
+      const newMember = new MemberModel({ ...req.body, active: true });
+      member = await newMember.save();
+      await ProjectModel.findByIdAndUpdate(
+        { _id: projectExists?._id },
+        { $push: { members: [member._id] } },
+        { new: true },
+      );
+    } else {
+      member = (await MemberModel.findByIdAndUpdate(
+        { _id: memberExists[0]._id },
+        { ...req.body, active: true },
+        {
+          new: true,
+        },
+      )) as MemberData;
+    }
     return res.status(201).json({
       message: 'Member created successfully',
-      data: successData,
+      data: member,
       error: false,
     });
   } catch (error: any) {

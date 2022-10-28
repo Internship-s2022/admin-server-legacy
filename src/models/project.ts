@@ -29,10 +29,12 @@ const projectSchema = new Schema({
     type: Date,
     required: true,
   },
-  members: {
-    type: [Schema.Types.ObjectId],
-    required: false,
-  },
+  members: [
+    {
+      type: Schema.Types.ObjectId,
+      required: false,
+    },
+  ],
   isCritic: {
     type: String,
     enum: CriticalType,
