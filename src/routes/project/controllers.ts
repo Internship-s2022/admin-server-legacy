@@ -2,9 +2,8 @@ import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
 import ClientModel from 'src/models/client';
-import MemberModel from 'src/models/members';
 import ProjectModel from 'src/models/project';
-import { BodyResponse, MemberData, ProjectData } from 'src/types';
+import { BodyResponse, ProjectData } from 'src/types';
 
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
@@ -73,21 +72,6 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
     }
 
     const newProject = new ProjectModel(req.body);
-    let membersData;
-
-    if (req.body.members.length) {
-      membersData = req.body.members.map(
-        (member: MemberData) =>
-          new MemberModel({
-            ...member,
-            projectId: newProject._id,
-            active: true,
-          }),
-      );
-    }
-    const membersId = membersData.map((member: MemberData) => member._id);
-    await MemberModel.insertMany(membersData, { session: session });
-    newProject.members = membersId;
 
     const project = await newProject.save({ session: session });
 
@@ -119,13 +103,6 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
     const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });
-
-    // if (req.body.members?.length) {
-    //   const membersData = req.body.members.map((member: MemberData) => ({
-    //     ...member,
-    //   }));
-    //   const memberExists = MemberModel.findById(membersData);
-    // }
 
     if (!response) {
       return res.status(404).json({
