@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 
-import { ProjectData } from 'src/interfaces';
 import { CriticalType, ProjectType } from 'src/routes/project/types';
+import { ProjectData } from 'src/types';
 
 const projectSchema = new Schema({
   clientName: {
@@ -29,10 +29,13 @@ const projectSchema = new Schema({
     type: Date,
     required: true,
   },
-  members: {
-    type: [String],
-    required: false,
-  },
+  members: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Member',
+      required: false,
+    },
+  ],
   isCritic: {
     type: String,
     enum: CriticalType,

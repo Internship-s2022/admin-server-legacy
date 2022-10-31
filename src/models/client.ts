@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 
-import { ClientData } from 'src/interfaces';
+import { ClientData } from 'src/types';
 
 const clientSchema = new Schema({
   name: {

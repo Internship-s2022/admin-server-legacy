@@ -63,3 +63,24 @@ export interface AbsenceData {
   endDate?: Date;
   motive: string;
 }
+
+export interface MemberData {
+  _id?: string;
+  hasHelper?: boolean;
+  helper?: string[];
+  employee?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  project?: PopulatedDoc<Document<ObjectId> & ProjectData>;
+  role: RoleType;
+  dedication?: number;
+  startDate?: Date;
+  endDate?: Date;
+  active: boolean;
+}
+
+export enum RoleType {
+  DEV = 'DEV',
+  QA = 'QA',
+  UI_UX = 'UI_UX',
+  PM = 'PM',
+  TL = 'TL',
+}
