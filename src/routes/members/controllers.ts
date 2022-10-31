@@ -83,12 +83,12 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     let member: MemberData;
     if (!memberExists.length) {
       const newMember = new MemberModel({ ...req.body, active: true });
-      member = await newMember.save();
+      member = await newMember.save({ session: session });
       await ProjectModel.findByIdAndUpdate(
         { _id: projectExists?._id },
         { $push: { members: [member._id] } },
         { new: true },
-      );
+      ).session(session);
     } else {
       member = (await MemberModel.findByIdAndUpdate(
         { _id: memberExists[0]._id },
@@ -98,12 +98,16 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
         },
       )) as MemberData;
     }
+
+    session.commitTransaction();
+
     return res.status(201).json({
       message: 'Member created successfully',
       data: member,
       error: false,
     });
   } catch (error: any) {
+    session.abortTransaction();
     return res.json({
       message: `MongoDB Error: ${error.message}`,
       data: undefined,
