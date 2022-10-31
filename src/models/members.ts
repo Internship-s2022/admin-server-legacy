@@ -7,10 +7,12 @@ const membersSchema = new Schema({
     type: Boolean,
     required: false,
   },
-  helper: {
-    type: [Schema.Types.ObjectId],
-    required: false,
-  },
+  helper: [
+    {
+      type: Schema.Types.ObjectId,
+      required: false,
+    },
+  ],
   employeeId: {
     type: Schema.Types.ObjectId,
     ref: 'Employee',

@@ -8,12 +8,12 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allProjects = await MemberModel.find(req.body);
+    const allMembers = await MemberModel.find(req.body);
 
-    if (allProjects.length) {
+    if (allMembers.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
-        data: allProjects,
+        data: allMembers,
         error: false,
       });
     } else {
@@ -34,12 +34,12 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
 
 const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
   try {
-    const project = await MemberModel.findById(req.params.id);
+    const member = await MemberModel.findById(req.params.id);
 
-    if (project) {
+    if (member) {
       return res.status(200).json({
         message: `User with ID ${req.params.id} has been found`,
-        data: project,
+        data: member,
         error: false,
       });
     } else {
