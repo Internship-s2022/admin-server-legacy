@@ -38,13 +38,13 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
 
     if (member) {
       return res.status(200).json({
-        message: `User with ID ${req.params.id} has been found`,
+        message: `Member with ID ${req.params.id} has been found`,
         data: member,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found an user by the id of ${req.params.id}.`,
+        message: `Could not found a member by the id of ${req.params.id}.`,
         data: undefined,
         error: true,
       });
