@@ -11,10 +11,10 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
     helper: Joi.array().items(Joi.string()).messages({
       'string.base': 'Helper id must be a string',
     }),
-    employeeId: Joi.string().messages({
+    employee: Joi.string().messages({
       'string.base': 'Employee id must be a string',
     }),
-    projectId: Joi.string().required().messages({
+    project: Joi.string().required().messages({
       'string.base': 'Project id must be a string',
       'any.required': 'Project id is required',
     }),
@@ -56,10 +56,10 @@ const editMember = (req: Request, res: Response, next: NextFunction) => {
     helper: Joi.array().items(Joi.string()).messages({
       'string.base': 'Helper id must be a string',
     }),
-    employeeId: Joi.string().messages({
+    employee: Joi.string().messages({
       'string.base': 'Employee id must be a string',
     }),
-    projectId: Joi.string().messages({
+    project: Joi.string().messages({
       'string.base': 'Project id must be a string',
     }),
     role: Joi.string()

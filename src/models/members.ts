@@ -13,12 +13,12 @@ const membersSchema = new Schema({
       required: false,
     },
   ],
-  employeeId: {
+  employee: {
     type: Schema.Types.ObjectId,
     ref: 'Employee',
     required: false,
   },
-  projectId: {
+  project: {
     type: Schema.Types.ObjectId,
     ref: 'Project',
     required: true,

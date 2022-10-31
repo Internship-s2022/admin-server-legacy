@@ -62,11 +62,10 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
   const session = await startSession();
   session.startTransaction();
   try {
-    const projectExists = await ProjectModel.findById(req.body.projectId);
-    const employeeExists =
-      req.body.employeeId && (await EmployeeModel.findById(req.body.employeeId));
+    const projectExists = await ProjectModel.findById(req.body.project);
+    const employeeExists = req.body.employee && (await EmployeeModel.findById(req.body.employee));
 
-    if (!projectExists || (req.body.employeeId && !employeeExists)) {
+    if (!projectExists || (req.body.employee && !employeeExists)) {
       return res.status(404).json({
         message:
           !projectExists && !employeeExists
@@ -78,8 +77,8 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     }
 
     const memberExists = await MemberModel.find({
-      projectId: req.body.projectId,
-      employeeId: req.body.employeeId,
+      project: req.body.project,
+      employee: req.body.employee,
     });
     let member: MemberData;
     if (!memberExists.length) {
@@ -115,6 +114,17 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
 
 const editMember = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
   try {
+    if (req.body.project || req.body.employee) {
+      return res.status(400).json({
+        message:
+          req.body.project && req.body.employee
+            ? 'Editing project and employee is not allowed'
+            : `Editing ${req.body.project ? 'project' : 'employee'} is not allowed`,
+        data: undefined,
+        error: true,
+      });
+    }
+
     const response = await MemberModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     });

@@ -32,6 +32,7 @@ const projectSchema = new Schema({
   members: [
     {
       type: Schema.Types.ObjectId,
+      ref: 'Member',
       required: false,
     },
   ],

@@ -68,8 +68,8 @@ export interface MemberData {
   _id?: string;
   hasHelper?: boolean;
   helper?: string[];
-  employeeId?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
-  projectId?: PopulatedDoc<Document<ObjectId> & ProjectData>;
+  employee?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  project?: PopulatedDoc<Document<ObjectId> & ProjectData>;
   role: RoleType;
   dedication?: number;
   startDate?: Date;
