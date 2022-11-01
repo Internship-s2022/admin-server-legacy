@@ -78,11 +78,15 @@ const editMember = (req: Request, res: Response, next: NextFunction) => {
           'string.base': 'Helper Reference must be a string',
           'string.length': 'Helper Reference must be exactly 24 characters',
         }),
-        dependency: Joi.number().messages({
+        dependency: Joi.number().min(1).max(100).messages({
           'number.base': 'Dependency must be a number',
+          'number.max': 'The dependence cannot be greater than 100 ',
+          'number.min': 'The dependence cannot be less than 1',
         }),
-        dedication: Joi.number().messages({
+        dedication: Joi.number().min(1).max(100).messages({
           'number.base': 'Dedication must be a number',
+          'number.max': 'The dedication cannot be greater than 100 ',
+          'number.min': 'The dependence cannot be less than 1',
         }),
         isActive: Joi.boolean().messages({
           'boolean.base': 'is Active has to be a boolean',
