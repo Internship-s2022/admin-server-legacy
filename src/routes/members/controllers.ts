@@ -8,7 +8,18 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allMembers = await MemberModel.find(req.body);
+    const allMembers = await MemberModel.find(req.body).populate({
+      path: 'helper',
+      select: 'helperReference',
+      populate: {
+        path: 'helperReference',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName',
+        },
+      },
+    });
 
     if (allMembers.length) {
       return res.status(200).json({

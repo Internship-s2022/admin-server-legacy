@@ -9,8 +9,12 @@ const membersSchema = new Schema({
   },
   helper: [
     {
-      type: Schema.Types.ObjectId,
-      required: false,
+      type: new Schema({
+        helperReference: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
+        dependency: { type: Number, required: true },
+        dedication: { type: Number, required: true },
+        isActive: { type: Boolean, required: true },
+      }),
     },
   ],
   employee: {
