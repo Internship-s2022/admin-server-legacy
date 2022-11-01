@@ -45,7 +45,18 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
 
 const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
   try {
-    const member = await MemberModel.findById(req.params.id);
+    const member = await MemberModel.findById(req.params.id).populate({
+      path: 'helper',
+      select: 'helperReference',
+      populate: {
+        path: 'helperReference',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName',
+        },
+      },
+    });
 
     if (member) {
       return res.status(200).json({
