@@ -47,6 +47,14 @@ const employeeSchema = new Schema({
     type: String,
     required: false,
   },
+  careerPlan: {
+    type: String,
+    required: false,
+  },
+  availability: {
+    type: Boolean,
+    required: false,
+  },
 });
 
 export default model<EmployeeData>('Employee', employeeSchema);
