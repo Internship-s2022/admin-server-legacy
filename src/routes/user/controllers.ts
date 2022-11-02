@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
+import firebaseApp from 'src/helper/firebase';
 import EmployeeModel from 'src/models/employee';
 import UserModel from 'src/models/user';
 import { BodyResponse, UserData } from 'src/types';
@@ -71,7 +72,19 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
       });
     }
 
-    const newUser = new UserModel(req.body);
+    const newFirebaseUser = await firebaseApp.auth().createUser({
+      email: req.body.email,
+    });
+
+    const newUser = new UserModel({
+      ...req.body,
+      firebaseUid: newFirebaseUser.uid,
+    });
+
+    await firebaseApp
+      .auth()
+      .setCustomUserClaims(newFirebaseUser.uid, { role: newUser.accessRoleType });
+
     const successData = await newUser.save({ session: session });
 
     if (successData.accessRoleType === 'EMPLOYEE') {
@@ -107,6 +120,13 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     const response = await UserModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
     }).session(session);
+
+    if (req.body.accessRoleType) {
+      await firebaseApp
+        .auth()
+        .setCustomUserClaims(response?.firebaseUid as string, { role: req.body.accessRoleType }); //en base a que lo busco
+    }
+
     const employeeFound = await EmployeeModel.findOne({ user: req.params.id });
 
     if (!employeeFound && req.body.accessRoleType === 'EMPLOYEE') {

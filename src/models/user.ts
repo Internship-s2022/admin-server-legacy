@@ -5,7 +5,7 @@ import { AccessRoleType } from 'src/routes/user/types';
 const userSchema = new Schema({
   firebaseUid: {
     type: String,
-    required: true,
+    required: false,
   },
   accessRoleType: {
     type: String,

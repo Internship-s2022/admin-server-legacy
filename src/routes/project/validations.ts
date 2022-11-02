@@ -47,16 +47,13 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
     startDate: Joi.date()
       .greater('now')
       .messages({
-        'date.greater': 'Start date must be later than now',
+        'any.required': 'Start date is required field',
       })
       .required(),
 
-    endDate: Joi.date()
-      .greater('now')
-      .messages({
-        'date.greater': 'Start date must be later than now',
-      })
-      .required(),
+    endDate: Joi.date().greater('now').messages({
+      'date.greater': 'End date must be later than now',
+    }),
 
     members: Joi.array().items(Joi.object()),
 

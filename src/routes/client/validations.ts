@@ -23,7 +23,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
         .min(20)
         .messages({
           'string.pattern.base': 'Email is not valid',
-          'string.empty': 'Email is required to create client',
+          'any.required': 'Email is required to create client',
           'string.min': 'Email must contain at least 3 characters',
         }),
     }).required(),
@@ -34,11 +34,10 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
         'string.min': 'Our local contact name must contain more than 3 letters',
       }),
       email: Joi.string()
-        .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-        .min(20)
+        .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
         .messages({
           'string.pattern.base': 'Email is not valid',
-          'string.empty': 'Email is required to create client',
+          'any.required': 'Email is required to create client',
           'string.min': 'Email must contain at least 3 characters',
         }),
     }).required(),
@@ -71,7 +70,6 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
 
   const validate = schema.validate(req.body);
   if (validate.error) {
-    console.log(validate.error);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,
@@ -109,12 +107,10 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
         'string.min': 'Our local contact name must contain more than 3 letters',
       }),
       email: Joi.string()
-        .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-        .min(20)
+        .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
         .messages({
           'string.pattern.base': 'Email is not valid',
           'string.empty': 'Email is required to create client',
-          'string.min': 'Email must contain at least 3 characters',
         }),
     }),
 
