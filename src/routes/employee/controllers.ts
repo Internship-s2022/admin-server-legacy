@@ -40,12 +40,16 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
-    const employee = await EmployeeModel.findById(req.params.id).populate('user', [
-      'firstName',
-      'lastName',
-      'email',
-      'birthDate',
-    ]);
+    const employee = await EmployeeModel.findById(req.params.id)
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate({
+        path: 'projectHistory',
+        select: 'project role',
+        populate: {
+          path: 'project',
+          select: 'projectName',
+        },
+      });
 
     if (employee) {
       return res.status(200).json({
