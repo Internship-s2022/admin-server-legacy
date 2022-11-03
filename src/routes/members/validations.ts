@@ -15,7 +15,7 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
           'string.length': 'Helper Reference must be exactly 24 characters',
           'string.empty': 'Helper Reference id is a required field',
         }),
-        dependency: Joi.number().min(1).max(100).messages({
+        dependency: Joi.number().min(0).max(100).messages({
           'number.base': 'Dependency must be a number',
           'number.max': 'The dependence cannot be greater than 100 ',
           'number.min': 'The dependence cannot be less than 1',
