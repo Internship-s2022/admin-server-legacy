@@ -7,6 +7,5 @@ describe('GET /users', () => {
     const response = await request(app).get('/users');
     expect(response.body.message).toBe('The list has been successfully retrieved');
     expect(response.statusCode).toBe(200);
-    expect(response.body.data.length).toBe(20);
   });
 });
