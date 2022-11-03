@@ -5,12 +5,16 @@ import { BodyResponse, EmployeeData } from 'src/types';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
-    const allEmployees = await EmployeeModel.find(req.body).populate('user', [
-      'firstName',
-      'lastName',
-      'email',
-      'birthDate',
-    ]);
+    const allEmployees: EmployeeData[] = await EmployeeModel.find(req.body)
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate({
+        path: 'projectHistory',
+        select: 'project role',
+        populate: {
+          path: 'project',
+          select: 'projectName',
+        },
+      });
 
     if (allEmployees.length) {
       return res.status(200).json({

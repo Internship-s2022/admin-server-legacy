@@ -17,7 +17,8 @@ const employeeSchema = new Schema({
   },
   projectHistory: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Member',
       required: false,
     },
   ],

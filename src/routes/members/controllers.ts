@@ -111,6 +111,11 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
         { $push: { members: [member._id] } },
         { new: true },
       ).session(session);
+      await EmployeeModel.findByIdAndUpdate(
+        { _id: employeeExists?._id },
+        { $push: { projectHistory: [member._id] } },
+        { new: true },
+      ).session(session);
     } else {
       member = (await MemberModel.findByIdAndUpdate(
         { _id: memberExists[0]._id },
