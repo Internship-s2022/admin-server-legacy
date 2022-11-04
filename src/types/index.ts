@@ -7,7 +7,7 @@ export interface BodyResponse<T> {
 }
 
 export interface UserData {
-  firebaseUid: string;
+  firebaseUid?: string;
   accessRoleType: string;
   email: string;
   firstName: string;

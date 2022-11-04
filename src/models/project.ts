@@ -27,7 +27,7 @@ const projectSchema = new Schema({
   },
   endDate: {
     type: Date,
-    required: true,
+    required: false,
   },
   members: [
     {
