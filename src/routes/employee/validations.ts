@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-import { RoleType, SeniorityType } from './types';
+import { RoleType } from 'src/types';
+
+import { SeniorityType } from './types';
 
 const editEmployee = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
@@ -21,10 +23,19 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
       .items(Joi.string())
       .messages({ 'string.base': 'Array items must be strings' }),
 
-    absences: Joi.array()
-      .items(Joi.string())
-      .messages({ 'string.base': 'Array items must be strings' }),
-
+    absences: Joi.array().items(
+      Joi.object({
+        startDate: Joi.date().required().messages({ 'any.only': 'Start date is required' }),
+        endDate: Joi.date()
+          .greater(Joi.ref('startDate'))
+          .message('End date must be after start date'),
+        motive: Joi.string().min(3).max(120).required().messages({
+          'string.base': 'Motive must be a string',
+          'string.min': 'Motive must be at least 3 characters long',
+          'string.max': 'Motive can only be 120 characters long',
+        }),
+      }),
+    ),
     user: Joi.string().messages({
       'string.base': 'User Id must be a string',
     }),
@@ -38,11 +49,14 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
         }),
     ),
 
-    notes: Joi.string().min(12).max(499).messages({
+    notes: Joi.string().min(0).max(499).messages({
       'string.min': 'notes must contain more than 11 characters',
       'string.max': 'notes must contain less than 500 characters',
       'string.base': 'Notes must be a string',
     }),
+
+    availability: Joi.boolean(),
+    careerPlan: Joi.string().min(0).max(499),
   });
 
   const validate = schema.validate(req.body);

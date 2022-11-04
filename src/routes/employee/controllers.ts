@@ -1,16 +1,20 @@
 import { Request, Response } from 'express';
 
-import { BodyResponse, EmployeeData } from 'src/interfaces';
 import EmployeeModel from 'src/models/employee';
+import { BodyResponse, EmployeeData } from 'src/types';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
-    const allEmployees = await EmployeeModel.find(req.body).populate('user', [
-      'firstName',
-      'lastName',
-      'email',
-      'birthDate',
-    ]);
+    const allEmployees: EmployeeData[] = await EmployeeModel.find(req.body)
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate({
+        path: 'projectHistory',
+        select: 'project role',
+        populate: {
+          path: 'project',
+          select: 'projectName',
+        },
+      });
 
     if (allEmployees.length) {
       return res.status(200).json({
@@ -36,12 +40,16 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
-    const employee = await EmployeeModel.findById(req.params.id).populate('user', [
-      'firstName',
-      'lastName',
-      'email',
-      'birthDate',
-    ]);
+    const employee = await EmployeeModel.findById(req.params.id)
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate({
+        path: 'projectHistory',
+        select: 'project role',
+        populate: {
+          path: 'project',
+          select: 'projectName',
+        },
+      });
 
     if (employee) {
       return res.status(200).json({

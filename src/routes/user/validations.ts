@@ -5,16 +5,6 @@ import { AccessRoleType } from 'src/routes/user/types';
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    firebaseUid: Joi.string()
-      .min(3)
-      .max(35)
-      .messages({
-        'string.base': 'You have to use a valid firebaseUid',
-        'string.empty': 'You have to add a firebaseUid to create an user',
-        'string.min': 'firebaseUid must not contain less than 3 letters',
-      })
-      .required(),
-
     accessRoleType: Joi.string()
       .valid(
         AccessRoleType.ADMIN,
@@ -92,10 +82,6 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
 
 const updateUser = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    firebaseUid: Joi.string().min(3).max(35).messages({
-      'string.base': 'You have to use a valid firebaseUid',
-      'string.min': 'firebaseUid must not contain less than 3 letters',
-    }),
     accessRoleType: Joi.string()
       .valid(
         AccessRoleType.ADMIN,

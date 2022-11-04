@@ -10,7 +10,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .max(35)
       .messages({
         'string.base': 'You have to use a valid name',
-        'any.required': 'This field is required',
+        'any.required': 'The client name is required',
         'string.min': 'The name must not contain less than 3 letters',
         'string.max': 'The name must not contain more than 35 letters',
       })
@@ -21,7 +21,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .max(35)
       .messages({
         'string.base': 'You have to use a valid name',
-        'any.required': 'This field is required',
+        'any.required': 'The project name is required',
         'string.min': 'The name must not contain less than 3 letters',
         'string.max': 'The name must not contain more than 35 letters',
       })
@@ -32,7 +32,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .max(50)
       .messages({
         'string.base': 'You have to use a valid description',
-        'any.required': 'This field is required',
+        'any.required': 'The description is required',
         'string.min': 'The description must not contain less than 12 letters',
         'string.max': 'The description must not contain more than 50 letters',
       })
@@ -47,18 +47,15 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
     startDate: Joi.date()
       .greater('now')
       .messages({
-        'date.greater': 'Start date must be later than now',
+        'any.required': 'Start date is required field',
       })
       .required(),
 
-    endDate: Joi.date()
-      .greater('now')
-      .messages({
-        'date.greater': 'Start date must be later than now',
-      })
-      .required(),
+    endDate: Joi.date().greater('now').messages({
+      'date.greater': 'End date must be later than now',
+    }),
 
-    members: Joi.array().items(Joi.string().alphanum().length(24)),
+    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
@@ -94,21 +91,21 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     clientName: Joi.string().min(3).max(35).messages({
       'string.base': 'You have to use a valid name',
-      'any.required': 'This field is required',
+      'any.required': 'The client name is required',
       'string.min': 'The name must not contain less than 3 letters',
       'string.max': 'The name must not contain more than 35 letters',
     }),
 
     projectName: Joi.string().min(3).max(35).messages({
       'string.base': 'You have to use a valid name',
-      'any.required': 'This field is required',
+      'any.required': 'The project name is required',
       'string.min': 'The name must not contain less than 3 letters',
       'string.max': 'The name must not contain more than 35 letters',
     }),
 
     description: Joi.string().min(12).max(50).messages({
       'string.base': 'You have to use a valid description',
-      'any.required': 'This field is required',
+      'any.required': 'The description is required',
       'string.min': 'The description must not contain less than 12 letters',
       'string.max': 'The description must not contain more than 50 letters',
     }),
@@ -125,7 +122,7 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
     endDate: Joi.date().greater('now').messages({
       'date.greater': 'Start date must be later than now',
     }),
-    members: Joi.array().items(Joi.string().alphanum().length(24)),
+    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
       .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)

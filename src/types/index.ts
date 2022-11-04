@@ -7,7 +7,7 @@ export interface BodyResponse<T> {
 }
 
 export interface UserData {
-  firebaseUid: string;
+  firebaseUid?: string;
   accessRoleType: string;
   email: string;
   firstName: string;
@@ -51,9 +51,43 @@ export interface DataContact {
 export interface EmployeeData {
   skills?: string[];
   seniority?: string;
-  projectHistory?: string[];
-  absences?: string[];
+  projectHistory?: PopulatedDoc<Document<ObjectId> & MemberData>[];
+  absences?: AbsenceData;
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
+}
+
+export interface AbsenceData {
+  startDate: Date;
+  endDate?: Date;
+  motive: string;
+}
+
+export interface MemberData {
+  _id?: string;
+  hasHelper?: boolean;
+  helper?: HelperData[];
+  employee?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  project?: PopulatedDoc<Document<ObjectId> & ProjectData>;
+  role: RoleType;
+  dedication?: number;
+  startDate?: Date;
+  endDate?: Date;
+  active: boolean;
+}
+
+export interface HelperData {
+  _id?: string;
+  helperReference: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  dependency: number;
+  dedication: number;
+  isActive: boolean;
+}
+export enum RoleType {
+  DEV = 'DEV',
+  QA = 'QA',
+  UI_UX = 'UI_UX',
+  PM = 'PM',
+  TL = 'TL',
 }

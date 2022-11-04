@@ -1,13 +1,26 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
-import { BodyResponse, ProjectData } from 'src/interfaces';
 import ClientModel from 'src/models/client';
 import ProjectModel from 'src/models/project';
+import { BodyResponse, ProjectData } from 'src/types';
 
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
-    const allProjects = await ProjectModel.find(req.body).populate('clientName', ['name']);
+    const allProjects = await ProjectModel.find(req.body)
+      .populate('clientName', ['name'])
+      .populate({
+        path: 'members',
+        select: 'employee',
+        populate: {
+          path: 'employee',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     if (allProjects.length) {
       return res.status(200).json({
@@ -17,7 +30,7 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
       });
     } else {
       return res.status(404).json({
-        message: 'Cannot show the list of Users.',
+        message: 'Cannot show the list of Projects.',
         data: undefined,
         error: true,
       });
@@ -33,17 +46,30 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
 
 const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
-    const project = await ProjectModel.findById(req.params.id).populate('clientName', ['name']);
+    const project = await ProjectModel.findById(req.params.id)
+      .populate('clientName', ['name'])
+      .populate({
+        path: 'members',
+        select: 'employee',
+        populate: {
+          path: 'employee',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     if (project) {
       return res.status(200).json({
-        message: `User with ID ${req.params.id} has been found`,
+        message: `Project with ID ${req.params.id} has been found`,
         data: project,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found an user by the id of ${req.params.id}.`,
+        message: `Could not found a Project by the id of ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -72,6 +98,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
     }
 
     const newProject = new ProjectModel(req.body);
+
     const project = await newProject.save({ session: session });
 
     await ClientModel.findByIdAndUpdate(
@@ -105,14 +132,14 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
 
     if (!response) {
       return res.status(404).json({
-        message: `User account with ID "${req.params.id}" can not be found.`,
+        message: `Project with ID "${req.params.id}" can not be found.`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `User account with ID "${req.params.id}" updated successfully`,
+      message: `Project with ID "${req.params.id}" updated successfully`,
       data: req.body,
       error: false,
     });
@@ -135,14 +162,14 @@ const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectDat
 
     if (!response) {
       return res.status(404).json({
-        message: `User account with ID "${req.params.id}" can not be found.`,
+        message: `Project with ID "${req.params.id}" can not be found.`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `User account with ID "${req.params.id}" deleted successfully`,
+      message: `Project with ID "${req.params.id}" deleted successfully`,
       data: req.body,
       error: false,
     });

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import { BodyResponse, ClientData } from 'src/interfaces';
 import ClientSchema from 'src/models/client';
+import { BodyResponse, ClientData } from 'src/types';
 
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {

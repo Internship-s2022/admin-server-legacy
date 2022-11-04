@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 
-import { EmployeeData } from 'src/interfaces';
-import { RoleType, SeniorityType } from 'src/routes/employee/types';
+import { SeniorityType } from 'src/routes/employee/types';
+import { EmployeeData, RoleType } from 'src/types';
 
 const employeeSchema = new Schema({
   skills: [
@@ -17,13 +17,18 @@ const employeeSchema = new Schema({
   },
   projectHistory: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Member',
       required: false,
     },
   ],
   absences: [
     {
-      type: String,
+      type: new Schema({
+        startDate: { type: Date, required: true },
+        endDate: { type: Date, required: false },
+        motive: { type: String, required: true },
+      }),
       required: false,
     },
   ],
@@ -41,6 +46,14 @@ const employeeSchema = new Schema({
   ],
   notes: {
     type: String,
+    required: false,
+  },
+  careerPlan: {
+    type: String,
+    required: false,
+  },
+  availability: {
+    type: Boolean,
     required: false,
   },
 });
