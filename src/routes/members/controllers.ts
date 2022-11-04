@@ -8,7 +8,18 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allMembers = await MemberModel.find(req.body);
+    const allMembers = await MemberModel.find(req.body).populate({
+      path: 'helper',
+      select: 'helperReference',
+      populate: {
+        path: 'helperReference',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName',
+        },
+      },
+    });
 
     if (allMembers.length) {
       return res.status(200).json({
@@ -34,7 +45,18 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
 
 const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
   try {
-    const member = await MemberModel.findById(req.params.id);
+    const member = await MemberModel.findById(req.params.id).populate({
+      path: 'helper',
+      select: 'helperReference',
+      populate: {
+        path: 'helperReference',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName',
+        },
+      },
+    });
 
     if (member) {
       return res.status(200).json({
@@ -87,6 +109,11 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
       await ProjectModel.findByIdAndUpdate(
         { _id: projectExists?._id },
         { $push: { members: [member._id] } },
+        { new: true },
+      ).session(session);
+      await EmployeeModel.findByIdAndUpdate(
+        { _id: employeeExists?._id },
+        { $push: { projectHistory: [member._id] } },
         { new: true },
       ).session(session);
     } else {

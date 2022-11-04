@@ -17,7 +17,8 @@ const employeeSchema = new Schema({
   },
   projectHistory: [
     {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: 'Member',
       required: false,
     },
   ],
@@ -45,6 +46,14 @@ const employeeSchema = new Schema({
   ],
   notes: {
     type: String,
+    required: false,
+  },
+  careerPlan: {
+    type: String,
+    required: false,
+  },
+  availability: {
+    type: Boolean,
     required: false,
   },
 });

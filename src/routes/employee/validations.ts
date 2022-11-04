@@ -49,11 +49,14 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
         }),
     ),
 
-    notes: Joi.string().min(12).max(499).messages({
+    notes: Joi.string().min(0).max(499).messages({
       'string.min': 'notes must contain more than 11 characters',
       'string.max': 'notes must contain less than 500 characters',
       'string.base': 'Notes must be a string',
     }),
+
+    availability: Joi.boolean(),
+    careerPlan: Joi.string().min(0).max(499),
   });
 
   const validate = schema.validate(req.body);

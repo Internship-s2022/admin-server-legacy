@@ -51,7 +51,7 @@ export interface DataContact {
 export interface EmployeeData {
   skills?: string[];
   seniority?: string;
-  projectHistory?: string[];
+  projectHistory?: PopulatedDoc<Document<ObjectId> & MemberData>[];
   absences?: AbsenceData;
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
@@ -67,7 +67,7 @@ export interface AbsenceData {
 export interface MemberData {
   _id?: string;
   hasHelper?: boolean;
-  helper?: string[];
+  helper?: HelperData[];
   employee?: PopulatedDoc<Document<ObjectId> & EmployeeData>;
   project?: PopulatedDoc<Document<ObjectId> & ProjectData>;
   role: RoleType;
@@ -77,6 +77,13 @@ export interface MemberData {
   active: boolean;
 }
 
+export interface HelperData {
+  _id?: string;
+  helperReference: PopulatedDoc<Document<ObjectId> & EmployeeData>;
+  dependency: number;
+  dedication: number;
+  isActive: boolean;
+}
 export enum RoleType {
   DEV = 'DEV',
   QA = 'QA',
