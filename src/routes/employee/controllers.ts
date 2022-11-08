@@ -22,12 +22,6 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
         data: allEmployees,
         error: false,
       });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Employees.',
-        data: undefined,
-        error: true,
-      });
     }
   } catch (error: any) {
     return res.json({

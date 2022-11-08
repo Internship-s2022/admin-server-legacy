@@ -12,19 +12,11 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
       'isCritic',
     ]);
 
-    if (allClients.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allClients,
-        error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Clients.',
-        data: undefined,
-        error: true,
-      });
-    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allClients,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: error.message,

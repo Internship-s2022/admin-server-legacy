@@ -15,12 +15,6 @@ const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>
         data: allUsers,
         error: false,
       });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Users.',
-        data: undefined,
-        error: true,
-      });
     }
   } catch (error: any) {
     return res.json({

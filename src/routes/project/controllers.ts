@@ -28,12 +28,6 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
         data: allProjects,
         error: false,
       });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Projects.',
-        data: undefined,
-        error: true,
-      });
     }
   } catch (error: any) {
     return res.json({
