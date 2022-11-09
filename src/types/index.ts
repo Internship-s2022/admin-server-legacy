@@ -1,3 +1,4 @@
+import { Request } from 'express';
 import { Document, ObjectId, PopulatedDoc } from 'mongoose';
 
 export interface BodyResponse<T> {
@@ -90,4 +91,14 @@ export enum RoleType {
   UI_UX = 'UI_UX',
   PM = 'PM',
   TL = 'TL',
+}
+export interface RequestWithFirebase extends Request {
+  firebaseUid?: string;
+}
+
+export enum AccessRoleType {
+  MANAGER = 'MANAGER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE',
 }
