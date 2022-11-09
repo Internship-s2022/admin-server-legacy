@@ -74,63 +74,42 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
       });
     }
 
-    const firebaseUser = await findUser(req.body.email);
+    const doesUserExists = await findUser(req.body.email);
+    let firebaseUser = doesUserExists;
 
-    if (!firebaseUser) {
+    if (!doesUserExists) {
       const newFirebaseUser = await firebaseApp.auth().createUser({
         email: req.body.email,
       });
 
-      const newUser = new UserModel({
-        ...req.body,
-        firebaseUid: newFirebaseUser.uid,
-      });
-      await firebaseApp
-        .auth()
-        .setCustomUserClaims(newFirebaseUser.uid, { role: newUser.accessRoleType });
-
-      const successData = await newUser.save({ session: session });
-
-      if (successData.accessRoleType === 'EMPLOYEE') {
-        const employeeBody = {
-          user: successData._id,
-        };
-        const newEmployee = new EmployeeModel(employeeBody);
-        await newEmployee.save();
-      }
-
-      session.commitTransaction();
-
-      return res.status(201).json({
-        message: 'User created successfully',
-        data: successData,
-        error: false,
-      });
-    } else {
-      const newUser = new UserModel({
-        ...req.body,
-        firebaseUid: firebaseUser.uid,
-      });
-      await firebaseApp
-        .auth()
-        .setCustomUserClaims(firebaseUser.uid, { role: newUser.accessRoleType });
-      const successData = await newUser.save({ session: session });
-
-      if (successData.accessRoleType === 'EMPLOYEE') {
-        const employeeBody = {
-          user: successData._id,
-        };
-        const newEmployee = new EmployeeModel(employeeBody);
-        await newEmployee.save();
-      }
-
-      session.commitTransaction();
-      return res.status(201).json({
-        message: 'User created successfully',
-        data: successData,
-        error: false,
-      });
+      firebaseUser = newFirebaseUser;
     }
+
+    const newUser = new UserModel({
+      ...req.body,
+      firebaseUid: firebaseUser?.uid,
+    });
+    await firebaseApp
+      .auth()
+      .setCustomUserClaims(firebaseUser?.uid as string, { role: newUser.accessRoleType });
+
+    const successData = await newUser.save({ session: session });
+
+    if (successData.accessRoleType === 'EMPLOYEE') {
+      const employeeBody = {
+        user: successData._id,
+      };
+      const newEmployee = new EmployeeModel(employeeBody);
+      await newEmployee.save();
+    }
+
+    session.commitTransaction();
+
+    return res.status(201).json({
+      message: 'User created successfully',
+      data: successData,
+      error: false,
+    });
   } catch (error: any) {
     session.abortTransaction();
     return res.json({
