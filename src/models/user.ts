@@ -1,6 +1,6 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-import { AccessRoleType } from 'src/routes/user/types';
+import { AccessRoleType } from 'src/types';
 
 const userSchema = new Schema({
   firebaseUid: {
