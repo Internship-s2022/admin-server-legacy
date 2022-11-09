@@ -27,12 +27,6 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
         data: allMembers,
         error: false,
       });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Members.',
-        data: undefined,
-        error: true,
-      });
     }
   } catch (error: any) {
     return res.json({
