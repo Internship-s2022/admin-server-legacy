@@ -5,24 +5,13 @@ import { CriticalType, ProjectType } from './types';
 
 const createProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    clientName: Joi.string().min(3).max(35).required().trim().messages({
-      'string.min': 'El nombre del cliente debe tener al menos 3 caracteres',
-      'string.max': 'El nombre del cliente debe tener máximo 35 caracteres',
-      'string.empty': 'Este campo es requerido',
+    projectName: Joi.string().min(3).max(35).trim().required().messages({
+      'any.required': 'Este campo es requerido',
+      'string.min': 'El nombre debe contener al menos 3 caracteres',
+      'string.max': 'El nombre no debe contener más de 35 caracteres',
     }),
 
-    projectName: Joi.string()
-      .min(3)
-      .max(35)
-      .trim()
-      .messages({
-        'any.required': 'Este campo es requerido',
-        'string.min': 'El nombre debe contener al menos 3 caracteres',
-        'string.max': 'El nombre no debe contener más de 35 caracteres',
-      })
-      .required(),
-
-    description: Joi.string().max(100).messages({
+    description: Joi.string().max(100).allow('').messages({
       'string.max': 'La descripción no debe contener más de 100 caracteres',
     }),
 
@@ -51,6 +40,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
   const validate = schema.validate(req.body);
   if (validate.error) {
+    console.log(validate.error.details);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,
@@ -62,19 +52,17 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
 const editProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    clientName: Joi.string().min(3).max(35).trim().messages({
-      'string.min': 'El nombre del cliente debe tener al menos 3 caracteres',
-      'string.max': 'El nombre del cliente debe tener máximo 35 caracteres',
-    }),
-
     projectName: Joi.string().min(3).max(35).trim().messages({
       'string.min': 'El nombre debe contener al menos 3 caracteres',
       'string.max': 'El nombre no debe contener más de 35 caracteres',
     }),
 
-    description: Joi.string().max(100).messages({
-      'string.max': 'La descripción no debe contener más de 100 caracteres',
-    }),
+    description: Joi.string()
+      .max(100)
+      .messages({
+        'string.max': 'La descripción no debe contener más de 100 caracteres',
+      })
+      .allow(''),
 
     startDate: Joi.date(),
 

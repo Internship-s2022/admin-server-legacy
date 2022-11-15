@@ -80,7 +80,6 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
 const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   const session = await startSession();
   session.startTransaction();
-
   try {
     const clientExist = await ClientModel.findById(req.body.clientName);
     if (!clientExist) {
@@ -91,7 +90,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
       });
     }
 
-    const newProject = new ProjectModel(req.body);
+    const newProject = new ProjectModel({ ...req.body, isActive: true, isUpdated: false });
 
     const project = await newProject.save({ session: session });
 
