@@ -10,7 +10,7 @@ import { AccessRoleType } from 'src/types';
 
 const router = express.Router();
 
-router.use('/users', authMiddleware(AccessRoleType.SUPER_ADMIN), userRouter);
+router.use('/users', userRouter);
 router.use('/projects', authMiddleware(AccessRoleType.ADMIN), projectRouter);
 router.use('/clients', authMiddleware(AccessRoleType.ADMIN), clientRouter);
 router.use('/employees', authMiddleware(AccessRoleType.ADMIN), employeeRouter);
