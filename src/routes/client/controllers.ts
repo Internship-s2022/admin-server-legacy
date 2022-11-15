@@ -8,6 +8,7 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
     const allClients = await ClientSchema.find(req.body).populate('projects', [
       'projectName',
       'description',
+      'startDate',
       'endDate',
       'isCritic',
     ]);
@@ -31,6 +32,7 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
     const client = await ClientSchema.findById(req.params.id).populate('projects', [
       'projectName',
       'description',
+      'startDate',
       'endDate',
       'isCritic',
     ]);
