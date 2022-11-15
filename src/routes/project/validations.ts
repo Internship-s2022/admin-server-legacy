@@ -5,76 +5,49 @@ import { CriticalType, ProjectType } from './types';
 
 const createProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    clientName: Joi.string()
-      .min(3)
-      .max(35)
-      .messages({
-        'string.base': 'You have to use a valid name',
-        'any.required': 'The client name is required',
-        'string.min': 'The name must not contain less than 3 letters',
-        'string.max': 'The name must not contain more than 35 letters',
-      })
-      .required(),
+    clientName: Joi.string().min(3).max(35).required().trim().messages({
+      'string.min': 'El nombre del cliente debe tener al menos 3 caracteres',
+      'string.max': 'El nombre del cliente debe tener máximo 35 caracteres',
+      'string.empty': 'Este campo es requerido',
+    }),
 
     projectName: Joi.string()
       .min(3)
       .max(35)
+      .trim()
       .messages({
-        'string.base': 'You have to use a valid name',
-        'any.required': 'The project name is required',
-        'string.min': 'The name must not contain less than 3 letters',
-        'string.max': 'The name must not contain more than 35 letters',
+        'any.required': 'Este campo es requerido',
+        'string.min': 'El nombre debe contener al menos 3 caracteres',
+        'string.max': 'El nombre no debe contener más de 35 caracteres',
       })
       .required(),
 
-    description: Joi.string()
-      .min(12)
-      .max(50)
-      .messages({
-        'string.base': 'You have to use a valid description',
-        'any.required': 'The description is required',
-        'string.min': 'The description must not contain less than 12 letters',
-        'string.max': 'The description must not contain more than 50 letters',
-      })
-      .required(),
-
-    notes: Joi.string().min(12).max(50).messages({
-      'string.base': 'You have to use a valid name',
-      'string.min': 'The name must not contain less than 12 letters',
-      'string.max': 'The name must not contain more than 50 letters',
+    description: Joi.string().max(100).messages({
+      'string.max': 'La descripción no debe contener más de 100 caracteres',
     }),
 
-    startDate: Joi.date()
-      .greater('now')
-      .messages({
-        'any.required': 'Start date is required field',
-      })
-      .required(),
+    startDate: Joi.date(),
 
-    endDate: Joi.date().greater('now').messages({
-      'date.greater': 'End date must be later than now',
+    endDate: Joi.date().greater(Joi.ref('startDate')).messages({
+      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
     }),
-
-    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
-      .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
+      .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
       .messages({
-        'any.only': 'Critical type must be one High, Medium, Low',
-      }),
-
-    isUpdated: Joi.boolean().required(),
+        'any.only': 'La criticidad debe ser Alta, Media o Baja',
+        'any.required': 'Este campo es requerido',
+      })
+      .required(),
 
     projectType: Joi.string()
-      .valid(ProjectType.PROJECT_BUILDING, ProjectType.STAFF_AUMENTATION)
+      .valid(ProjectType.PRODUCT_BUILDING, ProjectType.STAFF_AUGMENTATION)
+      .required()
       .messages({
-        'any.only': 'Project type must be one Project Building, Staff Aumentation',
+        'any.only': 'El tipo de proyecto debe ser Project Building o Staff Augmentation',
+        'any.required': 'Este campo es requerido',
       }),
-
-    isActive: Joi.boolean().required(),
-    'string.base': 'Status has to be a boolean',
-    'any.required': 'You have to add a status to create an user ',
-  });
+  }).options({ allowUnknown: true });
 
   const validate = schema.validate(req.body);
   if (validate.error) {
@@ -89,60 +62,38 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
 const editProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    clientName: Joi.string().min(3).max(35).messages({
-      'string.base': 'You have to use a valid name',
-      'any.required': 'The client name is required',
-      'string.min': 'The name must not contain less than 3 letters',
-      'string.max': 'The name must not contain more than 35 letters',
+    clientName: Joi.string().min(3).max(35).trim().messages({
+      'string.min': 'El nombre del cliente debe tener al menos 3 caracteres',
+      'string.max': 'El nombre del cliente debe tener máximo 35 caracteres',
     }),
 
-    projectName: Joi.string().min(3).max(35).messages({
-      'string.base': 'You have to use a valid name',
-      'any.required': 'The project name is required',
-      'string.min': 'The name must not contain less than 3 letters',
-      'string.max': 'The name must not contain more than 35 letters',
+    projectName: Joi.string().min(3).max(35).trim().messages({
+      'string.min': 'El nombre debe contener al menos 3 caracteres',
+      'string.max': 'El nombre no debe contener más de 35 caracteres',
     }),
 
-    description: Joi.string().min(12).max(50).messages({
-      'string.base': 'You have to use a valid description',
-      'any.required': 'The description is required',
-      'string.min': 'The description must not contain less than 12 letters',
-      'string.max': 'The description must not contain more than 50 letters',
+    description: Joi.string().max(100).messages({
+      'string.max': 'La descripción no debe contener más de 100 caracteres',
     }),
 
-    notes: Joi.string().min(12).max(50).messages({
-      'string.base': 'You have to use a valid name',
-      'string.min': 'The name must not contain less than 12 letters',
-      'string.max': 'The name must not contain more than 50 letters',
-    }),
+    startDate: Joi.date(),
 
-    startDate: Joi.date().greater('now').messages({
-      'date.greater': 'Start date must be later than now',
+    endDate: Joi.date().greater(Joi.ref('startDate')).messages({
+      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
     }),
-    endDate: Joi.date().greater('now').messages({
-      'date.greater': 'Start date must be later than now',
-    }),
-    members: Joi.array().items(Joi.object()),
 
     isCritic: Joi.string()
-      .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
+      .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
       .messages({
-        'any.only': 'Critical type must be one High, Medium, Low',
+        'any.only': 'La criticidad debe ser Alta, Media o Baja',
       }),
-
-    isUpdated: Joi.boolean(),
 
     projectType: Joi.string()
-      .valid(ProjectType.PROJECT_BUILDING, ProjectType.STAFF_AUMENTATION)
+      .valid(ProjectType.PRODUCT_BUILDING, ProjectType.STAFF_AUGMENTATION)
       .messages({
-        'any.only': 'Project type must be one Project Building, Staff Aumentation',
+        'any.only': 'El tipo de proyecto debe ser Project Building o Staff Augmentation',
       }),
-
-    isActive: Joi.boolean(),
-    'string.base': 'Status has to be a boolean',
-    'any.required': 'You have to add a status to create an user ',
-  });
-
+  }).options({ allowUnknown: true });
   const validate = schema.validate(req.body);
   if (validate.error) {
     return res.status(400).json({
