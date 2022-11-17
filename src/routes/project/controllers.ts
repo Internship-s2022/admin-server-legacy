@@ -11,10 +11,10 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
       .populate('clientName', ['name'])
       .populate({
         path: 'members',
-        select: 'employee',
+        select: 'employee role startDate endDate dedication helper',
         populate: {
-          path: 'employee',
-          select: 'user',
+          path: 'employee helper',
+          select: 'user helperReference',
           populate: {
             path: 'user',
             select: 'firstName lastName',
@@ -44,10 +44,10 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
       .populate('clientName', ['name'])
       .populate({
         path: 'members',
-        select: 'employee',
+        select: 'employee role startDate endDate dedication helper',
         populate: {
-          path: 'employee',
-          select: 'user',
+          path: 'employee helper',
+          select: 'user helperReference',
           populate: {
             path: 'user',
             select: 'firstName lastName',
