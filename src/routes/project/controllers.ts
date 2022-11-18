@@ -11,10 +11,10 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
       .populate('clientName', ['name'])
       .populate({
         path: 'members',
-        select: 'employee',
+        select: 'employee role startDate endDate memberDedication helper active',
         populate: {
-          path: 'employee',
-          select: 'user',
+          path: 'employee helper',
+          select: 'user helperReference',
           populate: {
             path: 'user',
             select: 'firstName lastName',
@@ -27,12 +27,6 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
         message: 'The list has been successfully retrieved',
         data: allProjects,
         error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Projects.',
-        data: undefined,
-        error: true,
       });
     }
   } catch (error: any) {
@@ -50,10 +44,10 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
       .populate('clientName', ['name'])
       .populate({
         path: 'members',
-        select: 'employee',
+        select: 'employee role startDate endDate memberDedication helper active',
         populate: {
-          path: 'employee',
-          select: 'user',
+          path: 'employee helper',
+          select: 'user helperReference',
           populate: {
             path: 'user',
             select: 'firstName lastName',
@@ -86,7 +80,6 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
 const createProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   const session = await startSession();
   session.startTransaction();
-
   try {
     const clientExist = await ClientModel.findById(req.body.clientName);
     if (!clientExist) {
@@ -97,7 +90,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
       });
     }
 
-    const newProject = new ProjectModel(req.body);
+    const newProject = new ProjectModel({ ...req.body, isActive: true, isUpdated: false });
 
     const project = await newProject.save({ session: session });
 

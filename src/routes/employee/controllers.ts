@@ -6,7 +6,7 @@ import { BodyResponse, EmployeeData } from 'src/types';
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
     const allEmployees: EmployeeData[] = await EmployeeModel.find(req.body)
-      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate', 'isActive'])
       .populate({
         path: 'projectHistory',
         select: 'project role',
@@ -22,12 +22,6 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
         data: allEmployees,
         error: false,
       });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Employees.',
-        data: undefined,
-        error: true,
-      });
     }
   } catch (error: any) {
     return res.json({
@@ -41,7 +35,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
 const getEmployeeById = async (req: Request, res: Response<BodyResponse<EmployeeData>>) => {
   try {
     const employee = await EmployeeModel.findById(req.params.id)
-      .populate('user', ['firstName', 'lastName', 'email', 'birthDate'])
+      .populate('user', ['firstName', 'lastName', 'email', 'birthDate', 'isActive'])
       .populate({
         path: 'projectHistory',
         select: 'project role',

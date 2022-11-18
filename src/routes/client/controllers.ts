@@ -8,23 +8,16 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
     const allClients = await ClientSchema.find(req.body).populate('projects', [
       'projectName',
       'description',
+      'startDate',
       'endDate',
       'isCritic',
     ]);
 
-    if (allClients.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allClients,
-        error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: 'Cannot show the list of Clients.',
-        data: undefined,
-        error: true,
-      });
-    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allClients,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: error.message,
@@ -39,6 +32,7 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
     const client = await ClientSchema.findById(req.params.id).populate('projects', [
       'projectName',
       'description',
+      'startDate',
       'endDate',
       'isCritic',
     ]);
