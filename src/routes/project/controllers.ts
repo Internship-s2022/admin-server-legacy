@@ -51,33 +51,9 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
           populate: {
             path: 'user',
             select: 'firstName lastName',
-            // populate: {
-            //   path: 'employee',
-            //   select: 'user',
-            //   populate: {
-            //     path: 'user',
-            //     select: 'firstName lastName',
-            //   },
-            // },
           },
         },
       });
-    // .populate({
-    //   path: 'members',
-    //   select: 'helper',
-    //   populate: {
-    //     path: 'helper',
-    //     select: 'helperReference',
-    //     populate: {
-    //       path: 'helperReference',
-    //       select: 'user',
-    //       populate: {
-    //         path: 'user',
-    //         select: 'firstName lastName',
-    //       },
-    //     },
-    //   },
-    // });
 
     if (project) {
       return res.status(200).json({
