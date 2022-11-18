@@ -3,10 +3,6 @@ import { model, Schema } from 'mongoose';
 import { MemberData, RoleType } from 'src/types';
 
 const membersSchema = new Schema({
-  hasHelper: {
-    type: Boolean,
-    required: false,
-  },
   helper: [
     {
       type: new Schema({
@@ -32,7 +28,7 @@ const membersSchema = new Schema({
     enum: RoleType,
     required: true,
   },
-  dedication: {
+  memberDedication: {
     type: Number,
     required: false,
   },

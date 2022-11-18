@@ -100,6 +100,7 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     if (!memberExists.length) {
       const newMember = new MemberModel({ ...req.body, active: true });
       member = await newMember.save({ session: session });
+      console.log(newMember);
       await ProjectModel.findByIdAndUpdate(
         { _id: projectExists?._id },
         { $push: { members: [member._id] } },
