@@ -13,7 +13,7 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
       .required(),
 
     role: Joi.string()
-      .valid(RoleType.DEV, RoleType.QA, RoleType.UI_UX, RoleType.TL, RoleType.PM)
+      .valid(RoleType.DEV, RoleType.QA, RoleType.UX_UI, RoleType.TL, RoleType.PM)
       .messages({
         'any.only': 'El rol debe ser DEV, QA, UX/UI, TL o PM',
         'any.required': 'Este campo es requerido',
@@ -109,9 +109,9 @@ const editMember = (req: Request, res: Response, next: NextFunction) => {
       'string.base': 'Project id must be a string',
     }),
     role: Joi.string()
-      .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UI_UX)
+      .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UX_UI)
       .messages({
-        'any.only': 'Role must be DEV, PM, TL, QA, or UI_UX',
+        'any.only': 'Role must be DEV, PM, TL, QA, or UX/UI',
       }),
     dedication: Joi.number().messages({ 'any.only': 'Dedication must be a number' }),
     startDate: Joi.date().greater('now').messages({
