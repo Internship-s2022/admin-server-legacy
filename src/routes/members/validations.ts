@@ -7,7 +7,7 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     employee: Joi.string()
       .messages({
-        'any.required': 'Este campo es requerido',
+        'any.required': 'El empleado es un campo requerido',
         'string.empty': 'Este campo es requerido',
       })
       .required(),
@@ -24,7 +24,7 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
       .min(0)
       .max(100)
       .messages({
-        'any.required': 'Este campo es requerido',
+        'any.required': 'La dedicacion es un campo requerido',
         'number.min': 'El porcentaje de dedicacion debe ser mayor a 0',
         'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
       })
@@ -63,8 +63,10 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
       'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
     }),
   }).options({ allowUnknown: true });
+
   const validate = schema.validate(req.body);
   if (validate.error) {
+    console.log(validate.error);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,
