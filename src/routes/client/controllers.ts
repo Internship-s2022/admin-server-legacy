@@ -67,7 +67,7 @@ const createClient = async (req: Request, res: Response<BodyResponse<ClientData>
 
     if (clientName) {
       return res.status(400).json({
-        message: 'Name already exist',
+        message: 'Client name already exist',
         data: undefined,
         error: true,
       });
