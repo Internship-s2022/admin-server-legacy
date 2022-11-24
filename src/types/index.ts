@@ -88,7 +88,7 @@ export interface HelperData {
 export enum RoleType {
   DEV = 'DEV',
   QA = 'QA',
-  UI_UX = 'UI_UX',
+  UX_UI = 'UX/UI',
   PM = 'PM',
   TL = 'TL',
 }
