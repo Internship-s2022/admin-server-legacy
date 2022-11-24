@@ -62,6 +62,17 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
 const createClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
   try {
     const newClient = new ClientSchema(req.body);
+
+    const clientName = await ClientSchema.findOne({ name: req.body.name });
+
+    if (clientName) {
+      return res.status(400).json({
+        message: 'Name already exist',
+        data: undefined,
+        error: true,
+      });
+    }
+
     const successData = await newClient.save();
 
     return res.status(201).json({
