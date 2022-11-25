@@ -20,7 +20,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
       .messages({
-        'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+        'date.greater': 'Fecha de finalización debe ser posterior a la fecha de inicio',
       })
       .allow(null),
 
@@ -72,7 +72,7 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
       .messages({
-        'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+        'date.greater': 'Fecha de finalización debe ser posterior a la fecha de inicio',
       })
       .allow(null),
 

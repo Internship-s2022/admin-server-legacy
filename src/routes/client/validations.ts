@@ -66,7 +66,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
     relationshipStart: Joi.date()
       .less('now')
       .messages({
-        'date.less': 'La fecha de inicio debe ser anterior a la fecha actual',
+        'date.less': 'Fecha de inicio debe ser anterior a la fecha actual',
       })
       .allow(null),
 
