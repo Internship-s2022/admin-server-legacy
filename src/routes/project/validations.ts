@@ -15,11 +15,14 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       'string.max': 'La descripción no debe contener más de 100 caracteres',
     }),
 
-    startDate: Joi.date(),
+    startDate: Joi.date().allow(null),
 
-    endDate: Joi.date().greater(Joi.ref('startDate')).messages({
-      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
-    }),
+    endDate: Joi.date()
+      .greater(Joi.ref('startDate'))
+      .messages({
+        'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+      })
+      .allow(null),
 
     isCritic: Joi.string()
       .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
@@ -64,11 +67,14 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
       })
       .allow(''),
 
-    startDate: Joi.date(),
+    startDate: Joi.date().allow(null),
 
-    endDate: Joi.date().greater(Joi.ref('startDate')).messages({
-      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
-    }),
+    endDate: Joi.date()
+      .greater(Joi.ref('startDate'))
+      .messages({
+        'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+      })
+      .allow(null),
 
     isCritic: Joi.string()
       .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
@@ -82,6 +88,7 @@ const editProject = (req: Request, res: Response, next: NextFunction) => {
         'any.only': 'El tipo de proyecto debe ser Project Building o Staff Augmentation',
       }),
   }).options({ allowUnknown: true });
+
   const validate = schema.validate(req.body);
   if (validate.error) {
     return res.status(400).json({
