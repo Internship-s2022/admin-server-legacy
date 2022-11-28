@@ -8,18 +8,28 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allMembers = await MemberModel.find(req.query).populate({
-      path: 'helper',
-      select: 'helperReference',
-      populate: {
-        path: 'helperReference',
+    const allMembers = await MemberModel.find(req.query)
+      .populate({
+        path: 'employee',
         select: 'user',
         populate: {
           path: 'user',
           select: 'firstName lastName',
         },
-      },
-    });
+      })
+      .populate('project', 'projectName')
+      .populate({
+        path: 'helper',
+        select: 'helperReference',
+        populate: {
+          path: 'helperReference',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     return res.status(200).json({
       message: 'The list has been successfully retrieved',
