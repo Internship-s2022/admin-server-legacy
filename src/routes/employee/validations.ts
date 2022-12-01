@@ -44,7 +44,7 @@ const editEmployee = (req: Request, res: Response, next: NextFunction) => {
       Joi.string()
         .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UX_UI)
         .messages({
-          'any.only': 'Potential role must be DEV, QA, UI_UX, PM or TL',
+          'any.only': 'Potential role must be DEV, QA, UX/UI, PM or TL',
           'string.base': 'Array items must be strings',
         }),
     ),
