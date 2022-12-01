@@ -5,7 +5,7 @@ import { BodyResponse, EmployeeData } from 'src/types';
 
 const getAllEmployees = async (req: Request, res: Response<BodyResponse<EmployeeData[]>>) => {
   try {
-    const allEmployees: EmployeeData[] = await EmployeeModel.find(req.body)
+    const allEmployees: EmployeeData[] = await EmployeeModel.find(req.query)
       .populate('user', ['firstName', 'lastName', 'email', 'birthDate', 'isActive'])
       .populate({
         path: 'projectHistory',
@@ -16,13 +16,11 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
         },
       });
 
-    if (allEmployees.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allEmployees,
-        error: false,
-      });
-    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allEmployees,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: 'Error',

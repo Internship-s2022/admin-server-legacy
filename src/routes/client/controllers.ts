@@ -5,7 +5,7 @@ import { BodyResponse, ClientData } from 'src/types';
 
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {
-    const allClients = await ClientSchema.find(req.body).populate('projects', [
+    const allClients = await ClientSchema.find(req.query).populate('projects', [
       'projectName',
       'description',
       'startDate',

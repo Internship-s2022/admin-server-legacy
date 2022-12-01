@@ -7,7 +7,7 @@ import { BodyResponse, ProjectData } from 'src/types';
 
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
-    const allProjects = await ProjectModel.find(req.body)
+    const allProjects = await ProjectModel.find(req.query)
       .populate('clientName', ['name'])
       .populate({
         path: 'members',
@@ -22,13 +22,11 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
         },
       });
 
-    if (allProjects.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allProjects,
-        error: false,
-      });
-    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allProjects,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: 'Error',

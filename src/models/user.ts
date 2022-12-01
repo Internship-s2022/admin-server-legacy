@@ -2,7 +2,7 @@ import { InferSchemaType, model, Schema } from 'mongoose';
 
 import { AccessRoleType } from 'src/types';
 
-const userSchema = new Schema({
+export const userSchema = new Schema({
   firebaseUid: {
     type: String,
     required: false,
