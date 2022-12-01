@@ -102,3 +102,11 @@ export enum AccessRoleType {
   ADMIN = 'ADMIN',
   EMPLOYEE = 'EMPLOYEE',
 }
+
+export enum MainRoutes {
+  USERS = '/users',
+  PROJECTS = '/projects',
+  CLIENTS = '/clients',
+  EMPLOYEES = '/employees',
+  MEMBERS = '/members',
+}

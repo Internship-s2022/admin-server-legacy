@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 import { SeniorityType } from 'src/routes/employee/types';
 import { EmployeeData, RoleType } from 'src/types';
 
-const employeeSchema = new Schema({
+export const employeeSchema = new Schema({
   skills: [
     {
       type: String,

@@ -2,7 +2,7 @@ import { model, Schema } from 'mongoose';
 
 import { MemberData, RoleType } from 'src/types';
 
-const membersSchema = new Schema({
+export const membersSchema = new Schema({
   employee: {
     type: Schema.Types.ObjectId,
     ref: 'Employee',

@@ -3,7 +3,7 @@ import { model, Schema } from 'mongoose';
 import { CriticalType, ProjectType } from 'src/routes/project/types';
 import { ProjectData } from 'src/types';
 
-const projectSchema = new Schema({
+export const projectSchema = new Schema({
   clientName: {
     type: Schema.Types.ObjectId,
     ref: 'Client',

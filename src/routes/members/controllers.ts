@@ -8,7 +8,7 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allMembers = await MemberModel.find(req.body).populate({
+    const allMembers = await MemberModel.find(req.query).populate({
       path: 'helper',
       select: 'helperReference',
       populate: {
@@ -21,13 +21,11 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
       },
     });
 
-    if (allMembers.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allMembers,
-        error: false,
-      });
-    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved',
+      data: allMembers,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: 'Error',
