@@ -32,7 +32,7 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
       });
 
     return res.status(200).json({
-      message: 'The list has been successfully retrieved',
+      message: 'Lista de miembros obtenida correctamente',
       data: allMembers,
       error: false,
     });
@@ -72,13 +72,13 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
 
     if (member) {
       return res.status(200).json({
-        message: `Member with ID ${req.params.id} has been found`,
+        message: `Miembro con ID ${req.params.id} encontrado`,
         data: member,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found a member by the id of ${req.params.id}.`,
+        message: `No se pudo encontrar un miembro con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -103,8 +103,8 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
       return res.status(404).json({
         message:
           !projectExists && !employeeExists
-            ? 'Employee and Project do not exist'
-            : `The ${!projectExists ? 'Project' : 'Employee'} does not exist`,
+            ? 'Empleado y proyecto inexistentes'
+            : `El ${!projectExists ? 'Proyecto' : 'Empleado'} no existe`,
         data: undefined,
         error: true,
       });
@@ -141,7 +141,7 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'Member created successfully',
+      message: 'Miembro creado exitosamente',
       data: member,
       error: false,
     });
