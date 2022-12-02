@@ -1,5 +1,6 @@
 import express from 'express';
 
+import queryParamsOnSchemaValidation from 'src/middlewares/queryValidation';
 import idValidationMiddleware from 'src/middlewares/validations';
 
 import controllers from './controllers';
@@ -9,7 +10,7 @@ const router = express.Router();
 
 router
   .route('/')
-  .get(controllers.getAllMembers)
+  .get(queryParamsOnSchemaValidation('member'), controllers.getAllMembers)
   .post(validations.createMember, controllers.createMember);
 
 router

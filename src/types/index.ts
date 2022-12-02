@@ -88,7 +88,7 @@ export interface HelperData {
 export enum RoleType {
   DEV = 'DEV',
   QA = 'QA',
-  UI_UX = 'UI_UX',
+  UX_UI = 'UX/UI',
   PM = 'PM',
   TL = 'TL',
 }
@@ -101,4 +101,12 @@ export enum AccessRoleType {
   SUPER_ADMIN = 'SUPER_ADMIN',
   ADMIN = 'ADMIN',
   EMPLOYEE = 'EMPLOYEE',
+}
+
+export enum MainRoutes {
+  USERS = '/users',
+  PROJECTS = '/projects',
+  CLIENTS = '/clients',
+  EMPLOYEES = '/employees',
+  MEMBERS = '/members',
 }

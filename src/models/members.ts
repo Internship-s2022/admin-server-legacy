@@ -2,17 +2,7 @@ import { model, Schema } from 'mongoose';
 
 import { MemberData, RoleType } from 'src/types';
 
-const membersSchema = new Schema({
-  helper: [
-    {
-      type: new Schema({
-        helperReference: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
-        dependency: { type: Number, required: true },
-        dedication: { type: Number, required: true },
-        isActive: { type: Boolean, required: true },
-      }),
-    },
-  ],
+export const membersSchema = new Schema({
   employee: {
     type: Schema.Types.ObjectId,
     ref: 'Employee',
@@ -32,6 +22,16 @@ const membersSchema = new Schema({
     type: Number,
     required: false,
   },
+  helper: [
+    {
+      type: new Schema({
+        helperReference: { type: Schema.Types.ObjectId, ref: 'Employee', required: false },
+        dependency: { type: Number, required: true },
+        dedication: { type: Number, required: true },
+        isActive: { type: Boolean, required: true },
+      }),
+    },
+  ],
   startDate: {
     type: Date,
     required: false,

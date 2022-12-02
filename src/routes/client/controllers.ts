@@ -5,7 +5,7 @@ import { BodyResponse, ClientData } from 'src/types';
 
 const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
   try {
-    const allClients = await ClientSchema.find(req.body).populate('projects', [
+    const allClients = await ClientSchema.find(req.query).populate('projects', [
       'projectName',
       'description',
       'startDate',
@@ -14,7 +14,7 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
     ]);
 
     return res.status(200).json({
-      message: 'The list has been successfully retrieved',
+      message: 'Lista de clientes obtenida con éxito',
       data: allClients,
       error: false,
     });
@@ -39,13 +39,13 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
 
     if (client) {
       return res.status(200).json({
-        message: `Client with ID ${req.params.id} has been found`,
+        message: `Cliente con ID ${req.params.id} encontrado`,
         data: client,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found an client by the id of ${req.params.id}.`,
+        message: `No se pudo encontrar un cliente con el ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -62,10 +62,21 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
 const createClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
   try {
     const newClient = new ClientSchema(req.body);
+
+    const clientName = await ClientSchema.findOne({ name: req.body.name });
+
+    if (clientName) {
+      return res.status(400).json({
+        message: 'Este cliente ya existe',
+        data: undefined,
+        error: true,
+      });
+    }
+
     const successData = await newClient.save();
 
     return res.status(201).json({
-      message: 'Client created successfully',
+      message: 'Cliente creado exitosamente',
       data: successData,
       error: false,
     });
@@ -86,20 +97,20 @@ const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>)
 
     if (!response) {
       return res.status(404).json({
-        message: `Client account with ID "${req.params.id}" can not be found.`,
+        message: `Cuenta del cliente con ID "${req.params.id}" no encontrada.`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Client account with ID "${req.params.id}" updated successfully`,
+      message: `Cuenta del cliente con ID "${req.params.id}" actualizada`,
       data: req.body,
       error: false,
     });
   } catch (error: any) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error.message}`,
+      message: `Ha ocurrido un error: ${error.message}`,
       data: undefined,
       error: true,
     });
@@ -116,20 +127,20 @@ const deleteClient = async (req: Request, res: Response<BodyResponse<ClientData>
 
     if (!response) {
       return res.status(404).json({
-        message: `Client with ID "${req.params.id}" can not be found.`,
+        message: `Cliente con ID "${req.params.id}" no fue encontrado.`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Client with ID "${req.params.id}" deleted successfully`,
+      message: `Cliente con ID "${req.params.id}" eliminado exitosamente`,
       data: req.body,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+      message: `Ha ocurrido un error: ${error}`,
       data: undefined,
       error: true,
     });

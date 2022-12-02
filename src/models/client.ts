@@ -2,10 +2,11 @@ import { model, Schema } from 'mongoose';
 
 import { ClientData } from 'src/types';
 
-const clientSchema = new Schema({
+export const clientSchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
   },
   localContact: {
     type: new Schema({

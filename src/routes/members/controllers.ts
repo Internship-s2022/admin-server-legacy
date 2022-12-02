@@ -8,26 +8,34 @@ import { BodyResponse, MemberData } from 'src/types';
 
 const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData[]>>) => {
   try {
-    const allMembers = await MemberModel.find(req.body).populate({
-      path: 'helper',
-      select: 'helperReference',
-      populate: {
-        path: 'helperReference',
+    const allMembers = await MemberModel.find(req.query)
+      .populate({
+        path: 'employee',
         select: 'user',
         populate: {
           path: 'user',
           select: 'firstName lastName',
         },
-      },
-    });
-
-    if (allMembers.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allMembers,
-        error: false,
+      })
+      .populate('project', 'projectName')
+      .populate({
+        path: 'helper',
+        select: 'helperReference',
+        populate: {
+          path: 'helperReference',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
       });
-    }
+
+    return res.status(200).json({
+      message: 'Lista de miembros obtenida correctamente',
+      data: allMembers,
+      error: false,
+    });
   } catch (error: any) {
     return res.json({
       message: 'Error',
@@ -39,28 +47,38 @@ const getAllMembers = async (req: Request, res: Response<BodyResponse<MemberData
 
 const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData>>) => {
   try {
-    const member = await MemberModel.findById(req.params.id).populate({
-      path: 'helper',
-      select: 'helperReference',
-      populate: {
-        path: 'helperReference',
+    const member = await MemberModel.findById(req.params.id)
+      .populate({
+        path: 'employee',
         select: 'user',
         populate: {
           path: 'user',
           select: 'firstName lastName',
         },
-      },
-    });
+      })
+      .populate('project', 'projectName')
+      .populate({
+        path: 'helper',
+        select: 'helperReference',
+        populate: {
+          path: 'helperReference',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     if (member) {
       return res.status(200).json({
-        message: `Member with ID ${req.params.id} has been found`,
+        message: `Miembro con ID ${req.params.id} encontrado`,
         data: member,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found a member by the id of ${req.params.id}.`,
+        message: `No se pudo encontrar un miembro con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -85,8 +103,8 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
       return res.status(404).json({
         message:
           !projectExists && !employeeExists
-            ? 'Employee and Project do not exist'
-            : `The ${!projectExists ? 'Project' : 'Employee'} does not exist`,
+            ? 'Empleado y proyecto inexistentes'
+            : `El ${!projectExists ? 'Proyecto' : 'Empleado'} no existe`,
         data: undefined,
         error: true,
       });
@@ -123,7 +141,7 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'Member created successfully',
+      message: 'Miembro creado exitosamente',
       data: member,
       error: false,
     });
