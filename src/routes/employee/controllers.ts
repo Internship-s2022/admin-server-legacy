@@ -17,7 +17,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
       });
 
     return res.status(200).json({
-      message: 'The list has been successfully retrieved',
+      message: 'Lista de empleados obtenida correctamente',
       data: allEmployees,
       error: false,
     });
@@ -45,13 +45,13 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
 
     if (employee) {
       return res.status(200).json({
-        message: `Employee with ID ${req.params.id} has been found`,
+        message: `Empleado con ID ${req.params.id} encontrado`,
         data: employee,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found an employee by the id of ${req.params.id}.`,
+        message: `No se pudo encontrar un empleado con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -73,14 +73,14 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
 
     if (!response) {
       return res.status(404).json({
-        message: `Employee with ID "${req.params.id}" can not be found.`,
+        message: `No se pudo encontrar un empleado con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Employee with ID "${req.params.id}" updated successfully`,
+      message: `Empleado con ID "${req.params.id}" actualizado`,
       data: req.body,
       error: false,
     });
