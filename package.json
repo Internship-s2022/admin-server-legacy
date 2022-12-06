@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc && yarn babel",
     "babel": "babel dist -d ./dist/",
+    "seeders": "ts-node ./seeders/index",
     "start:build": "ts-node -r tsconfig-paths/register ./dist/index.js",
     "start": "nodemon",
     "test": "IS_TEST=true jest",
