@@ -5,7 +5,7 @@ import ClientModel from 'src/models/client';
 import EmployeeModel from 'src/models/employee';
 import NotificationsModel from 'src/models/notifications';
 import ProjectModel from 'src/models/project';
-import { BodyResponse, NotificationsData, NotificationType } from 'src/types';
+import { BodyResponse, NotificationsData } from 'src/types';
 
 const getAllNotifications = async (
   req: Request,
@@ -22,7 +22,7 @@ const getAllNotifications = async (
       });
     }
   } catch (error: any) {
-    return res.json({
+    return res.status(400).json({
       message: 'Error',
       data: undefined,
       error: true,
@@ -68,68 +68,43 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
     const clientExists = req.body.client;
 
     if (projectExists?.length) {
-      if (req.body.notificationType !== NotificationType.PROJECT) {
-        return res.status(400).json({
-          message: 'The type of notification does not correspond with the data',
+      const project = await ProjectModel.findById(req.body.project);
+
+      if (!project) {
+        return res.status(404).json({
+          message: 'Project not found',
           data: undefined,
           error: true,
         });
-      } else {
-        const project = await ProjectModel.findById(req.body.project);
-
-        if (!project) {
-          return res.status(404).json({
-            message: 'Project not found',
-            data: undefined,
-            error: true,
-          });
-        }
       }
     }
 
     if (employeeExists?.length) {
-      if (req.body.notificationType !== NotificationType.EMPLOYEE) {
-        return res.status(400).json({
-          message: 'The type of notification does not correspond with the data',
+      const employee = await EmployeeModel.findById(req.body.employee);
+
+      if (!employee) {
+        return res.status(404).json({
+          message: 'Employee not found',
           data: undefined,
           error: true,
         });
-      } else {
-        const employee = await EmployeeModel.findById(req.body.employee);
-
-        if (!employee) {
-          return res.status(404).json({
-            message: 'Employee not found',
-            data: undefined,
-            error: true,
-          });
-        }
       }
     }
 
     if (clientExists?.length) {
-      if (req.body.notificationType !== NotificationType.CLIENT) {
-        return res.status(400).json({
-          message: 'The type of notification does not correspond with the data',
+      const client = await ClientModel.findById(req.body.client);
+
+      if (!client) {
+        return res.status(404).json({
+          message: 'Client not found',
           data: undefined,
           error: true,
         });
-      } else {
-        const client = await ClientModel.findById(req.body.client);
-
-        if (!client) {
-          return res.status(404).json({
-            message: 'Client not found',
-            data: undefined,
-            error: true,
-          });
-        }
       }
     }
 
     const newNotification = new NotificationsModel({
       ...req.body,
-      date: new Date(Date.now()),
       isChecked: true,
     });
 
@@ -144,7 +119,7 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
     });
   } catch (error: any) {
     session.abortTransaction();
-    return res.json({
+    return res.status(400).json({
       message: `MongoDB Error: ${error.message}`,
       data: undefined,
       error: true,
