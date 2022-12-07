@@ -12,10 +12,7 @@ router
   .get(controllers.getAllNotifications)
   .post(validations.createNotification, controllers.createNotification);
 
-router
-  .route('/:id')
-  .get(idValidationMiddleware, controllers.getNotificationById)
-  .patch(idValidationMiddleware, validations.editNotification, controllers.editNotification);
+router.route('/:id').get(idValidationMiddleware, controllers.getNotificationById);
 
 router.route('/delete/:id').patch(idValidationMiddleware, controllers.deleteNotification);
 
