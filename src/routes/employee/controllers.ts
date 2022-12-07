@@ -12,7 +12,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
         select: 'project role',
         populate: {
           path: 'project',
-          select: 'projectName',
+          select: 'projectName isActive',
         },
       });
 
@@ -39,7 +39,7 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
         select: 'project role',
         populate: {
           path: 'project',
-          select: 'projectName',
+          select: 'projectName isActive',
         },
       });
 

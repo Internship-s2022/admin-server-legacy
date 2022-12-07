@@ -11,6 +11,7 @@ const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData
       'startDate',
       'endDate',
       'isCritic',
+      'isActive',
     ]);
 
     return res.status(200).json({
@@ -35,6 +36,7 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
       'startDate',
       'endDate',
       'isCritic',
+      'isActive',
     ]);
 
     if (client) {
