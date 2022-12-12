@@ -22,7 +22,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
       error: false,
     });
   } catch (error: any) {
-    return res.json({
+    return res.status(400).json({
       message: 'Error',
       data: undefined,
       error: true,
