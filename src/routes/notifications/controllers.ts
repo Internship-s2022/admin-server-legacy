@@ -12,9 +12,14 @@ const getAllNotifications = async (
   res: Response<BodyResponse<NotificationsData[]>>,
 ) => {
   try {
-    const allNotifications = await NotificationsModel.find(req.body);
-
-    if (allNotifications.length) {
+    const allNotifications = await NotificationsModel.find(req.query);
+    if (allNotifications.length === 0) {
+      return res.status(200).json({
+        message: 'The list has been successfully retrieved, but is empty',
+        data: allNotifications,
+        error: false,
+      });
+    } else {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
         data: allNotifications,
