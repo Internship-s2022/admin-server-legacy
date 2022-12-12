@@ -182,7 +182,7 @@ const editMember = async (req: Request, res: Response<BodyResponse<MemberData>>)
 
     return res.status(200).json({
       message: `Member with ID "${req.params.id}" updated successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {
@@ -210,7 +210,7 @@ const deleteMember = async (req: Request, res: Response<BodyResponse<MemberData>
     }
     return res.status(200).json({
       message: `Member with ID "${req.params.id}" deleted successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error) {

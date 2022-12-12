@@ -107,7 +107,7 @@ const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>)
 
     return res.status(200).json({
       message: `Cuenta del cliente con ID "${req.params.id}" actualizada`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {
@@ -137,7 +137,7 @@ const deleteClient = async (req: Request, res: Response<BodyResponse<ClientData>
 
     return res.status(200).json({
       message: `Cliente con ID "${req.params.id}" eliminado exitosamente`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error) {

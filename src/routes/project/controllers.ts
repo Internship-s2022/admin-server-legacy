@@ -131,7 +131,7 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
 
     return res.status(200).json({
       message: `Project with ID "${req.params.id}" updated successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {
@@ -161,7 +161,7 @@ const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectDat
 
     return res.status(200).json({
       message: `Project with ID "${req.params.id}" deleted successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error) {
