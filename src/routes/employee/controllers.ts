@@ -81,7 +81,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
 
     return res.status(200).json({
       message: `Empleado con ID "${req.params.id}" actualizado`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {

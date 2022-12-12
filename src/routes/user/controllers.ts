@@ -154,7 +154,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     }
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" updated successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {
@@ -184,7 +184,7 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     }
     return res.status(200).json({
       message: `User account with ID "${req.params.id}" deleted successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error) {

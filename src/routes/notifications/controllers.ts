@@ -12,7 +12,17 @@ const getAllNotifications = async (
   res: Response<BodyResponse<NotificationsData[]>>,
 ) => {
   try {
-    const allNotifications = await NotificationsModel.find(req.query);
+    const allNotifications = await NotificationsModel.find(req.query)
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName isActive',
+        },
+      })
+      .populate('project', ['projectName', 'projectType', 'isActive'])
+      .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
     if (allNotifications.length === 0) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved, but is empty',
@@ -40,7 +50,17 @@ const getNotificationById = async (
   res: Response<BodyResponse<NotificationsData>>,
 ) => {
   try {
-    const notification = await NotificationsModel.findById(req.params.id);
+    const notification = await NotificationsModel.findById(req.params.id)
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName isActive',
+        },
+      })
+      .populate('project', ['projectName', 'projectType', 'isActive'])
+      .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
 
     if (notification) {
       return res.status(200).json({
@@ -150,7 +170,7 @@ const deleteNotification = async (req: Request, res: Response<BodyResponse<Notif
 
     return res.status(200).json({
       message: `Notification with ID "${req.params.id}" deleted successfully`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error) {
