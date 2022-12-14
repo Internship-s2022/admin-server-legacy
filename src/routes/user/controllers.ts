@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
-import firebaseApp from 'src/helper/firebase';
+import firebaseApp from 'src/helpers/firebase';
 import EmployeeModel from 'src/models/employee';
 import UserModel from 'src/models/user';
 import { BodyResponse, UserData } from 'src/types';

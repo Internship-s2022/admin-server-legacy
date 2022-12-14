@@ -3,7 +3,7 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 
 import app from './app';
-import firebaseApp from './helper/firebase';
+import firebaseApp from './helpers/firebase';
 
 const port = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || '';

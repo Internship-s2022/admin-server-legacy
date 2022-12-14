@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 
-import firebase from 'src/helper/firebase';
+import firebase from 'src/helpers/firebase';
 import { AccessRoleType, RequestWithFirebase } from 'src/types';
 
 const authMiddleware =
