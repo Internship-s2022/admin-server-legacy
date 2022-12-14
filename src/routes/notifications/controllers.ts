@@ -21,7 +21,7 @@ const getAllNotifications = async (
           select: 'firstName lastName isActive',
         },
       })
-      .populate('project', ['projectName', 'projectType', 'isActive'])
+      .populate('project', ['projectName', 'projectType', 'isActive', 'isCritic'])
       .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
     if (allNotifications.length === 0) {
       return res.status(200).json({
@@ -59,7 +59,7 @@ const getNotificationById = async (
           select: 'firstName lastName isActive',
         },
       })
-      .populate('project', ['projectName', 'projectType', 'isActive'])
+      .populate('project', ['projectName', 'projectType', 'isActive', 'isCritic'])
       .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
 
     if (notification) {
