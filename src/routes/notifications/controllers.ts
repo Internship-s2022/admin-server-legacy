@@ -21,7 +21,22 @@ const getAllNotifications = async (
           select: 'firstName lastName isActive',
         },
       })
-      .populate('project', ['projectName', 'projectType', 'isActive', 'isCritic'])
+      .populate({
+        path: 'project',
+        select: 'projectName projectType isActive isCritic members',
+        populate: {
+          path: 'members',
+          select: 'employee role startDate endDate memberDedication helper active',
+          populate: {
+            path: 'employee helper',
+            select: 'user helperReference',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        },
+      })
       .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
     if (allNotifications.length === 0) {
       return res.status(200).json({
@@ -59,7 +74,22 @@ const getNotificationById = async (
           select: 'firstName lastName isActive',
         },
       })
-      .populate('project', ['projectName', 'projectType', 'isActive', 'isCritic'])
+      .populate({
+        path: 'project',
+        select: 'projectName projectType isActive isCritic members',
+        populate: {
+          path: 'members',
+          select: 'employee role startDate endDate memberDedication helper active',
+          populate: {
+            path: 'employee helper',
+            select: 'user helperReference',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        },
+      })
       .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
 
     if (notification) {
