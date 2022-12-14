@@ -59,7 +59,7 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
       .populate('project', 'projectName')
       .populate({
         path: 'helper',
-        select: 'helperReference',
+        select: 'helperReference isActive',
         populate: {
           path: 'helperReference',
           select: 'user',
@@ -118,6 +118,7 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
     if (!memberExists.length) {
       const newMember = new MemberModel({ ...req.body, active: true });
       member = await newMember.save({ session: session });
+
       await ProjectModel.findByIdAndUpdate(
         { _id: projectExists?._id },
         { $push: { members: [member._id] } },
@@ -140,9 +141,33 @@ const createMember = async (req: Request, res: Response<BodyResponse<MemberData>
 
     session.commitTransaction();
 
+    const populatedMember = await MemberModel.populate(member, {
+      path: 'employee',
+      select: 'user',
+      populate: {
+        path: 'user',
+        select: 'firstName lastName',
+      },
+    })
+      .then((res) => res.populate('project', 'projectName'))
+      .then((res) =>
+        res.populate({
+          path: 'helper',
+          select: 'helperReference isActive',
+          populate: {
+            path: 'helperReference',
+            select: 'user',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        }),
+      );
+
     return res.status(201).json({
       message: 'Miembro creado exitosamente',
-      data: member,
+      data: populatedMember,
       error: false,
     });
   } catch (error: any) {
@@ -170,7 +195,28 @@ const editMember = async (req: Request, res: Response<BodyResponse<MemberData>>)
 
     const response = await MemberModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
-    });
+    })
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName',
+        },
+      })
+      .populate('project', 'projectName')
+      .populate({
+        path: 'helper',
+        select: 'helperReference isActive',
+        populate: {
+          path: 'helperReference',
+          select: 'user',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     if (!response) {
       return res.status(404).json({

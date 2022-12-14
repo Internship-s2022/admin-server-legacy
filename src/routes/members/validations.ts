@@ -37,32 +37,34 @@ const createMember = (req: Request, res: Response, next: NextFunction) => {
       })
       .required(),
 
-    helper: Joi.object({
-      helperReference: Joi.string()
-        .messages({
-          'any.required': 'Este campo es requerido',
-          'string.empty': 'Este campo es requerido',
-        })
-        .required(),
-      dependency: Joi.number()
-        .min(0)
-        .max(100)
-        .messages({
-          'any.required': 'Este campo es requerido',
-          'number.min': 'El porcentaje de dependencia debe ser mayor a 0',
-          'number.max': 'El porcentaje de dependencia debe ser menor a 100',
-        })
-        .required(),
-      dedication: Joi.number()
-        .min(0)
-        .max(100)
-        .messages({
-          'any.required': 'Dedicación es un campo requerido',
-          'number.min': 'El porcentaje de dedicación debe ser mayor a 0',
-          'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
-        })
-        .required(),
-    }),
+    helper: Joi.array().items(
+      Joi.object({
+        helperReference: Joi.string()
+          .messages({
+            'any.required': 'Este campo es requerido',
+            'string.empty': 'Este campo es requerido',
+          })
+          .required(),
+        dependency: Joi.number()
+          .min(0)
+          .max(100)
+          .messages({
+            'any.required': 'Este campo es requerido',
+            'number.min': 'El porcentaje de dependencia debe ser mayor a 0',
+            'number.max': 'El porcentaje de dependencia debe ser menor a 100',
+          })
+          .required(),
+        dedication: Joi.number()
+          .min(0)
+          .max(100)
+          .messages({
+            'any.required': 'Dedicación es un campo requerido',
+            'number.min': 'El porcentaje de dedicación debe ser mayor a 0',
+            'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
+          })
+          .required(),
+      }),
+    ),
 
     startDate: Joi.date().allow(null),
 
@@ -102,18 +104,21 @@ const editMember = (req: Request, res: Response, next: NextFunction) => {
       'number.max': 'El porcentaje de dedicación debe ser menor a 100',
     }),
 
-    helper: Joi.object({
-      helperReference: Joi.string(),
+    helper: Joi.array().items(
+      Joi.object({
+        helperReference: Joi.string(),
 
-      dependency: Joi.number().min(0).max(100).messages({
-        'number.min': 'El porcentaje de dependencia debe ser mayor a 0',
-        'number.max': 'El porcentaje de dependencia debe ser menor a 100',
+        dependency: Joi.number().min(0).max(100).messages({
+          'number.min': 'El porcentaje de dependencia debe ser mayor a 0',
+          'number.max': 'El porcentaje de dependencia debe ser menor a 100',
+        }),
+
+        dedication: Joi.number().min(0).max(100).messages({
+          'number.min': 'El porcentaje de dedicación debe ser mayor a 0',
+          'number.max': 'El porcentaje de dedicación debe ser menor a 100',
+        }),
       }),
-      dedication: Joi.number().min(0).max(100).messages({
-        'number.min': 'El porcentaje de dedicación debe ser mayor a 0',
-        'number.max': 'El porcentaje de dedicación debe ser menor a 100',
-      }),
-    }),
+    ),
 
     startDate: Joi.date().allow(null),
 
@@ -123,7 +128,7 @@ const editMember = (req: Request, res: Response, next: NextFunction) => {
         'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
       })
       .allow(null),
-  });
+  }).options({ allowUnknown: true });
 
   const validate = schema.validate(req.body);
   if (validate.error) {
