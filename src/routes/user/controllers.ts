@@ -3,6 +3,7 @@ import { startSession } from 'mongoose';
 
 import firebaseApp from 'src/helper/firebase';
 import EmployeeModel from 'src/models/employee';
+import MemberModel from 'src/models/members';
 import UserModel from 'src/models/user';
 import { BodyResponse, UserData } from 'src/types';
 
@@ -169,12 +170,19 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
 
 const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   try {
-    //to do: check if user is related to an employee that is active as member in project.
     const response = await UserModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },
       { isActive: false },
       { new: true },
     );
+    const employeeExist = await EmployeeModel.findOne({ user: req.params.id });
+
+    await MemberModel.findOneAndUpdate(
+      { employee: employeeExist?._id },
+      { active: false },
+      { new: true },
+    );
+
     if (!response) {
       return res.status(404).json({
         message: `User account with ID "${req.params.id}" can not be found.`,
