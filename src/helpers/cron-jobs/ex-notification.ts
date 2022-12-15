@@ -12,13 +12,14 @@ const notificationData = {
 
 export const ExampleNotification = () => {
   cron.schedule(
-    '* * * * *',
+    //everyday aty 15:10
+    '10 15 * * *',
     async () => {
       const response = await addResourceRequest('/notifications', notificationData);
-      console.log(response);
+      return response;
     },
     {
-      scheduled: false,
+      scheduled: true,
       timezone: 'America/Argentina/Buenos_Aires',
     },
   );
