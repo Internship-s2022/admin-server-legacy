@@ -12,7 +12,7 @@ import { AccessRoleType, MainRoutes } from 'src/types';
 const router = express.Router();
 
 router.use(MainRoutes.USERS, userRouter);
-router.use(MainRoutes.NOTIFICATIONS, authMiddleware(AccessRoleType.ADMIN), notificationsRouter);
+router.use(MainRoutes.NOTIFICATIONS, notificationsRouter);
 router.use(MainRoutes.PROJECTS, authMiddleware(AccessRoleType.ADMIN), projectRouter);
 router.use(MainRoutes.CLIENTS, authMiddleware(AccessRoleType.ADMIN), clientRouter);
 router.use(MainRoutes.EMPLOYEES, authMiddleware(AccessRoleType.ADMIN), employeeRouter);
