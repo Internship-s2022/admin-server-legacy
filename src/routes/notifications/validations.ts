@@ -22,9 +22,9 @@ const createNotification = (req: Request, res: Response, next: NextFunction) => 
       'string.base': 'El id del cliente debe ser un string',
     }),
     reasonType: Joi.number(),
-    customMessage: Joi.string().min(3).max(25).messages({
+    customMessage: Joi.string().min(3).max(50).messages({
       'string.min': 'El mensaje debe contener al menos 3 caracteres',
-      'string.max': 'El mensaje debe contener menos de 25 caracteres',
+      'string.max': 'El mensaje debe contener menos de 50 caracteres',
     }),
     isActive: Joi.boolean()
       .messages({
