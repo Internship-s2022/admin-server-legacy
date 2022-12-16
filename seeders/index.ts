@@ -1,10 +1,12 @@
 import 'dotenv/config';
 import firebaseAdmin from 'firebase-admin';
+import { UserRecord } from 'firebase-admin/lib/auth/user-record';
 import { DeleteResult } from 'mongodb';
 import mongoose, { InsertManyResult } from 'mongoose';
 
 import { entitiesConfig, firebaseConfig } from './config';
 import { FirebaseUsers } from './data/dev/firebase';
+import { DataType } from './types';
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
@@ -57,7 +59,7 @@ const isRemoving = process.env.REMOVE === 'true';
     }
 
     if (isCreating) {
-      let createFirebaseUsers: Promise<any>[] = [];
+      let createFirebaseUsers: Promise<UserRecord>[] = [];
 
       // ------------ CREATE FIREBASE USERS ----------- [start]
       if (firebaseConfig.create) {
