@@ -3,7 +3,8 @@ import 'dotenv/config';
 import mongoose from 'mongoose';
 
 import app from './app';
-import firebaseApp from './helper/firebase';
+import setUpCrons from './helpers/cron-jobs/';
+import firebaseApp from './helpers/firebase';
 
 const port = process.env.PORT || 3000;
 const MONGO_URL = process.env.MONGO_URL || '';
@@ -19,3 +20,5 @@ mongoose.connect(MONGO_URL, (error) => {
     });
   }
 });
+
+setUpCrons();
