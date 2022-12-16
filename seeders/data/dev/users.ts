@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { AccessRoleType, UserData } from '../../../src/types';
+import { AccessRoleType } from '../../../src/types';
 
 const userList = [
   {
@@ -87,7 +87,7 @@ const userList = [
     location: 'Rosario',
     birthDate: new Date('1995-11-25T00:00:00Z'),
     isActive: true,
-    firebaseUid: 'wvOzFoI9U8bBuhBFUIAejnZNysW8',
+    firebaseUid: '0G08Itx6V9YIALCtKWRP0XSQATF3',
     email: 'omari.gomez@radiumrocket.com',
     role: AccessRoleType.EMPLOYEE,
   },
@@ -98,19 +98,8 @@ const userList = [
     location: 'Buenos Aires',
     birthDate: new Date('1995-11-25T00:00:00Z'),
     isActive: true,
-    firebaseUid: 'wvOzFoI9U8bBuhBFUIAejnZNysW8',
+    firebaseUid: 'v7lwPV3W1GbD2ThZM0cM9dSsr0u2',
     email: 'roberto.gonzalez@radiumrocket.com',
-    role: AccessRoleType.EMPLOYEE,
-  },
-  {
-    _id: new mongoose.Types.ObjectId('63652237f744e1c979ccbdc7'),
-    firstName: 'Agustin',
-    lastName: 'Ruiz',
-    location: 'Buenos Aires',
-    birthDate: new Date('1995-11-25T00:00:00Z'),
-    isActive: true,
-    firebaseUid: 'wvOzFoI9U8bBuhBFUIAejnZNysW8',
-    email: 'agustin.ruiz@radiumrocket.com',
     role: AccessRoleType.EMPLOYEE,
   },
   {
@@ -120,8 +109,8 @@ const userList = [
     location: 'Buenos Aires',
     birthDate: new Date('1995-11-25T00:00:00Z'),
     isActive: true,
-    firebaseUid: 'wvOzFoI9U8bBuhBFUIAejnZNysW8',
-    email: 'axel.galindo@radiumrocket.com',
+    firebaseUid: 'n8ud7ACr1TOiwJ3oenxEQNR1GtF3',
+    email: 'agustin.ruiz@radiumrocket.com',
     role: AccessRoleType.EMPLOYEE,
   },
   {
@@ -131,10 +120,12 @@ const userList = [
     location: 'Buenos Aires',
     birthDate: new Date('1995-11-25T00:00:00Z'),
     isActive: true,
-    firebaseUid: 'wvOzFoI9U8bBuhBFUIAejnZNysW8',
-    email: 'axel.galindo@radiumrocket.com',
+    firebaseUid: 'eBVh8uLL6KZSRdkG85pKHgfYJsg1',
+    email: 'gerardo.fernandez@radiumrocket.com',
     role: AccessRoleType.EMPLOYEE,
   },
 ];
+
+export type UserType = typeof userList;
 
 export default userList;

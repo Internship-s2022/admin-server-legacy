@@ -207,4 +207,6 @@ const clientList = [
   },
 ];
 
+export type ClientType = typeof clientList;
+
 export default clientList;

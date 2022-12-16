@@ -36,6 +36,26 @@ const firebaseUsers = [
     email: 'axel.galindo@radiumrocket.com',
     role: AccessRoleType.EMPLOYEE,
   },
+  {
+    uid: '0G08Itx6V9YIALCtKWRP0XSQATF3',
+    email: 'omari.gomez@radiumrocket.com',
+    role: AccessRoleType.EMPLOYEE,
+  },
+  {
+    uid: 'v7lwPV3W1GbD2ThZM0cM9dSsr0u2',
+    email: 'roberto.gozalez@radiumrocket.com',
+    role: AccessRoleType.EMPLOYEE,
+  },
+  {
+    uid: 'n8ud7ACr1TOiwJ3oenxEQNR1GtF3',
+    email: 'agustin.ruiz@radiumrocket.com',
+    role: AccessRoleType.EMPLOYEE,
+  },
+  {
+    uid: 'eBVh8uLL6KZSRdkG85pKHgfYJsg1',
+    email: 'gerardo.fernandez@radiumrocket.com',
+    role: AccessRoleType.EMPLOYEE,
+  },
 ];
 
 export interface FirebaseUsers {

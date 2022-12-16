@@ -89,7 +89,7 @@ const employeeList = [
       '637786001c9ee1c4fed1db19',
       '63779ea8028903b4995606df',
     ],
-    user: new mongoose.Types.ObjectId('63652237f744e1c979ccbdc7'),
+    user: new mongoose.Types.ObjectId('636522bff744e1c979ccbdcc'),
     potentialRole: ['TL', 'PM', 'DEV'],
     absences: [],
     __v: 0,
@@ -142,4 +142,7 @@ const employeeList = [
     seniority: 'JR',
   },
 ];
+
+export type EmployeesType = typeof employeeList;
+
 export default employeeList;

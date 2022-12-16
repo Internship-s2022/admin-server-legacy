@@ -297,4 +297,7 @@ const memberList = [
     __v: 0,
   },
 ];
+
+export type MemberType = typeof memberList;
+
 export default memberList;

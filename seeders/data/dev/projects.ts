@@ -8,11 +8,7 @@ const projectList = [
     description: 'AR shooter game',
     startDate: new Date('2022-11-25T00:00:00Z'),
     endDate: new Date('2023-12-22T03:00:00Z'),
-    members: [
-      {
-        $oid: '63751fae038b7315df14fc46',
-      },
-    ],
+    members: ['63751fae038b7315df14fc46'],
     isCritic: 'ALTA',
     isUpdated: true,
     projectType: 'PRODUCT_BUILDING',
@@ -27,11 +23,7 @@ const projectList = [
     description: 'Aplicacion web para asuntos educativos',
     startDate: new Date('2020-11-14T00:00:00Z'),
     endDate: new Date('2021-12-23T00:00:00Z'),
-    members: [
-      {
-        $oid: '63640315809ed05a30982465',
-      },
-    ],
+    members: ['63640315809ed05a30982465'],
     isCritic: 'ALTA',
     isUpdated: true,
     projectType: 'STAFF_AUGMENTATION',
@@ -46,17 +38,7 @@ const projectList = [
     description: 'Plataforma para realizar videollamadas',
     startDate: new Date('2021-09-14T00:00:00Z'),
     endDate: new Date('2021-12-23T00:00:00Z'),
-    members: [
-      {
-        $oid: '63642b558a13af3f280342c1',
-      },
-      {
-        $oid: '6365263cf744e1c979ccbe13',
-      },
-      {
-        $oid: '63652745f744e1c979ccbe22',
-      },
-    ],
+    members: ['63642b558a13af3f280342c1', '6365263cf744e1c979ccbe13', '63652745f744e1c979ccbe22'],
     isCritic: 'MEDIA',
     isUpdated: true,
     projectType: 'PRODUCT_BUILDING',
@@ -72,24 +54,12 @@ const projectList = [
     startDate: new Date('2021-09-14T00:00:00Z'),
     endDate: new Date('2021-12-23T00:00:00Z'),
     members: [
-      {
-        $oid: '63640345809ed05a30982473',
-      },
-      {
-        $oid: '6376d46be488db7f0f7bb0bd',
-      },
-      {
-        $oid: '6376d7a6e488db7f0f7bb10b',
-      },
-      {
-        $oid: '6376d912e488db7f0f7bb13d',
-      },
-      {
-        $oid: '6376e14a141220bdf666b8f7',
-      },
-      {
-        $oid: '6376e2321fd888dd06a7f127',
-      },
+      '63640345809ed05a30982473',
+      '6376d46be488db7f0f7bb0bd',
+      '6376d7a6e488db7f0f7bb10b',
+      '6376d912e488db7f0f7bb13d',
+      '6376e14a141220bdf666b8f7',
+      '6376e2321fd888dd06a7f127',
     ],
     isCritic: 'MEDIA',
     isUpdated: true,
@@ -106,18 +76,10 @@ const projectList = [
     startDate: new Date('2021-09-14T00:00:00Z'),
     endDate: new Date('2021-12-23T00:00:00Z'),
     members: [
-      {
-        $oid: '63765cac198d5fe378b698d3',
-      },
-      {
-        $oid: '6376aab9193921160ef42b22',
-      },
-      {
-        $oid: '6376cb0ee488db7f0f7ba6f9',
-      },
-      {
-        $oid: '6376ce92e488db7f0f7ba71b',
-      },
+      '63765cac198d5fe378b698d3',
+      '6376aab9193921160ef42b22',
+      '6376cb0ee488db7f0f7ba6f9',
+      '6376ce92e488db7f0f7ba71b',
     ],
     isCritic: 'MEDIA',
     isUpdated: true,
@@ -149,18 +111,10 @@ const projectList = [
     startDate: new Date('2023-08-11T00:00:00Z'),
     endDate: new Date('2024-03-24T00:00:00Z'),
     members: [
-      {
-        $oid: '635ad36c7ed1e50d7301674a',
-      },
-      {
-        $oid: '635ad36c7ed1e50d7301674b',
-      },
-      {
-        $oid: '635ad36c7ed1e50d7301674c',
-      },
-      {
-        $oid: '635c3e83ca49bc873848a8eb',
-      },
+      '635ad36c7ed1e50d7301674a',
+      '635ad36c7ed1e50d7301674b',
+      '635ad36c7ed1e50d7301674c',
+      '635c3e83ca49bc873848a8eb',
     ],
     isCritic: 'ALTA',
     isUpdated: true,
@@ -176,11 +130,7 @@ const projectList = [
     description: 'Administracion de proyectos y recursos',
     startDate: new Date('2023-08-11T00:00:00Z'),
     endDate: new Date('2024-03-24T00:00:00Z'),
-    members: [
-      {
-        $oid: '6376e34da52ade5c25a040eb',
-      },
-    ],
+    members: ['6376e34da52ade5c25a040eb'],
     isCritic: 'ALTA',
     isUpdated: true,
     projectType: 'STAFF_AUGMENTATION',
@@ -256,14 +206,7 @@ const projectList = [
     notes: '',
     startDate: new Date('2022-11-18T15:01:41Z'),
     endDate: new Date('2022-12-20T15:01:41Z'),
-    members: [
-      {
-        $oid: '63779ea8028903b4995606df',
-      },
-      {
-        $oid: '63779eefa3cedd0d374aa297',
-      },
-    ],
+    members: ['63779ea8028903b4995606df', '63779eefa3cedd0d374aa297'],
     isCritic: 'ALTA',
     isUpdated: false,
     projectType: 'PRODUCT_BUILDING',
@@ -278,14 +221,7 @@ const projectList = [
     notes: 'Nota',
     startDate: new Date('2022-11-18T15:48:03Z'),
     endDate: new Date('2022-11-22T15:48:03Z'),
-    members: [
-      {
-        $oid: '6377aa18b472e1b11e2d63ee',
-      },
-      {
-        $oid: '6377aa42b472e1b11e2d6416',
-      },
-    ],
+    members: ['6377aa18b472e1b11e2d63ee', '6377aa42b472e1b11e2d6416'],
     isCritic: 'ALTA',
     isUpdated: false,
     projectType: 'PRODUCT_BUILDING',
@@ -293,5 +229,7 @@ const projectList = [
     __v: 0,
   },
 ];
+
+export type ProjectType = typeof projectList;
 
 export default projectList;
