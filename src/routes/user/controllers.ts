@@ -177,7 +177,7 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     );
     const employeeExist = await EmployeeModel.findOne({ user: req.params.id });
 
-    await MemberModel.findOneAndUpdate(
+    await MemberModel.updateMany(
       { employee: employeeExist?._id },
       { active: false },
       { new: true },
