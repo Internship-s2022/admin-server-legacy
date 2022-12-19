@@ -11,6 +11,7 @@ const authMiddleware =
     }
     try {
       const response = await firebase.auth().verifyIdToken(token);
+
       if (!response.role) {
         return res.status(403).json({
           message: 'No credentials found',
