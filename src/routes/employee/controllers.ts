@@ -12,7 +12,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
         select: 'project role',
         populate: {
           path: 'project',
-          select: 'projectName',
+          select: 'projectName isActive',
         },
       });
 
@@ -22,7 +22,7 @@ const getAllEmployees = async (req: Request, res: Response<BodyResponse<Employee
       error: false,
     });
   } catch (error: any) {
-    return res.json({
+    return res.status(400).json({
       message: 'Error',
       data: undefined,
       error: true,
@@ -39,7 +39,7 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
         select: 'project role',
         populate: {
           path: 'project',
-          select: 'projectName',
+          select: 'projectName isActive',
         },
       });
 
@@ -81,7 +81,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
 
     return res.status(200).json({
       message: `Empleado con ID "${req.params.id}" actualizado`,
-      data: req.body,
+      data: response,
       error: false,
     });
   } catch (error: any) {

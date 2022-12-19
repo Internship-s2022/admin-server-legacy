@@ -109,4 +109,21 @@ export enum MainRoutes {
   CLIENTS = '/clients',
   EMPLOYEES = '/employees',
   MEMBERS = '/members',
+  NOTIFICATIONS = '/notifications',
+}
+
+export enum NotificationType {
+  PROJECT = 'PROJECT',
+  EMPLOYEE = 'EMPLOYEE',
+  CLIENT = 'CLIENT',
+}
+export interface NotificationsData {
+  notificationType: string;
+  employee?: string;
+  project?: string;
+  client?: string;
+  date: Date;
+  reasonType: number;
+  isChecked?: boolean;
+  customMessage?: string;
 }

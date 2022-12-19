@@ -1,6 +1,6 @@
 import { InferSchemaType, model, Schema } from 'mongoose';
 
-import { AccessRoleType } from 'src/types';
+import { AccessRoleType, UserData } from 'src/types';
 
 export const userSchema = new Schema({
   firebaseUid: {
@@ -44,4 +44,4 @@ export const userSchema = new Schema({
 
 export type User = InferSchemaType<typeof userSchema>;
 
-export default model('User', userSchema);
+export default model<UserData>('User', userSchema);

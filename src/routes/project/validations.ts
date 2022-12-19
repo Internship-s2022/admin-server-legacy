@@ -43,7 +43,6 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
   const validate = schema.validate(req.body);
   if (validate.error) {
-    console.log(validate.error.details);
     return res.status(400).json({
       message: validate.error.details[0].message,
       data: undefined,
