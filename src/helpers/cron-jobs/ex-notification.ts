@@ -1,6 +1,6 @@
 import cron from 'node-cron';
 
-import { addResourceRequest } from 'src/config/api';
+import NotificationsModel from 'src/models/notifications';
 
 const notificationData = {
   notificationType: 'EMPLOYEE',
@@ -15,8 +15,21 @@ export const ExampleNotification = () => {
     //everyday aty 15:10
     '10 15 * * *',
     async () => {
-      const response = await addResourceRequest('/notifications', notificationData);
-      return response;
+      try {
+        const newNotification = new NotificationsModel({
+          notificationType: 'EMPLOYEE',
+          date: new Date(Date.now()),
+          employee: '6362af9589d8042257ae3d69',
+          reasonType: 101,
+          isCustom: false,
+          isChecked: false,
+          isActive: true,
+        });
+
+        newNotification.save();
+      } catch (error) {
+        console.error(error);
+      }
     },
     {
       scheduled: true,
