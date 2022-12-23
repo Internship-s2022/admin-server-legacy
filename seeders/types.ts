@@ -19,13 +19,7 @@ export interface EntitiesConfig {
   [key: string]: {
     remove: boolean;
     create: boolean;
-    model: Model<
-      unknown,
-      unknown,
-      unknown,
-      unknown,
-      EmployeeData | MemberData | ClientData | MemberData | ProjectData | UserData
-    >;
+    model: Model<any>;
     data: DataType;
   };
 }

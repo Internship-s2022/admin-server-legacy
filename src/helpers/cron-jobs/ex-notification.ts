@@ -12,8 +12,8 @@ const notificationData = {
 
 export const ExampleNotification = () => {
   cron.schedule(
-    //everyday aty 15:10
-    '10 15 * * *',
+    //everyday at midnight
+    '0 0 * * *',
     async () => {
       try {
         const newNotification = new NotificationsModel({
