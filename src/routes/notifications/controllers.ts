@@ -37,7 +37,7 @@ const getAllNotifications = async (
           },
         },
       })
-      .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
+      .populate('client', ['name', 'clientContact', 'localContact isActive']);
     if (allNotifications.length === 0) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved, but is empty',
@@ -90,7 +90,7 @@ const getNotificationById = async (
           },
         },
       })
-      .populate('client', ['clientName', 'clientContact', 'localContact isActive']);
+      .populate('client', ['name', 'clientContact', 'localContact isActive']);
 
     if (notification) {
       return res.status(200).json({
