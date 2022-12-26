@@ -42,6 +42,7 @@ export interface ClientData {
   relationshipEnd?: Date;
   notes?: string;
   isActive: boolean;
+  _id?: string;
 }
 
 export interface DataContact {
