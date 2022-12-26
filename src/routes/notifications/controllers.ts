@@ -38,19 +38,18 @@ const getAllNotifications = async (
         },
       })
       .populate('client', ['name', 'clientContact', 'localContact isActive']);
-    if (allNotifications.length === 0) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved, but is empty',
-        data: allNotifications,
-        error: false,
-      });
-    } else {
+    if (!allNotifications.length) {
       return res.status(200).json({
         message: 'The list has been successfully retrieved',
         data: allNotifications,
         error: false,
       });
     }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved, but is empty',
+      data: allNotifications,
+      error: false,
+    });
   } catch (error: any) {
     return res.status(400).json({
       message: 'Error',
