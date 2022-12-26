@@ -1,6 +1,4 @@
-import { Model } from 'mongoose';
-
-import { ClientData, EmployeeData, MemberData, ProjectData, UserData } from '../src/types';
+import { ClientModel, EmployeeModel, MemberModel, ProjectModel, UserModel } from '../src/models';
 import { ClientType } from './data/dev/clients';
 import { EmployeesType } from './data/dev/employees';
 import { MemberType } from './data/dev/members';
@@ -19,7 +17,12 @@ export interface EntitiesConfig {
   [key: string]: {
     remove: boolean;
     create: boolean;
-    model: Model<any>;
+    model:
+      | typeof ClientModel
+      | typeof EmployeeModel
+      | typeof MemberModel
+      | typeof ProjectModel
+      | typeof UserModel;
     data: DataType;
   };
 }
