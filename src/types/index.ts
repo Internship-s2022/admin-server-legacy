@@ -50,10 +50,11 @@ export interface DataContact {
 }
 
 export interface EmployeeData {
+  _id?: string;
   skills?: string[];
   seniority?: string;
   projectHistory?: PopulatedDoc<Document<ObjectId> & MemberData>[];
-  absences?: AbsenceData;
+  absences?: AbsenceData[];
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
