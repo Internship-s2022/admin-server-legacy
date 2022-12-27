@@ -6,7 +6,7 @@ import { absenceEmployees, employeesWithoutProjects } from './employee-notificat
 export const CronJobs = () => {
   cron.schedule(
     //everyday at midnight
-    '42 14 * * *',
+    '38 9 * * *',
     async () => {
       try {
         employeesWithoutProjects();

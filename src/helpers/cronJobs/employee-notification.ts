@@ -1,34 +1,30 @@
-import isWithinInterval from 'date-fns/isWithinInterval';
+import { addBusinessDays, isWithinInterval } from 'date-fns';
 
 import EmployeeModel from 'src/models/employee';
-import MemberModel from 'src/models/members';
 import NotificationsModel from 'src/models/notifications';
+import { NotificationType } from 'src/types';
 
-import { Member } from './types';
+import { Employee } from './types';
 
 const employeesWithoutProjects = async () => {
-  const allEmployees = await EmployeeModel.find().populate('user', [
-    'firstName',
-    'lastName',
-    'email',
-    'birthDate',
-    'isActive',
-  ]);
-
-  const allMembers: Member[] = await MemberModel.find().populate('project', [
-    'projectName',
-    'startDate',
-    'endDate',
-    'isActive',
-  ]);
+  const allEmployees: Employee[] = await EmployeeModel.find()
+    .populate('user', ['firstName', 'lastName', 'email', 'birthDate', 'isActive'])
+    .populate({
+      path: 'projectHistory',
+      select: 'project role active',
+      populate: {
+        path: 'project',
+        select: 'projectName startDate endDate isActive',
+      },
+    });
 
   allEmployees.forEach((employee) => {
     if (
-      !allMembers.some(
+      !employee.projectHistory?.some(
         (member) =>
           member.active &&
-          member.project.isActive &&
-          member.employee?.toString() === employee._id.toString() &&
+          member.project?.isActive &&
+          member.project?.endDate &&
           isWithinInterval(new Date(Date.now()), {
             start: member.project.startDate,
             end: member.project.endDate,
@@ -36,9 +32,9 @@ const employeesWithoutProjects = async () => {
       )
     ) {
       const newNotification = new NotificationsModel({
-        notificationType: 'EMPLOYEE',
+        notificationType: NotificationType.EMPLOYEE,
         date: new Date(Date.now()),
-        employee: employee._id.toString(),
+        employee: employee._id?.toString(),
         reasonType: 101,
         isCustom: false,
         isChecked: false,
@@ -62,13 +58,13 @@ const absenceEmployees = async () => {
     if (
       employee.absences?.some((absence) =>
         isWithinInterval(absence.startDate, {
-          start: new Date(Date.now()),
-          end: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7 * 2),
+          start: new Date(),
+          end: addBusinessDays(new Date(), 10),
         }),
       )
     ) {
       const newNotification = new NotificationsModel({
-        notificationType: 'EMPLOYEE',
+        notificationType: NotificationType.EMPLOYEE,
         date: new Date(Date.now()),
         employee: employee._id.toString(),
         reasonType: 102,
