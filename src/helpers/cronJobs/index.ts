@@ -3,6 +3,7 @@ import cron from 'node-cron';
 import { clientsWithCloseEndDate, clientsWithoutProjects } from '../cronJobs/clientNotifications';
 // index con todas las funciones para el cronjob
 import { absenceEmployees, employeesWithoutProjects } from './employee-notification';
+import { projectAboutToEnd, projectWithoutMembers } from './projectNotifications';
 
 export const CronJobs = () => {
   cron.schedule(
@@ -14,6 +15,8 @@ export const CronJobs = () => {
         absenceEmployees();
         clientsWithCloseEndDate();
         clientsWithoutProjects();
+        projectWithoutMembers();
+        projectAboutToEnd();
       } catch (error) {
         console.error(error);
       }

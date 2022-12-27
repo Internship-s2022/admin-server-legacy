@@ -4,7 +4,7 @@ import NotificationsModel from 'src/models/notifications';
 import ProjectModel from 'src/models/project';
 import { NotificationType } from 'src/types';
 
-import { Project } from './types';
+import { Project } from '../cronJobs/types';
 
 const projectWithoutMembers = async () => {
   const allProjects: Project[] = await ProjectModel.find();
