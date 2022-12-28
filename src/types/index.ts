@@ -113,6 +113,7 @@ export enum MainRoutes {
   EMPLOYEES = '/employees',
   MEMBERS = '/members',
   NOTIFICATIONS = '/notifications',
+  CRON = '/cron',
 }
 
 export enum NotificationType {
