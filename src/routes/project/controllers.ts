@@ -119,7 +119,20 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
   try {
     const response = await ProjectModel.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
-    });
+    })
+      .populate('clientName', ['name'])
+      .populate({
+        path: 'members',
+        select: 'employee role startDate endDate memberDedication helper active',
+        populate: {
+          path: 'employee helper',
+          select: 'user helperReference',
+          populate: {
+            path: 'user',
+            select: 'firstName lastName',
+          },
+        },
+      });
 
     if (!response) {
       return res.status(404).json({
