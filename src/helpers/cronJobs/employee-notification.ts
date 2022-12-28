@@ -1,25 +1,14 @@
 import { addBusinessDays, isWithinInterval } from 'date-fns';
 
-import EmployeeModel from 'src/models/employee';
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
 
 import { Employee } from './types';
 
-const employeesWithoutProjects = async () => {
-  const allEmployees: Employee[] = await EmployeeModel.find()
-    .populate('user', ['firstName', 'lastName', 'email', 'birthDate', 'isActive'])
-    .populate({
-      path: 'projectHistory',
-      select: 'project role active',
-      populate: {
-        path: 'project',
-        select: 'projectName startDate endDate isActive',
-      },
-    });
-
+const employeesWithoutProjects = (allEmployees: Employee[]) => {
   allEmployees.forEach((employee) => {
     if (
+      employee.user.isActive &&
       !employee.projectHistory?.some(
         (member) =>
           member.active &&
@@ -45,17 +34,10 @@ const employeesWithoutProjects = async () => {
   });
 };
 
-const absenceEmployees = async () => {
-  const allEmployees = await EmployeeModel.find().populate('user', [
-    'firstName',
-    'lastName',
-    'email',
-    'birthDate',
-    'isActive',
-  ]);
-
+const absenceEmployees = (allEmployees: Employee[]) => {
   allEmployees.forEach((employee) => {
     if (
+      employee.user.isActive &&
       employee.absences?.some((absence) =>
         isWithinInterval(absence.startDate, {
           start: new Date(),
@@ -66,7 +48,7 @@ const absenceEmployees = async () => {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.EMPLOYEE,
         date: new Date(Date.now()),
-        employee: employee._id.toString(),
+        employee: employee._id?.toString(),
         reasonType: 102,
         isCustom: false,
         isChecked: false,

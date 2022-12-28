@@ -2,20 +2,10 @@ import { addBusinessDays } from 'date-fns';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
 import { Client } from 'src/helpers/cronJobs/types';
-import ClientModel from 'src/models/client';
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
 
-const clientsWithoutProjects = async () => {
-  const allClients: Client[] = await ClientModel.find().populate('projects', [
-    'description',
-    'endDate',
-    'isActive',
-    'isCritic',
-    'projectName',
-    'startDate',
-  ]);
-
+const clientsWithoutProjects = (allClients: Client[]) => {
   allClients.forEach((client) => {
     if (
       client.isActive &&
@@ -35,9 +25,7 @@ const clientsWithoutProjects = async () => {
   });
 };
 
-const clientsWithCloseEndDate = async () => {
-  const allClients = await ClientModel.find();
-
+const clientsWithCloseEndDate = (allClients: Client[]) => {
   allClients.forEach((client) => {
     if (
       client.isActive &&

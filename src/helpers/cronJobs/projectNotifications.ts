@@ -1,14 +1,11 @@
 import { addBusinessDays, isWithinInterval } from 'date-fns';
 
 import NotificationsModel from 'src/models/notifications';
-import ProjectModel from 'src/models/project';
 import { NotificationType } from 'src/types';
 
 import { Project } from '../cronJobs/types';
 
-const projectWithoutMembers = async () => {
-  const allProjects: Project[] = await ProjectModel.find();
-
+const projectWithoutMembers = (allProjects: Project[]) => {
   allProjects.forEach((item) => {
     if (!item.members?.length && item.isActive && !item.members?.some((member) => member.active)) {
       const newNotification = new NotificationsModel({
@@ -25,9 +22,7 @@ const projectWithoutMembers = async () => {
   });
 };
 
-const projectAboutToEnd = async () => {
-  const allProjects: Project[] = await ProjectModel.find();
-
+const projectAboutToEnd = (allProjects: Project[]) => {
   allProjects.forEach((item) => {
     if (
       item.isActive &&
