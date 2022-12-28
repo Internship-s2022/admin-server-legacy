@@ -1,7 +1,7 @@
 name: Daily Cron
 on:
   schedule:
-    - cron: '0 * * * *'
+    - cron: '* * * * *'
 jobs:
   cron:
     runs-on: ubuntu-latest
@@ -9,5 +9,5 @@ jobs:
       - name: Run Cronjobs
         run: |
           curl --request POST \
-          --url http://${{ secrets.ENV != "production" ? secrets.ENV : "" }}.${{ secrets.APP_DOMAIN }}/cron \
-          --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
+          --url ${{ secrets.ENV_URL}}/cron \
+          --header 'Authorization:${{ secrets.API_SECRET_KEY }}'
