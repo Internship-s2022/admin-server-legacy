@@ -1,7 +1,7 @@
 import { addBusinessDays } from 'date-fns';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
-import { Client } from 'src/helpers/cron-jobs/types';
+import { Client } from 'src/helpers/cronJobs/types';
 import ClientModel from 'src/models/client';
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
