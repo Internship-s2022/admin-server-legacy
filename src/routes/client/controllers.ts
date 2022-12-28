@@ -95,7 +95,14 @@ const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>)
   try {
     const response = await ClientSchema.findOneAndUpdate({ _id: req.params.id }, req.body, {
       new: true,
-    });
+    }).populate('projects', [
+      'projectName',
+      'description',
+      'startDate',
+      'endDate',
+      'isCritic',
+      'isActive',
+    ]);
 
     if (!response) {
       return res.status(404).json({
