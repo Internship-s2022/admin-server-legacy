@@ -9,5 +9,5 @@ jobs:
       - name: Run Cronjobs
         run: |
           curl --request POST \
-          --url https://admin-server-lxrpo86fe-radium-rocket.vercel.app/cron \
+          --url ${{ secrets.ENV_URL}}/cron \
           --header 'Authorization:${{ secrets.API_SECRET_KEY }}'
