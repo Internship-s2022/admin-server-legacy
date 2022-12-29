@@ -2,15 +2,15 @@ name: Daily Cron
 
 on:
   schedule:
-    - cron: '* * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   develop:
     runs-on: ubuntu-latest
-    environtment: develop
+    environment: develop
     steps:
       - name: Run Dev Cronjobs
         run: |
           curl --request POST \
-          --url https://admin-server-op7vyr3rb-radium-rocket.vercel.app/cron \
+          --url ${{ secrets.ENV_URL }}/cron \
           --header 'Authorization: ${{ secrets.API_SECRET_KEY }}'
