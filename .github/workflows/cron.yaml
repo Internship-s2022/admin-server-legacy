@@ -1,0 +1,16 @@
+name: Daily Cron
+
+on:
+  schedule:
+    - cron: '* * * * *'
+
+jobs:
+  develop:
+    runs-on: ubuntu-latest
+    environtment: develop
+    steps:
+      - name: Run Dev Cronjobs
+        run: |
+          curl --request POST \
+          --url https://admin-server-op7vyr3rb-radium-rocket.vercel.app/cron \
+          --header 'Authorization: ${{ secrets.API_SECRET_KEY }}'
