@@ -10,7 +10,8 @@ export const mockedNotifications = async () => {
       isCustom: true,
       isChecked: false,
       isActive: true,
-      customMessage: `${new Date(Date.now())}: by Vercel`,
+      customMessage: `${new Date(Date.now())}: by Vercel post changes`,
+      employee: '6362924333e5dd0c870035a2',
     });
     await newNotification.save();
   } catch (error) {
