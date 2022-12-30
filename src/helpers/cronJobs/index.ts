@@ -25,12 +25,14 @@ export const execCronJobs = async () => {
       'isActive',
     ]);
 
-    await employeesWithoutProjects(allEmployees);
-    await absenceEmployees(allEmployees);
-    await clientsWithCloseEndDate(allClients);
-    await clientsWithoutProjects(allClients);
-    await projectWithoutMembers(allProjects);
-    await projectAboutToEnd(allProjects);
+    await Promise.all([
+      employeesWithoutProjects(allEmployees),
+      absenceEmployees(allEmployees),
+      clientsWithCloseEndDate(allClients),
+      clientsWithoutProjects(allClients),
+      projectWithoutMembers(allProjects),
+      projectAboutToEnd(allProjects),
+    ]);
   } catch (error) {
     console.error(error);
   }
