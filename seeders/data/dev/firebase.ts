@@ -19,7 +19,7 @@ const firebaseUsers = [
   {
     uid: 'M5MCzG5aCKpf0B7qpNNsi8RyjN18',
     email: 'paula.rinaldi@radiumrocket.com',
-    role: AccessRoleType.SUPER_ADMIN,
+    role: AccessRoleType.ADMIN,
   },
   {
     uid: 'M5MCzG5aCKpf0B7qpNNsi8RyjN19',

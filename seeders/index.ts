@@ -6,7 +6,6 @@ import mongoose, { InsertManyResult } from 'mongoose';
 
 import { entitiesConfig, firebaseConfig } from './config';
 import { FirebaseUsers } from './data/dev/firebase';
-import { DataType } from './types';
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert({
