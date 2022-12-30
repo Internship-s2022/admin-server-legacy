@@ -5,8 +5,10 @@ import { NotificationType } from 'src/types';
 
 import { Employee } from './types';
 
-const employeesWithoutProjects = (allEmployees: Employee[]) => {
-  allEmployees.forEach((employee) => {
+const employeesWithoutProjects = async (allEmployees: Employee[]) => {
+  const promises: Promise<unknown>[] = [];
+
+  allEmployees.forEach(async (employee) => {
     if (
       employee.user.isActive &&
       !employee.projectHistory?.some(
@@ -29,12 +31,15 @@ const employeesWithoutProjects = (allEmployees: Employee[]) => {
         isChecked: false,
         isActive: true,
       });
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
-const absenceEmployees = (allEmployees: Employee[]) => {
+const absenceEmployees = async (allEmployees: Employee[]) => {
+  const promises: Promise<unknown>[] = [];
+
   allEmployees.forEach((employee) => {
     if (
       employee.user.isActive &&
@@ -54,9 +59,10 @@ const absenceEmployees = (allEmployees: Employee[]) => {
         isChecked: false,
         isActive: true,
       });
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
 export { absenceEmployees, employeesWithoutProjects };

@@ -5,7 +5,9 @@ import { NotificationType } from 'src/types';
 
 import { Project } from '../cronJobs/types';
 
-const projectWithoutMembers = (allProjects: Project[]) => {
+const projectWithoutMembers = async (allProjects: Project[]) => {
+  const promises: Promise<unknown>[] = [];
+
   allProjects.forEach((item) => {
     if (!item.members?.length && item.isActive && !item.members?.some((member) => member.active)) {
       const newNotification = new NotificationsModel({
@@ -17,12 +19,15 @@ const projectWithoutMembers = (allProjects: Project[]) => {
         isChecked: false,
         isActive: true,
       });
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
-const projectAboutToEnd = (allProjects: Project[]) => {
+const projectAboutToEnd = async (allProjects: Project[]) => {
+  const promises: Promise<unknown>[] = [];
+
   allProjects.forEach((item) => {
     if (
       item.isActive &&
@@ -41,9 +46,10 @@ const projectAboutToEnd = (allProjects: Project[]) => {
         isChecked: false,
         isActive: true,
       });
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
 export { projectAboutToEnd, projectWithoutMembers };

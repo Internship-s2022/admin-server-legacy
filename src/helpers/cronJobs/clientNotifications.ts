@@ -5,7 +5,9 @@ import { Client } from 'src/helpers/cronJobs/types';
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
 
-const clientsWithoutProjects = (allClients: Client[]) => {
+const clientsWithoutProjects = async (allClients: Client[]) => {
+  const promises: Promise<unknown>[] = [];
+
   allClients.forEach((client) => {
     if (
       client.isActive &&
@@ -20,12 +22,15 @@ const clientsWithoutProjects = (allClients: Client[]) => {
         isChecked: false,
         isActive: true,
       });
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
-const clientsWithCloseEndDate = (allClients: Client[]) => {
+const clientsWithCloseEndDate = async (allClients: Client[]) => {
+  const promises: Promise<unknown>[] = [];
+
   allClients.forEach((client) => {
     if (
       client.isActive &&
@@ -44,10 +49,10 @@ const clientsWithCloseEndDate = (allClients: Client[]) => {
         isChecked: false,
         isActive: true,
       });
-
-      newNotification.save();
+      promises.push(newNotification.save());
     }
   });
+  await Promise.all(promises);
 };
 
 export { clientsWithCloseEndDate, clientsWithoutProjects };

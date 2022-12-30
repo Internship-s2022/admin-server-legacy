@@ -2,7 +2,6 @@ import { ClientModel, EmployeeModel, ProjectModel } from 'src/models';
 
 import { clientsWithCloseEndDate, clientsWithoutProjects } from '../cronJobs/clientNotifications';
 import { absenceEmployees, employeesWithoutProjects } from './employeeNotifications';
-import { mockedNotifications } from './mockedNotifications';
 import { projectAboutToEnd, projectWithoutMembers } from './projectNotifications';
 import { Client, Employee, Project } from './types';
 
@@ -26,13 +25,12 @@ export const execCronJobs = async () => {
       'isActive',
     ]);
 
-    employeesWithoutProjects(allEmployees);
-    absenceEmployees(allEmployees);
-    clientsWithCloseEndDate(allClients);
-    clientsWithoutProjects(allClients);
-    projectWithoutMembers(allProjects);
-    projectAboutToEnd(allProjects);
-    mockedNotifications();
+    await employeesWithoutProjects(allEmployees);
+    await absenceEmployees(allEmployees);
+    await clientsWithCloseEndDate(allClients);
+    await clientsWithoutProjects(allClients);
+    await projectWithoutMembers(allProjects);
+    await projectAboutToEnd(allProjects);
   } catch (error) {
     console.error(error);
   }

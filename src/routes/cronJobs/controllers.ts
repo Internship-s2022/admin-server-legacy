@@ -4,7 +4,10 @@ import { Request, Response } from 'express';
 import { execCronJobs } from 'src/helpers/cronJobs';
 import { BodyResponse } from 'src/types';
 
-export const cronHandler = async (req: Request, res: Response<BodyResponse<any>>) => {
+export const cronHandler = async (
+  req: Request,
+  res: Response<BodyResponse<{ error: boolean; message: string }>>,
+) => {
   try {
     const { authorization } = req.headers;
 
