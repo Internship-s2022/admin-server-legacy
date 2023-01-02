@@ -20,6 +20,7 @@ export interface UserData {
 }
 
 export interface ProjectData {
+  _id?: string;
   clientName: PopulatedDoc<Document<ObjectId> & ClientData>;
   projectName: string;
   description: string;
@@ -42,6 +43,7 @@ export interface ClientData {
   relationshipEnd?: Date;
   notes?: string;
   isActive: boolean;
+  _id?: string;
 }
 
 export interface DataContact {
@@ -50,10 +52,11 @@ export interface DataContact {
 }
 
 export interface EmployeeData {
+  _id?: string;
   skills?: string[];
   seniority?: string;
   projectHistory?: PopulatedDoc<Document<ObjectId> & MemberData>[];
-  absences?: AbsenceData;
+  absences?: AbsenceData[];
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
@@ -110,6 +113,7 @@ export enum MainRoutes {
   EMPLOYEES = '/employees',
   MEMBERS = '/members',
   NOTIFICATIONS = '/notifications',
+  CRON = '/cron',
 }
 
 export enum NotificationType {
