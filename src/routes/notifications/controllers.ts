@@ -1,3 +1,4 @@
+import { addDays, endOfDay } from 'date-fns';
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
@@ -13,6 +14,74 @@ const getAllNotifications = async (
 ) => {
   try {
     const allNotifications = await NotificationsModel.find(req.query)
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName isActive',
+        },
+      })
+      .populate({
+        path: 'project',
+        select: 'projectName projectType isActive isCritic members',
+        populate: {
+          path: 'members',
+          select: 'employee role startDate endDate memberDedication helper active',
+          populate: {
+            path: 'employee helper',
+            select: 'user helperReference',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        },
+      })
+      .populate('client', ['name', 'clientContact', 'localContact isActive']);
+    if (!allNotifications.length) {
+      return res.status(200).json({
+        message: 'The list has been successfully retrieved',
+        data: allNotifications,
+        error: false,
+      });
+    }
+    return res.status(200).json({
+      message: 'The list has been successfully retrieved, but is empty',
+      data: allNotifications,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: 'Error',
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const getActiveNotifications = async (
+  req: Request,
+  res: Response<BodyResponse<NotificationsData[]>>,
+) => {
+  try {
+    const allNotifications = await NotificationsModel.find({
+      $or: [
+        {
+          $and: [
+            { isCustom: true },
+            {
+              date: {
+                $lte: endOfDay(addDays(new Date(), 5)),
+              },
+            },
+          ],
+        },
+        {
+          isCustom: false,
+        },
+      ],
+    })
       .populate({
         path: 'employee',
         select: 'user',
@@ -214,6 +283,7 @@ const deleteNotification = async (req: Request, res: Response<BodyResponse<Notif
 export default {
   getAllNotifications,
   getNotificationById,
+  getActiveNotifications,
   createNotification,
   deleteNotification,
 };
