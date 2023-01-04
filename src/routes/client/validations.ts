@@ -145,19 +145,9 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
         }),
     }),
 
-    relationshipStart: Joi.date()
-      .less('now')
-      .messages({
-        'date.less': 'La fecha de inicio debe ser anterior a la fecha actual',
-      })
-      .allow(null),
+    relationshipStart: Joi.date().allow(null),
 
-    relationshipEnd: Joi.date()
-      .greater(Joi.ref('relationshipStart'))
-      .messages({
-        'date.greater': 'Fecha de fin debe ser posterior a la fecha de inicio',
-      })
-      .allow(null),
+    relationshipEnd: Joi.date().allow(null),
 
     isActive: Joi.boolean().messages({
       'boolean.base': 'El status tiene que ser un booleano',
