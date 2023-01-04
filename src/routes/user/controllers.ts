@@ -88,9 +88,11 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
       ...req.body,
       firebaseUid: firebaseUser?.uid,
     });
-    await firebaseApp
-      .auth()
-      .setCustomUserClaims(firebaseUser?.uid as string, { role: newUser.accessRoleType });
+
+    await firebaseApp.auth().setCustomUserClaims(firebaseUser?.uid as string, {
+      role: newUser.accessRoleType,
+      status: newUser.isActive,
+    });
 
     const successData = await newUser.save({ session: session });
 
@@ -128,10 +130,11 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
       new: true,
     }).session(session);
 
-    if (req.body.accessRoleType) {
-      await firebaseApp
-        .auth()
-        .setCustomUserClaims(response?.firebaseUid as string, { role: req.body.accessRoleType });
+    if (req.body.accessRoleType || req.body.isActive) {
+      await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
+        role: req.body.accessRoleType ?? response?.accessRoleType,
+        status: req.body.isActive ?? response?.isActive,
+      });
     }
 
     const employeeFound = await EmployeeModel.findOne({ user: req.params.id });
@@ -182,6 +185,11 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
       { active: false },
       { new: true },
     );
+
+    await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
+      role: response?.accessRoleType,
+      status: false,
+    });
 
     if (!response) {
       return res.status(404).json({
