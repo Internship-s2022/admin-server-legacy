@@ -1,3 +1,4 @@
+import { addDays, endOfDay } from 'date-fns';
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
@@ -47,6 +48,71 @@ const getAllNotifications = async (
     }
     return res.status(200).json({
       message: 'The list has been successfully retrieved, but is empty',
+      data: allNotifications,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: 'Error',
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const getActiveNotifications = async (
+  req: Request<unknown, unknown, unknown, { notice: number }>,
+  res: Response<BodyResponse<NotificationsData[]>>,
+) => {
+  try {
+    const { notice } = req.query;
+    const allNotifications = await NotificationsModel.find({
+      $or: [
+        {
+          $and: [
+            { isCustom: true },
+            {
+              date: {
+                $lte: endOfDay(addDays(new Date(), notice)),
+              },
+            },
+          ],
+        },
+        {
+          isCustom: false,
+        },
+      ],
+    })
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName isActive',
+        },
+      })
+      .populate({
+        path: 'project',
+        select: 'projectName projectType isActive isCritic members',
+        populate: {
+          path: 'members',
+          select: 'employee role startDate endDate memberDedication helper active',
+          populate: {
+            path: 'employee helper',
+            select: 'user helperReference',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        },
+      })
+      .populate('client', ['name', 'clientContact', 'localContact isActive']);
+
+    return res.status(200).json({
+      message: `The list has been successfully retrieved ${
+        !allNotifications.length && ', but is empty'
+      }`,
       data: allNotifications,
       error: false,
     });
@@ -214,6 +280,7 @@ const deleteNotification = async (req: Request, res: Response<BodyResponse<Notif
 export default {
   getAllNotifications,
   getNotificationById,
+  getActiveNotifications,
   createNotification,
   deleteNotification,
 };
