@@ -61,10 +61,11 @@ const getAllNotifications = async (
 };
 
 const getActiveNotifications = async (
-  req: Request,
+  req: Request<unknown, unknown, unknown, { notice: number }>,
   res: Response<BodyResponse<NotificationsData[]>>,
 ) => {
   try {
+    const { notice } = req.query;
     const allNotifications = await NotificationsModel.find({
       $or: [
         {
@@ -72,7 +73,7 @@ const getActiveNotifications = async (
             { isCustom: true },
             {
               date: {
-                $lte: endOfDay(addDays(new Date(), 5)),
+                $lte: endOfDay(addDays(new Date(), notice)),
               },
             },
           ],
@@ -107,15 +108,11 @@ const getActiveNotifications = async (
         },
       })
       .populate('client', ['name', 'clientContact', 'localContact isActive']);
-    if (!allNotifications.length) {
-      return res.status(200).json({
-        message: 'The list has been successfully retrieved',
-        data: allNotifications,
-        error: false,
-      });
-    }
+
     return res.status(200).json({
-      message: 'The list has been successfully retrieved, but is empty',
+      message: `The list has been successfully retrieved ${
+        !allNotifications.length && ', but is empty'
+      }`,
       data: allNotifications,
       error: false,
     });
