@@ -13,42 +13,42 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         AccessRoleType.SUPER_ADMIN,
       )
       .messages({
-        'any.only': 'Access rol type must be one Admin, Employee, Manager or Super Admin',
+        'any.only': 'El rol de acceso debe ser Admin, Empleado, Manager o Super Admin',
       }),
 
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.pattern.base': 'You have to use a valid email',
-        'string.empty': 'You have to add an email to create an user',
+        'string.pattern.base': 'Formato de mail invalido',
+        'string.empty': 'El email es requerido',
       }),
 
     firstName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'First name must contain only letters',
-        'string.empty': 'You have to add a first name to create an username ',
-        'string.min': 'First name must contain more than 3 letters',
+        'string.base': 'El nombre debe contener solo letras',
+        'string.empty': 'El nombre es requerido',
+        'string.min': 'El nombre debe contener más de 3 letras',
       })
       .required(),
 
     lastName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
-        'string.pattern.base': 'Last name must contain only letters',
-        'string.empty': 'You have to add a last name to create an user ',
-        'string.min': 'Last name must contain more than 3 letters',
+        'string.pattern.base': 'El apellido debe contener solo letras',
+        'string.empty': 'El apellido es requerido',
+        'string.min': 'El apellido debe contener más de 3 letras',
       })
       .required(),
 
     location: Joi.string()
       .min(3)
       .messages({
-        'string.base': 'Location has to be a string',
-        'string.empty': 'You have to add a location to create an user',
-        'string.min': 'Location must contain more than 3 letters',
+        'string.base': 'La localidad debe ser un string',
+        'string.empty': 'La localidad es requerida',
+        'string.min': 'La localidad debe contener al menos 3 letras',
       })
       .required(),
 
@@ -56,15 +56,15 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .greater('1-1-1900')
       .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
       .messages({
-        'date.greater': 'Date of birth must be earlier than 1900',
-        'date.less': 'Your must be over 18',
+        'date.greater': 'La fecha debe ser posterior a 1-1-1900',
+        'date.less': 'El usuario debe ser mayor de 18 años',
       })
       .required(),
 
     isActive: Joi.boolean()
       .messages({
-        'string.base': 'Status has to be a boolean',
-        'string.empty': 'You have to add a status to create an user ',
+        'string.base': 'El status tiene que ser un boolean',
+        'string.empty': 'El status es requerido',
       })
       .required(),
   });
@@ -90,46 +90,46 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
         AccessRoleType.SUPER_ADMIN,
       )
       .messages({
-        'any.only': 'Access rol type must be one ADMIN, EMPLOYEE, MANAGER or SUPER ADMIN',
+        'any.only': 'El rol de acceso debe ser Admin, Empleado, Manager o Super Admin',
       }),
 
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.base': 'You have to use a valid email',
+        'string.pattern.base': 'Formato de email invalido',
       }),
 
     firstName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'First name must contain only letters',
-        'string.min': 'First name must contain more than 3 letters',
+        'string.base': 'El nombre debe contener solo letras',
+        'string.min': 'El nombre debe contener más de 3 letras',
       }),
 
     lastName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
-        'string.base': 'Last name must contain only letters',
-        'string.min': 'Last name must contain more than 3 letters',
+        'string.pattern.base': 'El apellido debe contener solo letras',
+        'string.min': 'El apellido debe contener más de 3 letras',
       }),
 
     location: Joi.string().min(3).messages({
-      'string.base': 'Location has to be a string',
-      'string.min': 'Location must contain more than 3 letters',
+      'string.base': 'La localidad debe ser un string',
+      'string.min': 'La localidad debe contener al menos 3 letras',
     }),
 
     birthDate: Joi.date()
       .greater('1-1-1900')
       .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
       .messages({
-        'date.greater': 'Date of birth must be earlier than 1900',
-        'date.less': 'Your must be over 18',
+        'date.greater': 'La fecha debe ser posterior a 1-1-1900',
+        'date.less': 'El usuario debe ser mayor de 18 años',
       }),
 
     isActive: Joi.boolean(),
-    'string.base': 'Status has to be a boolean',
+    'string.base': 'El status tiene que ser un boolean',
   });
 
   const validate = schema.validate(req.body);

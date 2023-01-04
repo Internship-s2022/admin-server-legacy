@@ -1,3 +1,4 @@
+import { addDays, endOfDay } from 'date-fns';
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
@@ -40,13 +41,78 @@ const getAllNotifications = async (
       .populate('client', ['name', 'clientContact', 'localContact isActive']);
     if (!allNotifications.length) {
       return res.status(200).json({
-        message: 'The list has been successfully retrieved',
+        message: 'La lista de notificaciones fue obtenida con éxito',
         data: allNotifications,
         error: false,
       });
     }
     return res.status(200).json({
-      message: 'The list has been successfully retrieved, but is empty',
+      message: 'La lista de notificaciones fue obtenida con éxito, pero está vacía',
+      data: allNotifications,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      message: 'Error',
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
+const getActiveNotifications = async (
+  req: Request<unknown, unknown, unknown, { notice: number }>,
+  res: Response<BodyResponse<NotificationsData[]>>,
+) => {
+  try {
+    const { notice } = req.query;
+    const allNotifications = await NotificationsModel.find({
+      $or: [
+        {
+          $and: [
+            { isCustom: true },
+            {
+              date: {
+                $lte: endOfDay(addDays(new Date(), notice)),
+              },
+            },
+          ],
+        },
+        {
+          isCustom: false,
+        },
+      ],
+    })
+      .populate({
+        path: 'employee',
+        select: 'user',
+        populate: {
+          path: 'user',
+          select: 'firstName lastName isActive',
+        },
+      })
+      .populate({
+        path: 'project',
+        select: 'projectName projectType isActive isCritic members',
+        populate: {
+          path: 'members',
+          select: 'employee role startDate endDate memberDedication helper active',
+          populate: {
+            path: 'employee helper',
+            select: 'user helperReference',
+            populate: {
+              path: 'user',
+              select: 'firstName lastName',
+            },
+          },
+        },
+      })
+      .populate('client', ['name', 'clientContact', 'localContact isActive']);
+
+    return res.status(200).json({
+      message: `La lista de notificaciones fue obtenida con éxito ${
+        !allNotifications.length && ', pero está vacía'
+      }`,
       data: allNotifications,
       error: false,
     });
@@ -93,13 +159,13 @@ const getNotificationById = async (
 
     if (notification) {
       return res.status(200).json({
-        message: `Notification with ID ${req.params.id} has been found`,
+        message: `Se ha encontrado notificación con ID ${req.params.id}`,
         data: notification,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found a Notification by the id of ${req.params.id}.`,
+        message: `No se encontró notificación con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
@@ -126,7 +192,7 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
 
       if (!project) {
         return res.status(404).json({
-          message: 'Project not found',
+          message: 'Proyecto no existe',
           data: undefined,
           error: true,
         });
@@ -138,7 +204,7 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
 
       if (!employee) {
         return res.status(404).json({
-          message: 'Employee not found',
+          message: 'Empleado no existe',
           data: undefined,
           error: true,
         });
@@ -150,7 +216,7 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
 
       if (!client) {
         return res.status(404).json({
-          message: 'Client not found',
+          message: 'Cliente no existe',
           data: undefined,
           error: true,
         });
@@ -167,7 +233,7 @@ const createNotification = async (req: Request, res: Response<BodyResponse<Notif
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'Notification created successfully',
+      message: 'Notificación creada exitosamente',
       data: notification,
       error: false,
     });
@@ -191,20 +257,20 @@ const deleteNotification = async (req: Request, res: Response<BodyResponse<Notif
 
     if (!response) {
       return res.status(404).json({
-        message: `Notification with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró notificación con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Notification with ID "${req.params.id}" deleted successfully`,
+      message: `Notificación con ID ${req.params.id} borrada exitosamente`,
       data: response,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+      message: `Ocurrió un error: ${error}`,
       data: undefined,
       error: true,
     });
@@ -214,6 +280,7 @@ const deleteNotification = async (req: Request, res: Response<BodyResponse<Notif
 export default {
   getAllNotifications,
   getNotificationById,
+  getActiveNotifications,
   createNotification,
   deleteNotification,
 };

@@ -12,6 +12,8 @@ router
   .get(controllers.getAllNotifications)
   .post(validations.createNotification, controllers.createNotification);
 
+router.route('/active').get(controllers.getActiveNotifications);
+
 router.route('/:id').get(idValidationMiddleware, controllers.getNotificationById);
 
 router.route('/delete/:id').patch(idValidationMiddleware, controllers.deleteNotification);

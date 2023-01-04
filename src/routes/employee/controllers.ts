@@ -51,7 +51,7 @@ const getEmployeeById = async (req: Request, res: Response<BodyResponse<Employee
       });
     } else {
       return res.status(404).json({
-        message: `No se pudo encontrar un empleado con ID ${req.params.id}.`,
+        message: `No se encontró empleado con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -73,7 +73,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
 
     if (!response) {
       return res.status(404).json({
-        message: `No se pudo encontrar un empleado con ID ${req.params.id}.`,
+        message: `No se encontró empleado con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -86,7 +86,7 @@ const editEmployee = async (req: Request, res: Response<BodyResponse<EmployeeDat
     });
   } catch (error: any) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error.message}`,
+      message: `Ocurrió un error: ${error.message}`,
       data: undefined,
       error: true,
     });

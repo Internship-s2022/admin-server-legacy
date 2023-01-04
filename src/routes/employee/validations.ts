@@ -8,54 +8,53 @@ import { SeniorityType } from './types';
 const editEmployee = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     skills: Joi.array().items(Joi.string().min(3).max(35)).messages({
-      'string.min': 'Skills must contain more than 2 letters',
-      'string.max': 'Skills must contain less than 36 letters',
-      'string.base': 'Skills must be a string',
+      'string.min': 'Skills debe contener más de 2 letras',
+      'string.max': 'Skills debe contener menos de 36 letras',
+      'string.base': 'Skills debe ser un string',
     }),
 
-    seniority: Joi.string()
-      .valid(SeniorityType.JR, SeniorityType.SR, SeniorityType.SSR, SeniorityType.TRAINEE)
-      .messages({
-        'any.only': 'Seniority must be JR, SR, SSR or TRAINEE',
-      }),
+    seniority: Joi.string().valid(SeniorityType.JR, SeniorityType.SR, SeniorityType.SSR).messages({
+      'any.only': 'Seniority debe ser JR, SR o SSR',
+    }),
 
     projectHistory: Joi.array()
       .items(Joi.string())
-      .messages({ 'string.base': 'Array items must be strings' }),
+      .messages({ 'string.base': 'Los items del array deben ser strings' }),
 
     absences: Joi.array().items(
       Joi.object({
-        startDate: Joi.date().required().messages({ 'any.only': 'Start date is required' }),
+        startDate: Joi.date()
+          .required()
+          .messages({ 'any.only': 'La fecha de inicio es requerida' }),
 
         endDate: Joi.date()
           .greater(Joi.ref('startDate'))
-          .message('End date must be after start date'),
+          .message('La fecha de fin debe ser posterior a la fecha de inicio'),
 
         motive: Joi.string().min(3).max(120).required().messages({
-          'string.base': 'Motive must be a string',
-          'string.min': 'Motive must be at least 3 characters long',
-          'string.max': 'Motive can only be 120 characters long',
+          'string.base': 'El motivo debe ser un string',
+          'string.min': 'El motivo tiene que ser al menos de 3 caracteres',
+          'string.max': 'El motivo puede ser de hasta 120 caracteres',
         }),
       }),
     ),
 
     user: Joi.string().messages({
-      'string.base': 'User Id must be a string',
+      'string.base': 'El Id del usuario debe ser un string',
     }),
 
     potentialRole: Joi.array().items(
       Joi.string()
         .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UX_UI)
         .messages({
-          'any.only': 'Potential role must be DEV, QA, UX/UI, PM or TL',
-          'string.base': 'Array items must be strings',
+          'any.only': 'El rol potencial debe ser DEV, QA, UX/UI, PM o TL',
+          'string.base': 'Los items de array deben ser strings',
         }),
     ),
 
     notes: Joi.string().min(0).max(499).messages({
-      'string.min': 'notes must contain more than 11 characters',
-      'string.max': 'notes must contain less than 500 characters',
-      'string.base': 'Notes must be a string',
+      'string.max': 'Las notas deben contener menos de 500 caracteres',
+      'string.base': 'Las notas deben ser un string',
     }),
 
     availability: Joi.boolean(),

@@ -4,7 +4,8 @@ import firebase from 'src/helpers/firebase';
 import { AccessRoleType, RequestWithFirebase } from 'src/types';
 
 const authMiddleware =
-  (role: AccessRoleType) => async (req: RequestWithFirebase, res: Response, next: NextFunction) => {
+  (accessRole: AccessRoleType) =>
+  async (req: RequestWithFirebase, res: Response, next: NextFunction) => {
     const { token } = req.headers;
     if (!token || typeof token !== 'string') {
       return res.status(400).json({ message: 'Token is required' });
@@ -12,14 +13,26 @@ const authMiddleware =
     try {
       const response = await firebase.auth().verifyIdToken(token);
 
-      if (!response.role) {
+      const firebaseUser = await firebase.auth().getUser(response.uid);
+
+      const role = firebaseUser.customClaims?.role;
+      const isActive = firebaseUser.customClaims?.isActive;
+
+      if (!isActive) {
+        return res.status(403).json({
+          message: 'Access removed',
+          data: undefined,
+          error: true,
+        });
+      }
+      if (!role) {
         return res.status(403).json({
           message: 'No credentials found',
           data: undefined,
           error: true,
         });
       }
-      if (response.role !== role) {
+      if (role !== accessRole) {
         return res.status(403).json({
           message: 'Credentials not authorized to access this information',
           data: undefined,

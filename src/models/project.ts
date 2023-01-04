@@ -23,7 +23,7 @@ export const projectSchema = new Schema({
   },
   startDate: {
     type: Date,
-    required: true,
+    required: false,
   },
   endDate: {
     type: Date,
