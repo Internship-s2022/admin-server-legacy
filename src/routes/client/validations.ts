@@ -18,7 +18,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       name: Joi.string()
         .min(3)
         .max(35)
-        .regex(/^[a-zA-Z\s]*$/)
+        .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
         .trim()
         .messages({
           'string.min': 'El nombre debe contener al menos 3 letras',
@@ -43,7 +43,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
       name: Joi.string()
         .min(3)
         .max(35)
-        .regex(/^[a-zA-Z\s]*$/)
+        .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
         .trim()
         .messages({
           'string.min': 'El nombre debe contener al menos 3 letras',
@@ -103,7 +103,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       name: Joi.string()
         .min(3)
         .max(35)
-        .regex(/^[a-zA-Z\s]*$/)
+        .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
         .trim()
         .messages({
           'string.min': 'El nombre del contacto local debe contener al menos 3 letras',
@@ -127,7 +127,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
       name: Joi.string()
         .min(3)
         .max(35)
-        .regex(/^[a-zA-Z\s]*$/)
+        .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
         .trim()
         .messages({
           'string.min': 'El nombre de contacto de cliente debe contener al menos 3 letras',

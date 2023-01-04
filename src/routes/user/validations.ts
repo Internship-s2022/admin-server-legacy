@@ -24,7 +24,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       }),
 
     firstName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
         'string.base': 'El nombre debe contener solo letras',
@@ -34,7 +34,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .required(),
 
     lastName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
         'string.pattern.base': 'El apellido debe contener solo letras',
@@ -100,7 +100,7 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
       }),
 
     firstName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
         'string.base': 'El nombre debe contener solo letras',
@@ -108,7 +108,7 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
       }),
 
     lastName: Joi.string()
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
       .messages({
         'string.pattern.base': 'El apellido debe contener solo letras',
