@@ -16,9 +16,9 @@ const authMiddleware =
       const firebaseUser = await firebase.auth().getUser(response.uid);
 
       const role = firebaseUser.customClaims?.role;
-      const status = firebaseUser.customClaims?.status;
+      const isActive = firebaseUser.customClaims?.isActive;
 
-      if (!status) {
+      if (!isActive) {
         return res.status(403).json({
           message: 'Access removed',
           data: undefined,

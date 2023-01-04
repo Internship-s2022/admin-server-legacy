@@ -20,7 +20,7 @@ const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>
   try {
     const allUsers = await UserModel.find(req.query);
     return res.status(200).json({
-      message: 'The list has been successfully retrieved',
+      message: 'La lista fue obtenida exitosamente',
       data: allUsers,
       error: false,
     });
@@ -39,13 +39,13 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
 
     if (user) {
       return res.status(200).json({
-        message: `User with ID ${req.params.id} has been found`,
+        message: `Se ha encontrado usuario con ID ${req.params.id}`,
         data: user,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found an user by the id of ${req.params.id}.`,
+        message: `No se encontró usuario con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
@@ -67,7 +67,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     const isUsed = await UserModel.findOne({ email: req.body.email });
     if (isUsed) {
       return res.status(400).json({
-        message: 'This user has already been registered',
+        message: 'El usuario ya se encuentra registrado',
         data: undefined,
         error: true,
       });
@@ -91,7 +91,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 
     await firebaseApp.auth().setCustomUserClaims(firebaseUser?.uid as string, {
       role: newUser.accessRoleType,
-      status: newUser.isActive,
+      isActive: newUser.isActive,
     });
 
     const successData = await newUser.save({ session: session });
@@ -107,7 +107,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'User created successfully',
+      message: 'Usuario creado exitosamente',
       data: successData,
       error: false,
     });
@@ -133,7 +133,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     if (req.body.accessRoleType || req.body.isActive) {
       await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
         role: req.body.accessRoleType ?? response?.accessRoleType,
-        status: req.body.isActive ?? response?.isActive,
+        isActive: req.body.isActive ?? response?.isActive,
       });
     }
 
@@ -151,20 +151,20 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
 
     if (!response) {
       return res.status(404).json({
-        message: `User account with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró usuario con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
     return res.status(200).json({
-      message: `User account with ID "${req.params.id}" updated successfully`,
+      message: `Usuario con ID ${req.params.id} editado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error: any) {
     session.abortTransaction();
     return res.status(400).json({
-      message: `An error has ocurred: ${error.message}`,
+      message: `Ocurrió un error: ${error.message}`,
       data: undefined,
       error: true,
     });
@@ -188,24 +188,24 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 
     await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
       role: response?.accessRoleType,
-      status: false,
+      isActive: false,
     });
 
     if (!response) {
       return res.status(404).json({
-        message: `User account with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró usuario con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
     return res.status(200).json({
-      message: `User account with ID "${req.params.id}" deleted successfully`,
+      message: `Usuario con ID ${req.params.id} desactivado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+      message: `Ocurrió un error: ${error}`,
       data: undefined,
       error: true,
     });
