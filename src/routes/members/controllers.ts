@@ -72,13 +72,13 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
 
     if (member) {
       return res.status(200).json({
-        message: `Miembro con ID ${req.params.id} encontrado`,
+        message: `se ha encontrado miembro con ID ${req.params.id}`,
         data: member,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `No se pudo encontrar un miembro con ID ${req.params.id}.`,
+        message: `No se encontró miembro con ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });
@@ -186,8 +186,8 @@ const editMember = async (req: Request, res: Response<BodyResponse<MemberData>>)
       return res.status(400).json({
         message:
           req.body.project && req.body.employee
-            ? 'Editing project and employee is not allowed'
-            : `Editing ${req.body.project ? 'project' : 'employee'} is not allowed`,
+            ? 'Editar proyecto y empleado no esta permitido'
+            : `Editar ${req.body.project ? 'proyectp' : 'empleado'} no está permitido`,
         data: undefined,
         error: true,
       });
@@ -220,20 +220,20 @@ const editMember = async (req: Request, res: Response<BodyResponse<MemberData>>)
 
     if (!response) {
       return res.status(404).json({
-        message: `Member with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró miembro con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Member with ID "${req.params.id}" updated successfully`,
+      message: `Miembro con ID ${req.params.id} editado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error: any) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error.message}`,
+      message: `Ocurrió un error: ${error.message}`,
       data: undefined,
       error: true,
     });
@@ -249,19 +249,19 @@ const deleteMember = async (req: Request, res: Response<BodyResponse<MemberData>
     );
     if (!response) {
       return res.status(404).json({
-        message: `Member with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró miembro con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
     return res.status(200).json({
-      message: `Member with ID "${req.params.id}" deleted successfully`,
+      message: `Miembro con ID ${req.params.id} eliminado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+      message: `Ocurrio un error: ${error}`,
       data: undefined,
       error: true,
     });

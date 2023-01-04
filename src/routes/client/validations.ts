@@ -56,7 +56,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
         .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
         .trim()
         .messages({
-          'string.empty': 'Este campo es requerido',
+          'string.empty': 'El email es requerido',
           'string.min': 'El email debe contener al menos 3 letras',
           'string.pattern.base': 'Formato de email no es válido',
         })
@@ -75,7 +75,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
     isActive: Joi.boolean()
       .messages({
         'boolean.base': 'El status tiene que ser un booleano',
-        'any.required': 'Este campo es requerido',
+        'any.required': 'El status es requerido',
       })
       .required(),
   }).options({ allowUnknown: true });
@@ -96,7 +96,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
     name: Joi.string().min(3).max(35).trim().messages({
       'string.min': 'El nombre debe tener al menos 3 caracteres',
       'string.max': 'El nombre debe tener máximo 35 caracteres',
-      'string.empty': 'Este campo es requerido',
+      'string.empty': 'El nombre es requerido',
     }),
 
     localContact: Joi.object({
@@ -106,10 +106,10 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
         .regex(/^[a-zA-Z\s]*$/)
         .trim()
         .messages({
-          'string.min': 'El nombre debe contener al menos 3 letras',
-          'string.empty': 'Este campo es requerido',
-          'string.max': 'El nombre debe tener máximo 35 letras',
-          'string.pattern.base': 'El nombre debe contener solo letras',
+          'string.min': 'El nombre del contacto local debe contener al menos 3 letras',
+          'string.empty': 'El nombre del contacto local es requerido',
+          'string.max': 'El nombre del contacto local debe tener máximo 35 letras',
+          'string.pattern.base': 'El nombre del contacto local debe contener solo letras',
         }),
 
       email: Joi.string()
@@ -117,7 +117,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
         .min(20)
         .trim()
         .messages({
-          'string.empty': 'Este campo es requerido',
+          'string.empty': 'El email del contacto local es requerido',
           'string.min': 'El email debe contener al menos 3 letras',
           'string.pattern.base': 'Formato de email no es válido',
         }),
@@ -130,16 +130,16 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
         .regex(/^[a-zA-Z\s]*$/)
         .trim()
         .messages({
-          'string.min': 'El nombre debe contener al menos 3 letras',
-          'string.empty': 'Este campo es requerido',
-          'string.max': 'El nombre debe tener máximo 35 letras',
-          'string.pattern.base': 'El nombre debe contener solo letras',
+          'string.min': 'El nombre de contacto de cliente debe contener al menos 3 letras',
+          'string.empty': 'El nombre de contacto de cliente es requerido',
+          'string.max': 'El nombre de contacto de cliente  debe tener máximo 35 letras',
+          'string.pattern.base': 'El nombre de contacto de cliente debe contener solo letras',
         }),
       email: Joi.string()
         .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
         .trim()
         .messages({
-          'string.empty': 'Este campo es requerido',
+          'string.empty': 'El email de contacto de cliente es requerido ',
           'string.min': 'El email debe contener al menos 3 letras',
           'string.pattern.base': 'Formato de email no es válido',
         }),
@@ -161,7 +161,7 @@ const updateClient = (req: Request, res: Response, next: NextFunction) => {
 
     isActive: Joi.boolean().messages({
       'boolean.base': 'El status tiene que ser un booleano',
-      'any.required': 'Este campo es requerido',
+      'any.required': 'El status es requerido',
     }),
   }).options({ allowUnknown: true });
 

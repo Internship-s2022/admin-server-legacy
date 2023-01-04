@@ -23,7 +23,7 @@ const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectDa
       });
 
     return res.status(200).json({
-      message: 'The list has been successfully retrieved',
+      message: 'La lista de proyectos fue obtenida con éxito',
       data: allProjects,
       error: false,
     });
@@ -55,13 +55,13 @@ const getProjectById = async (req: Request, res: Response<BodyResponse<ProjectDa
 
     if (project) {
       return res.status(200).json({
-        message: `Project with ID ${req.params.id} has been found`,
+        message: `Se ha encontrado proyecto con ID ${req.params.id}`,
         data: project,
         error: false,
       });
     } else {
       return res.status(404).json({
-        message: `Could not found a Project by the id of ${req.params.id}.`,
+        message: `No se encontró proyecto con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
@@ -82,7 +82,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
     const clientExist = await ClientModel.findById(req.body.clientName);
     if (!clientExist) {
       return res.status(404).json({
-        message: 'The client was not found',
+        message: 'El cliente no fue encontrado',
         data: undefined,
         error: true,
       });
@@ -101,7 +101,7 @@ const createProject = async (req: Request, res: Response<BodyResponse<ProjectDat
     session.commitTransaction();
 
     return res.status(201).json({
-      message: 'Project created successfully',
+      message: 'Proyecto creado exitosamente',
       data: project,
       error: false,
     });
@@ -136,20 +136,20 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
 
     if (!response) {
       return res.status(404).json({
-        message: `Project with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró proyecto con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Project with ID "${req.params.id}" updated successfully`,
+      message: `Proyecto con ID ${req.params.id} editado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error: any) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error.message}`,
+      message: `Ocurrió un error: ${error.message}`,
       data: undefined,
       error: true,
     });
@@ -166,20 +166,20 @@ const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectDat
 
     if (!response) {
       return res.status(404).json({
-        message: `Project with ID "${req.params.id}" can not be found.`,
+        message: `No se encontró proyecto con ID ${req.params.id}`,
         data: undefined,
         error: true,
       });
     }
 
     return res.status(200).json({
-      message: `Project with ID "${req.params.id}" deleted successfully`,
+      message: `Proyecto con ID ${req.params.id} desactivado exitosamente`,
       data: response,
       error: false,
     });
   } catch (error) {
     return res.status(400).json({
-      message: `An error has ocurred: ${error}`,
+      message: `Ocurrió un error: ${error}`,
       data: undefined,
       error: true,
     });

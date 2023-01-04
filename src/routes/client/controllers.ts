@@ -47,7 +47,7 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
       });
     } else {
       return res.status(404).json({
-        message: `No se pudo encontrar un cliente con el ID ${req.params.id}.`,
+        message: `No se encontró cliente con el ID ${req.params.id}.`,
         data: undefined,
         error: true,
       });

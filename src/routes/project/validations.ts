@@ -6,7 +6,7 @@ import { CriticalType, ProjectType } from './types';
 const createProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
     projectName: Joi.string().min(3).max(35).trim().required().messages({
-      'any.required': 'Este campo es requerido',
+      'any.required': 'El nombre de proyecto es requerido',
       'string.min': 'El nombre debe contener al menos 3 caracteres',
       'string.max': 'El nombre no debe contener más de 35 caracteres',
     }),
@@ -28,7 +28,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
       .messages({
         'any.only': 'La criticidad debe ser Alta, Media o Baja',
-        'any.required': 'Este campo es requerido',
+        'any.required': 'La criticidad del proyecto es requerida',
       })
       .required(),
 
@@ -37,7 +37,7 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
       .required()
       .messages({
         'any.only': 'El tipo de proyecto debe ser Project Building o Staff Augmentation',
-        'any.required': 'Este campo es requerido',
+        'any.required': 'El tipo de proyecto es requerido',
       }),
   }).options({ allowUnknown: true });
 
