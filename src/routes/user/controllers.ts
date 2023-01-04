@@ -91,7 +91,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 
     await firebaseApp.auth().setCustomUserClaims(firebaseUser?.uid as string, {
       role: newUser.accessRoleType,
-      status: newUser.isActive,
+      isActive: newUser.isActive,
     });
 
     const successData = await newUser.save({ session: session });
@@ -133,7 +133,7 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     if (req.body.accessRoleType || req.body.isActive) {
       await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
         role: req.body.accessRoleType ?? response?.accessRoleType,
-        status: req.body.isActive ?? response?.isActive,
+        isActive: req.body.isActive ?? response?.isActive,
       });
     }
 
@@ -188,7 +188,7 @@ const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
 
     await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
       role: response?.accessRoleType,
-      status: false,
+      isActive: false,
     });
 
     if (!response) {
