@@ -72,7 +72,7 @@ const getMemberById = async (req: Request, res: Response<BodyResponse<MemberData
 
     if (member) {
       return res.status(200).json({
-        message: `se ha encontrado miembro con ID ${req.params.id}`,
+        message: `Se ha encontrado miembro con ID ${req.params.id}`,
         data: member,
         error: false,
       });

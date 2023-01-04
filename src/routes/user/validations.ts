@@ -96,7 +96,7 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
     email: Joi.string()
       .regex(/^[a-zA-Z.]*@radiumrocket.com/)
       .messages({
-        'string.pattern.base': 'Formato de mail invalido',
+        'string.pattern.base': 'Formato de email invalido',
       }),
 
     firstName: Joi.string()
