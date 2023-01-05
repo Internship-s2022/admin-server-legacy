@@ -53,11 +53,12 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       .required(),
 
     birthDate: Joi.date()
-      .greater('1-1-1900')
+      .greater('01-01-1930')
       .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
       .messages({
-        'date.greater': 'La fecha debe ser posterior a 1-1-1900',
-        'date.less': 'El usuario debe ser mayor de 18 años',
+        'date.greater': 'La fecha debe ser posterior a 01-01-1930',
+        'date.less': 'El usuario debe ser mayor a 18 años',
+        'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
       })
       .required(),
 
