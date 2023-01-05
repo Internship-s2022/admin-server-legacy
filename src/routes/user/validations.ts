@@ -117,7 +117,7 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 
     location: Joi.string().min(3).max(30).messages({
       'string.base': 'La localidad debe ser un string',
-      'string.min': 'La localidad debe contener al menos 3 letras',
+      'string.min': 'La localidad debe tener al menos 3 letras',
       'string.max': 'La localidad debe tener máximo 30 caracteres',
     }),
 
