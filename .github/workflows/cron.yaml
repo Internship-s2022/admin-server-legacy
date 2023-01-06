@@ -14,3 +14,12 @@ jobs:
           curl --request POST \
           --url ${{ secrets.ENV_URL }}/cron \
           --header 'Authorization: ${{ secrets.API_SECRET_KEY }}'
+  uat:
+    runs-on: ubuntu-latest
+    environment: uat
+    steps:
+      - name: Run Uat Cronjobs
+        run: |
+          curl --request POST \
+          --url ${{ secrets.ENV_URL }}/cron \
+          --header 'Authorization: ${{ secrets.API_SECRET_KEY }}'
