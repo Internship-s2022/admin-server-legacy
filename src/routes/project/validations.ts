@@ -5,10 +5,11 @@ import { CriticalType, ProjectType } from './types';
 
 const createProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    projectName: Joi.string().min(3).max(35).trim().required().messages({
+    projectName: Joi.string().min(3).max(35).alphanum().trim().required().messages({
       'any.required': 'El nombre de proyecto es requerido',
       'string.min': 'El nombre debe contener al menos 3 caracteres',
       'string.max': 'El nombre no debe contener más de 35 caracteres',
+      'string.alphanum': 'El nombre debe contener solo letras y numeros',
     }),
 
     description: Joi.string().max(100).allow('').messages({
@@ -54,9 +55,10 @@ const createProject = (req: Request, res: Response, next: NextFunction) => {
 
 const editProject = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    projectName: Joi.string().min(3).max(35).trim().messages({
+    projectName: Joi.string().min(3).max(35).alphanum().trim().messages({
       'string.min': 'El nombre debe contener al menos 3 caracteres',
       'string.max': 'El nombre no debe contener más de 35 caracteres',
+      'string.alphanum': 'El nombre debe contener solo letras y numeros',
     }),
 
     description: Joi.string()
