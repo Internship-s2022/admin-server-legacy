@@ -12,6 +12,8 @@ router
   .get(queryParamsOnSchemaValidation('client'), controllers.getAllClients)
   .post(validations.createClient, controllers.createClient);
 
+router.route('/clientExists/').get(controllers.clientExists);
+
 router
   .route('/:id')
   .get(idValidationMiddleware, controllers.getClientById)
