@@ -17,7 +17,9 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
       }),
 
     email: Joi.string()
-      .regex(/^[a-zA-Z.]*@radiumrocket.com/)
+      .regex(/^[a-zA-Z]+\.+[a-zA-Z]+@(radiumrocket.com)$/)
+      .min(20)
+      .trim()
       .messages({
         'string.pattern.base': 'Formato de mail invalido',
         'string.empty': 'El email es requerido',
@@ -26,29 +28,39 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     firstName: Joi.string()
       .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
+      .max(35)
+      .trim()
       .messages({
         'string.base': 'El nombre debe contener solo letras',
         'string.empty': 'El nombre es requerido',
         'string.min': 'El nombre debe contener más de 3 letras',
+        'string.max': 'El nombre debe tener máximo 35 letras',
       })
       .required(),
 
     lastName: Joi.string()
       .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
+      .max(35)
+      .trim()
       .messages({
         'string.pattern.base': 'El apellido debe contener solo letras',
         'string.empty': 'El apellido es requerido',
         'string.min': 'El apellido debe contener más de 3 letras',
+        'string.max': 'El apellido debe tener máximo 35 letras',
       })
       .required(),
 
     location: Joi.string()
       .min(3)
+      .max(30)
+      .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ ]*$/)
+      .trim()
       .messages({
         'string.base': 'La localidad debe ser un string',
         'string.empty': 'La localidad es requerida',
         'string.min': 'La localidad debe contener al menos 3 letras',
+        'string.max': 'La localidad debe tener máximo 30 caracteres',
       })
       .required(),
 
@@ -95,32 +107,49 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
       }),
 
     email: Joi.string()
-      .regex(/^[a-zA-Z.]*@radiumrocket.com/)
+      .regex(/^[a-zA-Z]+\.+[a-zA-Z]+@(radiumrocket.com)$/)
+      .min(20)
+      .trim()
       .messages({
-        'string.pattern.base': 'Formato de email invalido',
+        'string.pattern.base': 'Formato de mail invalido',
+        'string.empty': 'El email es requerido',
       }),
 
     firstName: Joi.string()
       .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
+      .max(35)
+      .trim()
       .messages({
         'string.base': 'El nombre debe contener solo letras',
+        'string.empty': 'El nombre es requerido',
         'string.min': 'El nombre debe contener más de 3 letras',
+        'string.max': 'El nombre debe tener máximo 35 letras',
       }),
 
     lastName: Joi.string()
       .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .min(3)
+      .max(35)
+      .trim()
       .messages({
         'string.pattern.base': 'El apellido debe contener solo letras',
+        'string.empty': 'El apellido es requerido',
         'string.min': 'El apellido debe contener más de 3 letras',
+        'string.max': 'El apellido debe tener máximo 35 letras',
       }),
 
-    location: Joi.string().min(3).max(30).messages({
-      'string.base': 'La localidad debe ser un string',
-      'string.min': 'La localidad debe tener al menos 3 letras',
-      'string.max': 'La localidad debe tener máximo 30 caracteres',
-    }),
+    location: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ ]*$/)
+      .trim()
+      .messages({
+        'string.base': 'La localidad debe ser un string',
+        'string.empty': 'La localidad es requerida',
+        'string.min': 'La localidad debe contener al menos 3 letras',
+        'string.max': 'La localidad debe tener máximo 30 caracteres',
+      }),
 
     birthDate: Joi.date()
       .greater('1-1-1900')

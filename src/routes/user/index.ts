@@ -13,6 +13,8 @@ router
   .get(queryParamsOnSchemaValidation('user'), controllers.getAllUsers)
   .post(validations.createUser, controllers.createUser);
 
+router.route('/userExists').get(controllers.userExists);
+
 router
   .route('/:id')
   .get(idValidationMiddleware, controllers.getUserById)

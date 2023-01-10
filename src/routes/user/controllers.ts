@@ -59,6 +59,31 @@ const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) 
   }
 };
 
+const userExists = async (req: Request, res: Response<BodyResponse<UserData>>) => {
+  try {
+    const userEmail = await UserModel.find(req.query);
+    if (userEmail.length) {
+      return res.status(400).json({
+        message: 'El usuario ya se encuentra registrado',
+        data: undefined,
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Email no registrado',
+      data: undefined,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
 const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   const session = await startSession();
   session.startTransaction();
@@ -218,4 +243,5 @@ export default {
   createUser,
   editUser,
   deleteUser,
+  userExists,
 };
