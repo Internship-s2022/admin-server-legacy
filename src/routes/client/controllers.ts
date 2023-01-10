@@ -61,6 +61,32 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
   }
 };
 
+const clientExists = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
+  try {
+    const clientName = await ClientSchema.find(req.query);
+
+    if (clientName.length) {
+      return res.status(400).json({
+        message: 'Este cliente ya existe',
+        data: undefined,
+        error: true,
+      });
+    }
+
+    return res.status(200).json({
+      message: 'Cliente no existe',
+      data: undefined,
+      error: false,
+    });
+  } catch (error: any) {
+    return res.json({
+      message: `MongoDB Error: ${error.message}`,
+      data: undefined,
+      error: true,
+    });
+  }
+};
+
 const createClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
   try {
     const newClient = new ClientSchema(req.body);
@@ -162,4 +188,5 @@ export default {
   createClient,
   editClient,
   deleteClient,
+  clientExists,
 };

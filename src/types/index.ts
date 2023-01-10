@@ -60,6 +60,7 @@ export interface EmployeeData {
   user: PopulatedDoc<Document<ObjectId> & UserData>;
   potentialRole?: string[];
   notes?: string;
+  availability: boolean;
 }
 
 export interface AbsenceData {

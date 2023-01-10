@@ -11,6 +11,7 @@ const createClient = (req: Request, res: Response, next: NextFunction) => {
         'string.min': 'El nombre debe tener al menos 3 caracteres',
         'string.max': 'El nombre debe tener máximo 35 caracteres',
         'string.empty': 'Este campo es requerido',
+        'any.required': 'El nombre es requerido',
       })
       .required(),
 
