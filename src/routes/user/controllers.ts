@@ -124,6 +124,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     if (successData.accessRoleType === 'EMPLOYEE') {
       const employeeBody = {
         user: successData._id,
+        availability: true,
       };
       const newEmployee = new EmployeeModel(employeeBody);
       await newEmployee.save();
