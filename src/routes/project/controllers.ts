@@ -5,6 +5,8 @@ import ClientModel from 'src/models/client';
 import ProjectModel from 'src/models/project';
 import { BodyResponse, ProjectData } from 'src/types';
 
+import { Project } from './types';
+
 const getAllProjects = async (req: Request, res: Response<BodyResponse<ProjectData[]>>) => {
   try {
     const allProjects = await ProjectModel.find(req.query)
@@ -158,6 +160,20 @@ const editProject = async (req: Request, res: Response<BodyResponse<ProjectData>
 
 const deleteProject = async (req: Request, res: Response<BodyResponse<ProjectData>>) => {
   try {
+    const selectedProject: Project | null = await ProjectModel.findOne({
+      _id: req.params.id,
+    }).populate('members', 'active');
+
+    const hasMembers = selectedProject?.members?.some((member) => member?.active);
+
+    if (hasMembers) {
+      return res.status(400).json({
+        message: `No se puede desactivar el proyecto con ID ${req.params.id} porque tiene miembros activos`,
+        data: undefined,
+        error: true,
+      });
+    }
+
     const response = await ProjectModel.findOneAndUpdate(
       { _id: req.params.id, isActive: true },
       { isActive: false },
