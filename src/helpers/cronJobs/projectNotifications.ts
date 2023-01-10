@@ -1,4 +1,4 @@
-import { addBusinessDays, isWithinInterval } from 'date-fns';
+import { addBusinessDays, addDays, isWithinInterval } from 'date-fns';
 
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
@@ -29,14 +29,7 @@ const projectAboutToEnd = async (allProjects: Project[]) => {
   const promises: Promise<unknown>[] = [];
 
   allProjects.forEach((item) => {
-    if (
-      item.isActive &&
-      item.endDate &&
-      isWithinInterval(item.endDate, {
-        start: new Date(),
-        end: addBusinessDays(new Date(), 10),
-      })
-    ) {
+    if (item.isActive && item.endDate && item.endDate === addDays(new Date(), 14)) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.PROJECT,
         date: new Date(Date.now()),

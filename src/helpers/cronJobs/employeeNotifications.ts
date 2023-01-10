@@ -1,4 +1,4 @@
-import { addBusinessDays, isWithinInterval } from 'date-fns';
+import { addBusinessDays, addDays, isWithinInterval } from 'date-fns';
 
 import NotificationsModel from 'src/models/notifications';
 import { NotificationType } from 'src/types';
@@ -43,16 +43,11 @@ const absenceEmployees = async (allEmployees: Employee[]) => {
   allEmployees.forEach((employee) => {
     if (
       employee.user.isActive &&
-      employee.absences?.some((absence) =>
-        isWithinInterval(absence.startDate, {
-          start: new Date(),
-          end: addBusinessDays(new Date(), 10),
-        }),
-      )
+      employee.absences?.some((absence) => absence.endDate === addDays(new Date(), 14))
     ) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.EMPLOYEE,
-        date: new Date(Date.now()),
+        date: new Date(),
         employee: employee._id?.toString(),
         reasonType: 102,
         isCustom: false,

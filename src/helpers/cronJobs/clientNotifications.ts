@@ -1,4 +1,4 @@
-import { addBusinessDays } from 'date-fns';
+import { addBusinessDays, addDays } from 'date-fns';
 import isWithinInterval from 'date-fns/isWithinInterval';
 
 import { Client } from 'src/helpers/cronJobs/types';
@@ -35,10 +35,7 @@ const clientsWithCloseEndDate = async (allClients: Client[]) => {
     if (
       client.isActive &&
       client.relationshipEnd &&
-      isWithinInterval(client.relationshipEnd, {
-        start: new Date(),
-        end: addBusinessDays(new Date(), 5),
-      })
+      client.relationshipEnd === addDays(new Date(), 14)
     ) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.CLIENT,
