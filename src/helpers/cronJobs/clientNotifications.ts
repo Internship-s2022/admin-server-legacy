@@ -38,7 +38,7 @@ const clientsWithCloseEndDate = async (allClients: Client[]) => {
     ) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.CLIENT,
-        date: new Date(Date.now()),
+        limitDate: client.relationshipEnd,
         client: client._id?.toString(),
         reasonType: 201,
         isCustom: false,

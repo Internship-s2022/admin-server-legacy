@@ -14,7 +14,7 @@ const projectWithoutMembers = async (allProjects: Project[]) => {
     if (!item.members?.length && item.isActive && !item.members?.some((member) => member.active)) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.PROJECT,
-        date: new Date(Date.now()),
+        limitDate: new Date(),
         project: item._id?.toString(),
         reasonType: 301,
         isCustom: false,

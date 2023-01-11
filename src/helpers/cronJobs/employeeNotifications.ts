@@ -24,7 +24,7 @@ const employeesWithoutProjects = async (allEmployees: Employee[]) => {
     ) {
       const newNotification = new NotificationsModel({
         notificationType: NotificationType.EMPLOYEE,
-        date: new Date(Date.now()),
+        limitDate: new Date(),
         employee: employee._id?.toString(),
         reasonType: 101,
         isCustom: false,
