@@ -7,8 +7,7 @@ import { SeniorityType } from './types';
 
 const editEmployee = (req: Request, res: Response, next: NextFunction) => {
   const schema = Joi.object({
-    skills: Joi.array().items(Joi.string().min(3).max(35)).messages({
-      'string.min': 'Skills debe contener más de 2 letras',
+    skills: Joi.array().items(Joi.string().min(1).max(35)).messages({
       'string.max': 'Skills debe contener menos de 36 letras',
       'string.base': 'Skills debe ser un string',
     }),

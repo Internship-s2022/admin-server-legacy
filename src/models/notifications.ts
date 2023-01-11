@@ -23,9 +23,9 @@ const notificationSchema = new Schema({
     ref: 'Client',
     required: false,
   },
-  date: {
+  limitDate: {
     type: Date,
-    required: true,
+    required: false,
   },
   reasonType: {
     type: Number,
