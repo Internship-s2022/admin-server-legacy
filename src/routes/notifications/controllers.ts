@@ -72,7 +72,7 @@ const getActiveNotifications = async (
           $and: [
             { isCustom: true },
             {
-              date: {
+              limitDate: {
                 $lte: endOfDay(addDays(new Date(), notice)),
               },
             },

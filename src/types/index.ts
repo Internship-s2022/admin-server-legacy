@@ -127,8 +127,8 @@ export interface NotificationsData {
   employee?: string;
   project?: string;
   client?: string;
-  date: Date;
   reasonType: number;
   isChecked?: boolean;
   customMessage?: string;
+  limitDate?: Date;
 }
