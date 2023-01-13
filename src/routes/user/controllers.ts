@@ -7,6 +7,8 @@ import MemberModel from 'src/models/members';
 import UserModel from 'src/models/user';
 import { BodyResponse, UserData } from 'src/types';
 
+import { SeniorityType } from '../employee/types';
+
 const findUser = async (email: string) => {
   try {
     const firebaseUser = await firebaseApp.auth().getUserByEmail(email);
@@ -125,6 +127,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
       const employeeBody = {
         user: successData._id,
         availability: true,
+        seniority: SeniorityType.JR,
       };
       const newEmployee = new EmployeeModel(employeeBody);
       await newEmployee.save();
