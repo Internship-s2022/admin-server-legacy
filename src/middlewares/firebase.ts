@@ -32,7 +32,7 @@ const authMiddleware =
           error: true,
         });
       }
-      if (role !== accessRole) {
+      if (role !== AccessRoleType.ADMIN && role !== AccessRoleType.SUPER_ADMIN) {
         return res.status(403).json({
           message: 'Credentials not authorized to access this information',
           data: undefined,

@@ -61,11 +61,17 @@ const getClientById = async (req: Request, res: Response<BodyResponse<ClientData
   }
 };
 
-const clientExists = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
+const clientExists = async (
+  req: Request<unknown, unknown, unknown, { name: string }>,
+  res: Response<BodyResponse<ClientData>>,
+) => {
   try {
-    const clientName = await ClientSchema.find(req.query);
+    const clientName = req.query.name;
+    const clientNameList = await ClientSchema.find({
+      name: new RegExp(`^${clientName}$`, 'i'),
+    });
 
-    if (clientName.length) {
+    if (clientNameList.length) {
       return res.status(400).json({
         message: 'Este cliente ya existe',
         data: undefined,
