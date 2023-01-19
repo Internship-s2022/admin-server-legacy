@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { startSession } from 'mongoose';
 
+import { CustomError } from 'src/helpers/customErrorModel';
 import firebaseApp from 'src/helpers/firebase';
 import EmployeeModel from 'src/models/employee';
 import MemberModel from 'src/models/members';
@@ -13,91 +14,55 @@ const findUser = async (email: string) => {
   try {
     const firebaseUser = await firebaseApp.auth().getUserByEmail(email);
     return firebaseUser;
-  } catch (error: any) {
+  } catch (error) {
     return undefined;
   }
 };
 
 const getAllUsers = async (req: Request, res: Response<BodyResponse<UserData[]>>) => {
-  try {
-    const allUsers = await UserModel.find(req.query);
-    return res.status(200).json({
-      message: 'La lista fue obtenida exitosamente',
-      data: allUsers,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: 'Error',
-      data: undefined,
-      error: true,
-    });
-  }
+  const allUsers = await UserModel.find(req.query);
+
+  return res.status(200).json({
+    message: 'La lista fue obtenida exitosamente',
+    data: allUsers,
+    error: false,
+  });
 };
 
 const getUserById = async (req: Request, res: Response<BodyResponse<UserData>>) => {
-  try {
-    const user = await UserModel.findById(req.params.id);
+  const user = await UserModel.findById(req.params.id);
 
-    if (user) {
-      return res.status(200).json({
-        message: `Se ha encontrado usuario con ID ${req.params.id}`,
-        data: user,
-        error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: `No se encontró usuario con ID ${req.params.id}`,
-        data: undefined,
-        error: true,
-      });
-    }
-  } catch (error: any) {
-    return res.status(400).json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  if (!user) {
+    throw new CustomError(404, `No se encontró usuario con ID ${req.params.id}`);
   }
+
+  return res.status(200).json({
+    message: `Se ha encontrado usuario con ID ${req.params.id}`,
+    data: user,
+    error: false,
+  });
 };
 
 const userExists = async (req: Request, res: Response<BodyResponse<UserData>>) => {
-  try {
-    const userEmail = await UserModel.find(req.query);
-    if (userEmail.length) {
-      return res.status(400).json({
-        message: 'El usuario ya se encuentra registrado',
-        data: undefined,
-        error: true,
-      });
-    }
-
-    return res.status(200).json({
-      message: 'Email no registrado',
-      data: undefined,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  const userEmail = await UserModel.find(req.query);
+  if (userEmail.length) {
+    throw new CustomError(400, 'El usuario ya se encuentra registrado');
   }
+
+  return res.status(200).json({
+    message: 'Email no registrado',
+    data: undefined,
+    error: false,
+  });
 };
 
 const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
   const session = await startSession();
   session.startTransaction();
-
   try {
     const isUsed = await UserModel.findOne({ email: req.body.email });
     if (isUsed) {
-      return res.status(400).json({
-        message: 'El usuario ya se encuentra registrado',
-        data: undefined,
-        error: true,
-      });
+      throw new CustomError(400, 'El usuario ya se encuentra registrado');
     }
 
     const doesUserExists = await findUser(req.body.email);
@@ -142,11 +107,7 @@ const createUser = async (req: Request, res: Response<BodyResponse<UserData>>) =
     });
   } catch (error: any) {
     session.abortTransaction();
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+    throw new CustomError(500, error.message);
   }
 };
 
@@ -179,12 +140,9 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     session.commitTransaction();
 
     if (!response) {
-      return res.status(404).json({
-        message: `No se encontró usuario con ID ${req.params.id}`,
-        data: undefined,
-        error: true,
-      });
+      throw new CustomError(404, `No se encontró usuario con ID ${req.params.id}`);
     }
+
     return res.status(200).json({
       message: `Usuario con ID ${req.params.id} editado exitosamente`,
       data: response,
@@ -192,53 +150,34 @@ const editUser = async (req: Request, res: Response<BodyResponse<UserData>>) => 
     });
   } catch (error: any) {
     session.abortTransaction();
-    return res.status(400).json({
-      message: `Ocurrió un error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+    throw new CustomError(500, error.message);
   }
 };
 
 const deleteUser = async (req: Request, res: Response<BodyResponse<UserData>>) => {
-  try {
-    const response = await UserModel.findOneAndUpdate(
-      { _id: req.params.id, isActive: true },
-      { isActive: false },
-      { new: true },
-    );
-    const employeeExist = await EmployeeModel.findOne({ user: req.params.id });
+  const response = await UserModel.findOneAndUpdate(
+    { _id: req.params.id, isActive: true },
+    { isActive: false },
+    { new: true },
+  );
+  const employeeExist = await EmployeeModel.findOne({ user: req.params.id });
 
-    await MemberModel.updateMany(
-      { employee: employeeExist?._id },
-      { active: false },
-      { new: true },
-    );
+  await MemberModel.updateMany({ employee: employeeExist?._id }, { active: false }, { new: true });
 
-    await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
-      role: response?.accessRoleType,
-      isActive: false,
-    });
+  await firebaseApp.auth().setCustomUserClaims(response?.firebaseUid as string, {
+    role: response?.accessRoleType,
+    isActive: false,
+  });
 
-    if (!response) {
-      return res.status(404).json({
-        message: `No se encontró usuario con ID ${req.params.id}`,
-        data: undefined,
-        error: true,
-      });
-    }
-    return res.status(200).json({
-      message: `Usuario con ID ${req.params.id} desactivado exitosamente`,
-      data: response,
-      error: false,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      message: `Ocurrió un error: ${error}`,
-      data: undefined,
-      error: true,
-    });
+  if (!response) {
+    throw new CustomError(404, `No se encontró usuario con ID ${req.params.id}`);
   }
+
+  return res.status(200).json({
+    message: `Usuario con ID ${req.params.id} desactivado exitosamente`,
+    data: response,
+    error: false,
+  });
 };
 
 export default {
