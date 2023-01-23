@@ -11,13 +11,12 @@ export const cronHandler = async (
 ) => {
   const { authorization } = req.headers;
 
-  if (authorization === `${process.env.API_SECRET_KEY}`) {
-    await execCronJobs();
-    return res
-      .status(200)
-      .json({ error: false, message: 'Notifications were created successfully' });
+  if (authorization !== `${process.env.API_SECRET_KEY}`) {
+    throw new CustomError(401, 'Not allow');
   }
-  throw new CustomError(401, 'Not allow');
+  await execCronJobs();
+
+  return res.status(200).json({ error: false, message: 'Notifications were created successfully' });
 };
 
 export default {
