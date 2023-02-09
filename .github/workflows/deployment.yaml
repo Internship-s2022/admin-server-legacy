@@ -1,19 +1,21 @@
 name: Deployment
 
 on:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Commit Ref (Optional)
+        required: false
+      environment:
+        description: Environment
+        required: true
+        default: develop
+        type: environment
   workflow_call:
     inputs:
-        environment:
-          required: true
-          type: string
-        production:
-          required: false
-          type: boolean
-          default: false
-        domain:
-          required: false
-          type: string
-          default: ""
+      environment:
+        required: true
+        type: string
 
 jobs:
   deploy:
@@ -23,7 +25,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build
         run: | # ADD ALL ENV VARIABLES HERE
           yarn
@@ -32,16 +34,16 @@ jobs:
           FIREBASE_CLIENT_EMAIL="${{ secrets.FIREBASE_CLIENT_EMAIL }}" \
           FIREBASE_PRIVATE_KEY="${{ secrets.FIREBASE_PRIVATE_KEY }}" \
           FIREBASE_PROJECT_ID="${{ secrets.FIREBASE_PROJECT_ID }}" \
-          API_SECRET_KEY="${{ secrets.API_SECRET_KEY }}" \
           yarn build
-      - name: Deploy to Vercel Action
-        uses: BetaHuhn/deploy-to-vercel-action@v1
+      - name: Generate deployment package
+        run: zip deploy.zip -r dist/ node_modules/ package.json yarn.lock Procfile
+      - name: Deploy to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v21
         with:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          VERCEL_SCOPE: ${{ secrets.VERCEL_TEAM_NAME }}
-          PRODUCTION: ${{ inputs.production }}
-          ALIAS_DOMAINS: |
-            https://${{ inputs.domain }}${{ secrets.APP_DOMAIN }}
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.AWS_EB_APP_NAME }}
+          environment_name: ${{ secrets.AWS_EB_APP_ENVIRONMENT }}
+          version_label: ${{ inputs.environment }}-${{ github.SHA }}
+          region: us-east-1
+          deployment_package: deploy.zip
