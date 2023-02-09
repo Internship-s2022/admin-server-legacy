@@ -1,16 +1,17 @@
 import { NextFunction, Response } from 'express';
 
+import { CustomError } from 'src/helpers/customErrorModel';
 import firebase from 'src/helpers/firebase';
 import { AccessRoleType, RequestWithFirebase } from 'src/types';
 
 const authMiddleware =
-  (accessRole: AccessRoleType) =>
+  (accessRoles: AccessRoleType[]) =>
   async (req: RequestWithFirebase, res: Response, next: NextFunction) => {
-    const { token } = req.headers;
-    if (!token || typeof token !== 'string') {
-      return res.status(400).json({ message: 'Token is required' });
-    }
     try {
+      const { token } = req.headers;
+      if (!token || typeof token !== 'string') {
+        throw new CustomError(400, 'Token is required');
+      }
       const response = await firebase.auth().verifyIdToken(token);
 
       const firebaseUser = await firebase.auth().getUser(response.uid);
@@ -19,34 +20,18 @@ const authMiddleware =
       const isActive = firebaseUser.customClaims?.isActive;
 
       if (!isActive) {
-        return res.status(403).json({
-          message: 'Access removed',
-          data: undefined,
-          error: true,
-        });
+        throw new CustomError(403, 'Access removed');
       }
       if (!role) {
-        return res.status(403).json({
-          message: 'No credentials found',
-          data: undefined,
-          error: true,
-        });
+        throw new CustomError(403, 'No credentials found');
       }
-      if (role !== AccessRoleType.ADMIN && role !== AccessRoleType.SUPER_ADMIN) {
-        return res.status(403).json({
-          message: 'Credentials not authorized to access this information',
-          data: undefined,
-          error: true,
-        });
+      if (!accessRoles.includes(role)) {
+        throw new CustomError(403, 'Credentials not authorized to access this information');
       }
       req.firebaseUid = response.uid;
       return next();
     } catch (error: any) {
-      return res.status(401).json({
-        message: error.message,
-        data: undefined,
-        error: true,
-      });
+      throw new CustomError(401, error.message);
     }
   };
 

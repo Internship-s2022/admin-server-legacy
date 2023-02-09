@@ -21,6 +21,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "^7.30.0",
+    "@sentry/tracing": "^7.30.0",
     "axios": "^1.2.1",
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
@@ -33,7 +35,8 @@
     "joi": "^17.6.1",
     "mongodb": "^4.10.0",
     "mongoose": "^6.6.1",
-    "node-cron": "^3.0.2"
+    "node-cron": "^3.0.2",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

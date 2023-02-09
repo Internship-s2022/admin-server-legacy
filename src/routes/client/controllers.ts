@@ -1,191 +1,111 @@
 import { Request, Response } from 'express';
 
+import { CustomError } from 'src/helpers/customErrorModel';
 import ClientSchema from 'src/models/client';
 import { BodyResponse, ClientData } from 'src/types';
 
-const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
-  try {
-    const allClients = await ClientSchema.find(req.query).populate('projects', [
-      'projectName',
-      'description',
-      'startDate',
-      'endDate',
-      'isCritic',
-      'isActive',
-    ]);
+const fieldsToPopulate = [
+  'projectName',
+  'description',
+  'startDate',
+  'endDate',
+  'isCritic',
+  'isActive',
+];
 
-    return res.status(200).json({
-      message: 'Lista de clientes obtenida con éxito',
-      data: allClients,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: error.message,
-      data: undefined,
-      error: true,
-    });
-  }
+const getAllClients = async (req: Request, res: Response<BodyResponse<ClientData[]>>) => {
+  const allClients = await ClientSchema.find(req.query).populate('projects', fieldsToPopulate);
+
+  return res.status(200).json({
+    message: 'Lista de clientes obtenida con éxito',
+    data: allClients,
+    error: false,
+  });
 };
 
 const getClientById = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
-  try {
-    const client = await ClientSchema.findById(req.params.id).populate('projects', [
-      'projectName',
-      'description',
-      'startDate',
-      'endDate',
-      'isCritic',
-      'isActive',
-    ]);
+  const client = await ClientSchema.findById(req.params.id).populate('projects', fieldsToPopulate);
 
-    if (client) {
-      return res.status(200).json({
-        message: `Cliente con ID ${req.params.id} encontrado`,
-        data: client,
-        error: false,
-      });
-    } else {
-      return res.status(404).json({
-        message: `No se encontró cliente con el ID ${req.params.id}.`,
-        data: undefined,
-        error: true,
-      });
-    }
-  } catch (error: any) {
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  if (!client) {
+    throw new CustomError(404, `No se encontró cliente con el ID ${req.params.id}.`);
   }
+  return res.status(200).json({
+    message: `Cliente con ID ${req.params.id} encontrado`,
+    data: client,
+    error: false,
+  });
 };
 
 const clientExists = async (
   req: Request<unknown, unknown, unknown, { name: string }>,
   res: Response<BodyResponse<ClientData>>,
 ) => {
-  try {
-    const clientName = req.query.name;
-    const clientNameList = await ClientSchema.find({
-      name: new RegExp(`^${clientName}$`, 'i'),
-    });
+  const clientName = req.query.name;
+  const clientNameList = await ClientSchema.find({
+    name: new RegExp(`^${clientName}$`, 'i'),
+  });
 
-    if (clientNameList.length) {
-      return res.status(400).json({
-        message: 'Este cliente ya existe',
-        data: undefined,
-        error: true,
-      });
-    }
-
-    return res.status(200).json({
-      message: 'Cliente no existe',
-      data: undefined,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  if (clientNameList.length) {
+    throw new CustomError(400, 'Este cliente ya existe');
   }
+
+  return res.status(200).json({
+    message: 'Cliente no existe',
+    data: undefined,
+    error: false,
+  });
 };
 
 const createClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
-  try {
-    const newClient = new ClientSchema(req.body);
+  const newClient = new ClientSchema(req.body);
 
-    const clientName = await ClientSchema.findOne({ name: req.body.name });
+  const clientName = await ClientSchema.findOne({ name: req.body.name });
 
-    if (clientName) {
-      return res.status(400).json({
-        message: 'Este cliente ya existe',
-        data: undefined,
-        error: true,
-      });
-    }
-
-    const successData = await newClient.save();
-
-    return res.status(201).json({
-      message: 'Cliente creado exitosamente',
-      data: successData,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.json({
-      message: `MongoDB Error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  if (clientName) {
+    throw new CustomError(400, 'Este cliente ya existe');
   }
+
+  const successData = await newClient.save();
+
+  return res.status(201).json({
+    message: 'Cliente creado exitosamente',
+    data: successData,
+    error: false,
+  });
 };
 
 const editClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
-  try {
-    const response = await ClientSchema.findOneAndUpdate({ _id: req.params.id }, req.body, {
-      new: true,
-    }).populate('projects', [
-      'projectName',
-      'description',
-      'startDate',
-      'endDate',
-      'isCritic',
-      'isActive',
-    ]);
+  const response = await ClientSchema.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+  }).populate('projects', fieldsToPopulate);
 
-    if (!response) {
-      return res.status(404).json({
-        message: `Cuenta del cliente con ID "${req.params.id}" no encontrada.`,
-        data: undefined,
-        error: true,
-      });
-    }
-
-    return res.status(200).json({
-      message: `Cuenta del cliente con ID "${req.params.id}" actualizada`,
-      data: response,
-      error: false,
-    });
-  } catch (error: any) {
-    return res.status(400).json({
-      message: `Ha ocurrido un error: ${error.message}`,
-      data: undefined,
-      error: true,
-    });
+  if (!response) {
+    throw new CustomError(404, `Cuenta del cliente con ID "${req.params.id}" no encontrada.`);
   }
+
+  return res.status(200).json({
+    message: `Cuenta del cliente con ID "${req.params.id}" actualizada`,
+    data: response,
+    error: false,
+  });
 };
 
 const deleteClient = async (req: Request, res: Response<BodyResponse<ClientData>>) => {
-  try {
-    const response = await ClientSchema.findOneAndUpdate(
-      { _id: req.params.id, isActive: true },
-      { isActive: false },
-      { new: true },
-    );
+  const response = await ClientSchema.findOneAndUpdate(
+    { _id: req.params.id, isActive: true },
+    { isActive: false },
+    { new: true },
+  );
 
-    if (!response) {
-      return res.status(404).json({
-        message: `Cliente con ID "${req.params.id}" no fue encontrado.`,
-        data: undefined,
-        error: true,
-      });
-    }
-
-    return res.status(200).json({
-      message: `Cliente con ID "${req.params.id}" eliminado exitosamente`,
-      data: response,
-      error: false,
-    });
-  } catch (error) {
-    return res.status(400).json({
-      message: `Ha ocurrido un error: ${error}`,
-      data: undefined,
-      error: true,
-    });
+  if (!response) {
+    throw new CustomError(404, `Cuenta del cliente con ID "${req.params.id}" no encontrada.`);
   }
+
+  return res.status(200).json({
+    message: `Cliente con ID "${req.params.id}" eliminado exitosamente`,
+    data: response,
+    error: false,
+  });
 };
 
 export default {

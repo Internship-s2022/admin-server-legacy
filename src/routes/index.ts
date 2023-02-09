@@ -12,12 +12,20 @@ import { AccessRoleType, MainRoutes } from 'src/types';
 
 const router = express.Router();
 
-router.use(MainRoutes.USERS, userRouter);
-router.use(MainRoutes.NOTIFICATIONS, notificationsRouter);
-router.use(MainRoutes.PROJECTS, authMiddleware(AccessRoleType.ADMIN), projectRouter);
-router.use(MainRoutes.CLIENTS, authMiddleware(AccessRoleType.ADMIN), clientRouter);
-router.use(MainRoutes.EMPLOYEES, authMiddleware(AccessRoleType.ADMIN), employeeRouter);
-router.use(MainRoutes.MEMBERS, authMiddleware(AccessRoleType.ADMIN), memberRouter);
+router.use(MainRoutes.USERS, authMiddleware([AccessRoleType.SUPER_ADMIN]), userRouter);
+router.use(MainRoutes.NOTIFICATIONS, authMiddleware([AccessRoleType.ADMIN]), notificationsRouter);
+router.use(MainRoutes.PROJECTS, authMiddleware([AccessRoleType.ADMIN]), projectRouter);
+router.use(MainRoutes.CLIENTS, authMiddleware([AccessRoleType.ADMIN]), clientRouter);
+router.use(
+  MainRoutes.EMPLOYEES,
+  authMiddleware([AccessRoleType.ADMIN, AccessRoleType.SUPER_ADMIN]),
+  employeeRouter,
+);
+router.use(
+  MainRoutes.MEMBERS,
+  authMiddleware([AccessRoleType.ADMIN, AccessRoleType.SUPER_ADMIN]),
+  memberRouter,
+);
 router.use(MainRoutes.CRON, cronJobRouter);
 
 export default router;

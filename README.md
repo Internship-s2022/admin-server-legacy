@@ -2,7 +2,7 @@
 
 ## Domains
 
-- https://admin.server.radiumrocket.com Production (master)
+- https://api.admin.radiumrocket.com Production (master)
 - https://uat.admin.server.radiumrocket.com UAT (uat)
 - https://test.admin.server.radiumrocket.com Test (test)
 - https://dev.admin.server.radiumrocket.com Develop (develop)
@@ -97,10 +97,13 @@ To schedule jobs using node-cron, we need to invoke the method cron.schedule()
 ```
 cron.schedule(expression, function, options);
 ```
+
 ### Example
+
 ![image](https://user-images.githubusercontent.com/94427392/207924865-0b096704-f8e1-4fa5-90ba-457fbcf12c6c.png)
 
 #### Execution on main index
+
 ![image](https://user-images.githubusercontent.com/94427392/207926664-e1e5fb5d-3dd4-44d3-a745-eb29367eda3b.png)
 
 ### Cron expresions
@@ -120,7 +123,9 @@ The cron expression is made up of 6 elements, separated by a space:
 | minute
 second(optional)
 ```
+
 To help us create these time expressions there are good tools such as [CronTab](https://crontab.guru/), which helps us to validate and gives us some examples
+
 ### Cron function
 
 The second argument of the cron.schedule method is a callback who indicates the function that will be executed every time when the cron expression triggers.
