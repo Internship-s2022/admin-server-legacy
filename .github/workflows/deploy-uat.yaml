@@ -1,4 +1,4 @@
-name: Deploy UAT
+name: Deploy Uat
 on:
   push:
     branches:
@@ -14,4 +14,3 @@ jobs:
     secrets: inherit
     with:
       environment: uat
-      domain: uat.
