@@ -19,11 +19,15 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build
         run: | # ADD ALL ENV VARIABLES HERE
           yarn
-          ENV=${{ secrets.ENV }} \
+          MONGO_URL="${{ secrets.MONGO_URL}}" \
+          ENV="${{ secrets.ENV }}" \
+          FIREBASE_CLIENT_EMAIL="${{ secrets.FIREBASE_CLIENT_EMAIL }}" \
+          FIREBASE_PRIVATE_KEY="${{ secrets.FIREBASE_PRIVATE_KEY }}" \
+          FIREBASE_PROJECT_ID="${{ secrets.FIREBASE_PROJECT_ID }}" \
           yarn build
       - name: Deploy to Vercel Action
         uses: BetaHuhn/deploy-to-vercel-action@v1
@@ -33,6 +37,4 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           VERCEL_SCOPE: ${{ secrets.VERCEL_TEAM_NAME }}
-          PRODUCTION: false
-          BUILD_ENV: | # ADD ALL ENV VARIABLES HERE
-            ENV=${{ secrets.ENV }}
+          DEPLOY_PR_FROM_FORK: true

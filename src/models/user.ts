@@ -1,16 +1,47 @@
-const userSchema = {
-  firstName: {
-    required: true,
+import { InferSchemaType, model, Schema } from 'mongoose';
+
+import { AccessRoleType, UserData } from 'src/types';
+
+export const userSchema = new Schema({
+  firebaseUid: {
+    type: String,
+    required: false,
   },
-  lastName: {
+  accessRoleType: {
+    type: String,
+    enum: AccessRoleType,
     required: true,
   },
   email: {
+    type: String,
     required: true,
   },
-  password: {
+  firstName: {
+    type: String,
     required: true,
   },
-};
+  lastName: {
+    type: String,
+    required: true,
+  },
+  location: {
+    type: String,
+    required: true,
+  },
+  workedHours: {
+    type: Number,
+    required: false,
+  },
+  birthDate: {
+    type: Date,
+    required: true,
+  },
+  isActive: {
+    type: Boolean,
+    required: true,
+  },
+});
 
-export default userSchema;
+export type User = InferSchemaType<typeof userSchema>;
+
+export default model<UserData>('User', userSchema);
