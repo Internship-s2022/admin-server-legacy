@@ -42,8 +42,8 @@ jobs:
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ $AWS_EB_APP_NAME }}
-          environment_name: ${{ $AWS_EB_APP_ENVIRONMENT }}
+          application_name: ${{ vars.AWS_EB_APP_NAME }}
+          environment_name: ${{ vars.AWS_EB_APP_ENVIRONMENT }}
           version_label: ${{ inputs.environment }}-${{ github.SHA }}
           region: us-east-1
           deployment_package: deploy.zip
