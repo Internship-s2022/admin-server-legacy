@@ -9,7 +9,7 @@ import logger from './config/logger';
 import firebaseApp from './helpers/firebase';
 import errorHandler from './middlewares/errorHandler';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const MONGO_URL = process.env.MONGO_URL || '';
 
 if (process.env.ENV && process.env.SENTRY_DSN) {
